@@ -67,7 +67,7 @@
 
     Create the database and set it up. (done)
 
-    Create frontend and connect them.
+    Create frontend and connect them. (done)
 
     User can create new account using passport-js.
         Make sure users can’t access other pages until or unless they are logged in.
