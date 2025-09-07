@@ -93,9 +93,13 @@
         Follow the color palette correctly. (Done)
         Design good as it'll be used later on. (Done)
 
-    On the right top side of the dashboard create user name which has logged in.
-        It should show profile circle, right next to it should be username.
-        Don’t make it clickable for now. Later user can click on it and go to their profile.
+    Create a Feed page which is the main posts page.
+        User can see the new posts created in the middle here. (Create Later) (Section Done)
+        On the left it will be menue with different options. (Done)
+        On the right user image logo with it's name and suggestions where all the users will be shown with their logo/images. (Create Later)
+        On the right top side of the Feed page create user name which has logged. (Done)
+        It should show profile circle, right next to it should be username. (Done)
+        Don’t make it clickable for now. Later user can click on it and go to their profile. (Done)
 
     User profile page for now show basic info.
         User can see their profile image place (can’t edit or add images for now)
@@ -104,13 +108,6 @@
         Also add edit user btn next to username but don’t make it work for now.
         The middle and the down area will include the posts so leave that for posts for now.
 
-    When user click on create a new post it will take them to a page for them to create a new post.
-        When the user clicks create new post it will open up a pop up with a message place for the user to write the message and post it.
-        Also add a discharge/close button for them to close the pop up or just click out of the pop up and it will close.
-        When the user posts the middle area of the dashboard show the users image and on the profile of the user show the image of all the users.
-        But make sure that on the dashboard we can see all the images of other users included.
-        While on the profile, show only the posts of the user that is logged in.
-
     Now make the edit btn work. User can edit their profile info and change it.
         When user clicks on edit btn it shows a pop up for the edit btn.
         For the name it could be any.
@@ -118,6 +115,13 @@
         The username, email should be unique. If it is used once the user can’t use it again.
         The password to change user has to write previous password. For the security this is enough for now.
         When click on the update btn it should update all info.
+
+    When user click on create a new post it will take them to a page for them to create a new post.
+        When the user clicks create new post it will open up a pop up with a message place for the user to write the message and post it.
+        Also add a discharge/close button for them to close the pop up or just click out of the pop up and it will close.
+        When the user posts the middle area of the dashboard show the users image and on the profile of the user show the image of all the users.
+        But make sure that on the dashboard we can see all the images of other users included.
+        While on the profile, show only the posts of the user that is logged in.
 
     On left bar have a friend’s btn to access friends page.
         On the page show 3 things.
