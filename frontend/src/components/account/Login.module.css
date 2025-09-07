@@ -1,0 +1,139 @@
+:root {
+  --bg: #f7f6ed;
+  --card: #fdfbd4;
+  --accent: rgba(84, 83, 51, 0.95);
+  --muted: #7d7a67;
+  --radius: 12px;
+}
+
+.container {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: linear-gradient(180deg, var(--bg) 0%, #f0efe2 100%);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.6rem;
+  box-shadow: 0 10px 28px rgba(16, 16, 16, 0.06);
+  border: 1px solid rgba(16, 16, 16, 0.03);
+}
+
+.title {
+  margin: 0 0 0.6rem 0;
+  font-size: 1.15rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.label {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.input {
+  border: 1px solid rgba(16, 16, 16, 0.06);
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(250, 250, 250, 0.98)
+  );
+  transition: border-color 0.12s ease, box-shadow 0.12s ease,
+    transform 0.12s ease;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 8px 20px rgba(84, 83, 51, 0.07);
+  transform: translateY(-1px);
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 0.4rem;
+}
+
+.primary {
+  background: var(--accent);
+  color: #fdfbd4;
+  border: none;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.18s ease;
+}
+
+.primary:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(84, 83, 51, 0.12);
+}
+
+.primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.linkBtn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: color 0.12s ease, transform 0.12s ease;
+}
+
+.linkBtn:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.error {
+  margin: 0.55rem 0 0 0;
+  color: #b82b2b;
+  background: #fff0f0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* small screens */
+@media (max-width: 480px) {
+  .card {
+    padding: 1.1rem;
+  }
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .linkBtn {
+    text-align: center;
+  }
+}

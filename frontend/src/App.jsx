@@ -4,25 +4,28 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './auth/AuthProvider';
 import RequireAuth from './components/RequireAuth';
 import GuestOnly from './components/GuestOnly';
+import './style/main.css';
 
-import Home from './components/pages/Home';
-import Login from './components/pages/Login';
-import Signup from './components/pages/Signup';
+import HeaderLayout from './components/Header/HeaderLayout';
+import Home from './components/dashboard/Home';
+import Login from './components/account/Login';
+import Signup from './components/account/Signup';
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* protected home */}
           <Route
-            path="/"
             element={
               <RequireAuth>
-                <Home />
+                <HeaderLayout />
               </RequireAuth>
             }
-          />
+          >
+            <Route path="/" element={<Home />} />
+            {/* add more protected routes here, e.g. <Route path="profile" element={<Profile/>} /> */}
+          </Route>
 
           {/* public routes */}
           <Route
