@@ -1,26 +1,39 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../auth/context';
 import leftStyle from './LeftBar.module.css';
 
 const LeftBar = () => {
+  const { logout } = useAuth();
+
   const links = [
     { name: 'Home', path: '/' },
     { name: 'Feed', path: '/feed' },
     { name: 'Post', path: '/post' },
     { name: 'Search', path: '#' }, // No path
     { name: 'Profile', path: '/profile' },
-    { name: 'Logout', path: '/logout' },
   ];
 
   return (
     <nav className={leftStyle.completeBar}>
       <h1 className={leftStyle.leftHeading}>Odling</h1>
-      <ul>
-        {links.map(({ name, path }) => (
-          <li key={name}>
-            {path === '#' ? <span>{name}</span> : <Link to={path}>{name}</Link>}
-          </li>
-        ))}
-      </ul>
+
+      <div className={leftStyle.linksContainer}>
+        <ul className={leftStyle.linkList}>
+          {links.map(({ name, path }) => (
+            <li key={name}>
+              {path === '#' ? (
+                <span>{name}</span>
+              ) : (
+                <Link to={path}>{name}</Link>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <button className={leftStyle.logoutBtn} onClick={logout}>
+        Logout
+      </button>
     </nav>
   );
 };

@@ -1,6 +1,7 @@
 .completeBar {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start; /* top-align everything */
   padding: 24px 16px;
   background-color: #d9d7b6;
   border-radius: 12px;
@@ -16,7 +17,11 @@
   text-align: center;
 }
 
-.completeBar ul {
+.linksContainer {
+  flex-grow: 1; /* takes remaining space so logout sticks to bottom */
+}
+
+.linkList {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -25,36 +30,53 @@
   gap: 16px;
 }
 
-.completeBar ul li {
+.linkList li {
   font-size: 18px;
   font-weight: 400;
   color: #545333;
   cursor: pointer;
-  padding: 8px 12px;
   border-radius: 8px;
   transition: all 0.2s ease;
 }
 
-.completeBar ul li:hover {
+/* Hover effect for li or links */
+.linkList li:hover {
   background-color: #fdfbd4;
   color: #878672;
   transform: translateX(4px);
 }
 
-.completeBar ul li a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.completeBar ul li a {
-  color: inherit;
-  text-decoration: none;
+/* Make links take full li space and inherit hover */
+.linkList li a {
   display: block;
   width: 100%;
   height: 100%;
   padding: 8px 12px;
+  color: inherit;
+  text-decoration: none;
 }
 
-.completeBar ul li span {
+.linkList li span {
+  display: block;
+  padding: 8px 12px;
   color: #878672;
+}
+
+.logoutBtn {
+  background: #b83232;
+  color: #fff;
+  border: none;
+  outline: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.logoutBtn:hover {
+  background: #d84444;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }

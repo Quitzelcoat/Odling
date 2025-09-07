@@ -25,10 +25,8 @@ function App() {
             }
           >
             <Route path="/" element={<Home />} />
-            {/* add more protected routes here, e.g. <Route path="profile" element={<Profile/>} /> */}
           </Route>
 
-          {/* public routes */}
           <Route
             path="/login"
             element={
