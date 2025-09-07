@@ -10,6 +10,7 @@ import HeaderLayout from './components/Header/HeaderLayout';
 import Home from './components/dashboard/Home';
 import Login from './components/account/Login';
 import Signup from './components/account/Signup';
+import Feed from './components/feed/Feed';
 
 function App() {
   return (
@@ -42,6 +43,15 @@ function App() {
               <GuestOnly>
                 <Signup />
               </GuestOnly>
+            }
+          />
+
+          <Route
+            path="/feed"
+            element={
+              <RequireAuth>
+                <Feed />
+              </RequireAuth>
             }
           />
 

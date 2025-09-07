@@ -15,6 +15,18 @@
   padding: 1rem 1.5rem;
 }
 
+.navList a {
+  text-decoration: none;
+  color: inherit; /* inherit text color from li */
+  transition: color 0.3s ease;
+  display: inline-block;
+  padding: 0.25rem 0; /* optional for nicer spacing */
+}
+
+.navList a:hover {
+  color: rgba(84, 83, 51, 0.95);
+}
+
 .navList {
   margin: 0%;
   padding: 0%;

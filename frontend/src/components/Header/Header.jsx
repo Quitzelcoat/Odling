@@ -10,9 +10,15 @@ const Header = () => {
         <h1 className={HeaderStyle.logo}>ODLING</h1>
         <nav>
           <ul className={HeaderStyle.navList}>
-            <li>Feed</li>
-            <li>New Post</li>
-            <li>Notification</li>
+            <li>
+              <a href="/feed">Feed</a>
+            </li>
+            <li>
+              <a>New Post</a>
+            </li>
+            <li>
+              <a>Search</a>
+            </li>
           </ul>
         </nav>
         <button className={HeaderStyle.logoutBtn} onClick={logout}>

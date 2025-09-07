@@ -1,0 +1,60 @@
+.completeBar {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  background-color: #d9d7b6;
+  border-radius: 12px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.leftHeading {
+  margin: 0 0 24px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #545333;
+  text-align: center;
+}
+
+.completeBar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.completeBar ul li {
+  font-size: 18px;
+  font-weight: 400;
+  color: #545333;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.completeBar ul li:hover {
+  background-color: #fdfbd4;
+  color: #878672;
+  transform: translateX(4px);
+}
+
+.completeBar ul li a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.completeBar ul li a {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 8px 12px;
+}
+
+.completeBar ul li span {
+  color: #878672;
+}

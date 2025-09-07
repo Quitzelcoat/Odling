@@ -1,0 +1,55 @@
+.completeBar {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: #d9d7b6;
+  border-radius: 12px;
+  gap: 24px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: #fdfbd4;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.username {
+  font-weight: 500;
+  color: #545333;
+}
+
+.followers h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #545333;
+}
+
+.followers ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.followers ul li {
+  font-size: 14px;
+  color: #878672;
+  cursor: pointer;
+}
+
+.followers ul li:hover {
+  color: #545333;
+}
