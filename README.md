@@ -69,29 +69,33 @@
 
     Create frontend and connect them. (done)
 
-    User can create new account using passport-js.
-        Make sure users can’t access other pages until or unless they are logged in.
-        For user to sign up make sure to get their following things:
-        Username (cannot be same should be different for every user),
-        Name, email, pass, description/bio. (for now these only)
-        Their date of birth and their gender.
-        Also in place of user image we can create a small circle for now.(don’t worry about choosing the img for now we will do that later).
+    User can create new account using passport-js. (Done)
+        Make sure users can’t access other pages until or unless they are logged in. (Done)
+        For user to sign up make sure to get their following things: (Done)
+        Username (cannot be same should be different for every user), (Done)
+        Name, email, pass, description/bio. (for now these only) (Done)
+        Their date of birth and their gender. (Done)
 
-    For the password encryption we will use jwt token.
-        Make sure you are getting the jwt token correctly and when log in console show that jwt token for later purposes.
+    For the password encryption we will use jwt token. (Done)
+        Make sure you are getting the jwt token correctly and when log in console show that jwt token for later purposes. (Done)
 
-    After logging in create the main dashboard just design to put coming soon but some good designing.
-        Later on we will show posts etc here on this page.
+    After logging in create the main dashboard just design to put coming soon but some good designing. (Done)
+        Later on we will show posts etc here on this page. (Done)
+        Create an header with Logout and also attach there on the homepage. Also make sure to design it and make it sticky animated. (Done)
 
-    On the right side create user name which has logged in.
+    On the top we will create a nav bar for now only show home, create new post, Feed, Notifications and (on the left) sign out buttons for now. (Done)
+        User can go home,
+        Click on create new posts to create new post, (make this work later). (Done)
+        Also later we will create a circle with user image and right next to it write profile for the user to go to their profile. (Later Done)
+        Finally a log out btn for the user to log out. (Done)
+
+    Design the Login and the Signup pages simple for now. (Done)
+        Follow the color palette correctly. (Done)
+        Design good as it'll be used later on. (Done)
+
+    On the right top side of the dashboard create user name which has logged in.
         It should show profile circle, right next to it should be username.
         Don’t make it clickable for now. Later user can click on it and go to their profile.
-
-    On the left we will create a nav bar for now only show home, create new post, and (on the down) sign out buttons for now. (sign out doesn’t need to work for now).
-        User can go home,
-        Click on create new posts to create new post,
-        Also later we will create a circle with user image and right next to it write profile for the user to go to their profile.
-        Finally a log out btn for the user to log out. It doesn’t have to work for now just show it’s there we will work on it later.
 
     User profile page for now show basic info.
         User can see their profile image place (can’t edit or add images for now)
@@ -135,3 +139,22 @@
         And also add those users which we sent request to the request place.
         When a user accepts the follow request remove them from request place and add to the friends list.
         If denied remove from the request page only and don’t remove from the suggestions section tho. But change the request btn to follow btn.
+
+## CSS:
+
+### Color Palette:
+
+    Main: (60%)
+        #FDFBD4
+        #d9d7b6
+        (Black works with it)
+
+    Secondary: (30%)
+        #878672
+        (Black works with it)
+
+    Last Touch: (10%)
+        #545333
+        (white works with it)
+
+    Reverse for dark color.
