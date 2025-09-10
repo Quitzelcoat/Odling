@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import rightStyle from './RightBar.module.css';
 import { useAuth } from '../../../auth/context';
 
@@ -9,12 +10,14 @@ const RightBar = () => {
   return (
     <aside className={rightStyle.completeBar}>
       <div className={rightStyle.userInfo}>
-        <img
-          src={user?.profilePic || '/default-avatar.png'}
-          alt={username}
-          className={rightStyle.avatar}
-        />
-        <span className={rightStyle.username}>{username}</span>
+        <Link to="/profile" className={rightStyle.userLink}>
+          <img
+            src={user?.profilePic || '/default-avatar.png'}
+            alt={username}
+            className={rightStyle.avatar}
+          />
+          <span className={rightStyle.username}>{username}</span>
+        </Link>
       </div>
 
       <div className={rightStyle.followers}>

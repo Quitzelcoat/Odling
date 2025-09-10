@@ -53,3 +53,14 @@
 .followers ul li:hover {
   color: #545333;
 }
+
+.userLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+.userLink:hover {
+  opacity: 0.9;
+}

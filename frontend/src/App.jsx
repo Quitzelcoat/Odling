@@ -11,6 +11,7 @@ import Home from './components/dashboard/Home';
 import Login from './components/account/Login';
 import Signup from './components/account/Signup';
 import Feed from './components/feed/Feed';
+import Profile from './components/profile/Profile';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
               </GuestOnly>
             }
           />
+
           <Route
             path="/signup"
             element={
@@ -49,6 +51,15 @@ function App() {
             element={
               <RequireAuth>
                 <Feed />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <Profile />
               </RequireAuth>
             }
           />
