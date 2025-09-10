@@ -101,12 +101,12 @@
         It should show profile circle, right next to it should be username. (Done)
         Don’t make it clickable for now. Later user can click on it and go to their profile. (Done)
 
-    User profile page for now show basic info.
-        User can see their profile image place (can’t edit or add images for now)
-        Their Right next to the profile image area the username.
-        Down the user name the name of the user and under it the description.
-        Also add edit user btn next to username but don’t make it work for now.
-        The middle and the down area will include the posts so leave that for posts for now.
+    User profile page for now show basic info. (Done)
+        User can see their profile image place (can’t edit or add images for now) (Done)
+        Their Right next to the profile image area the username. (Done)
+        Down the user name the name of the user and under it the description. (Done)
+        Also add edit user btn next to username but don’t make it work for now. (Done)
+        The down area will include the posts so leave that for posts for now. (Done)
 
     Now make the edit btn work. User can edit their profile info and change it.
         When user clicks on edit btn it shows a pop up for the edit btn.
