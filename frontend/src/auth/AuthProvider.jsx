@@ -18,6 +18,17 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const refreshUser = async () => {
+    try {
+      const data = await api.request('/', { method: 'GET', token });
+      if (data?.user) setUser(data.user);
+      return data.user;
+    } catch (e) {
+      console.log('refreshUser failed:', e);
+      return null;
+    }
+  };
+
   const logout = async () => {
     try {
       await api.request('/auth/logout', { method: 'POST' });
@@ -132,7 +143,7 @@ export function AuthProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const value = { user, token, loading, login, logout, signup };
+  const value = { user, token, loading, login, logout, signup, refreshUser };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

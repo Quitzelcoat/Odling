@@ -1,101 +1,72 @@
-/* Profile.module.css */
+/* add these or merge into existing file */
 
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 24px;
-  box-sizing: border-box;
-  color: #545333;
-}
-
-/* Header area: avatar on left, info on the right */
-.header {
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
-}
-
-/* Avatar */
-.avatarWrap {
-  flex: 0 0 auto;
-}
-.avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #f6f5df;
-  background: #f1f0d9;
-}
-
-/* Info area */
-.info {
-  flex: 1 1 auto;
+.form {
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-
-.topRow {
-  display: flex;
-  align-items: center;
   gap: 12px;
 }
 
-.username {
-  margin: 0;
-  font-size: 1.6rem;
-  color: #2f2e25;
-  font-weight: 600;
+.field .label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 6px;
 }
 
-/* Edit button sits next to username */
-.editBtn {
-  margin-left: auto;
-  padding: 6px 12px;
+.input,
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #d0cfa8;
+  border: 1px solid #e0dfc1;
   background: #fff;
-  cursor: not-allowed; /* visually indicates not active */
-  color: #545333;
-  font-weight: 600;
-  font-size: 0.95rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  color: #2f2e25;
 }
 
-.meta {
+.smallNote {
+  font-size: 0.85rem;
+  color: #8b8a72;
   margin-top: 6px;
 }
 
-.realName {
+.saveBtn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #2f8f4d;
+  background: #2f8f4d;
+  color: white;
+  cursor: pointer;
   font-weight: 600;
-  color: #545333;
+}
+.saveBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
-.bio {
-  margin-top: 8px;
-  color: #6f6e5e;
-  line-height: 1.4;
+.cancelBtn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  font-weight: 600;
 }
 
-/* Posts area */
-.posts {
-  margin-top: 22px;
+.error {
+  margin-top: 16px;
+  color: #b83232;
+  background: #fff3f3;
+  padding: 10px;
+  border-radius: 8px;
 }
 
-.posts h3 {
-  margin: 0 0 12px 0;
-  font-size: 1.1rem;
-  color: #545333;
-}
-
-.postsPlaceholder {
-  background: #ffffff;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
-  color: #6f6e5e;
+.success {
+  margin-top: 16px;
+  color: #225522;
+  background: #f3fff3;
+  padding: 10px;
+  border-radius: 8px;
 }
