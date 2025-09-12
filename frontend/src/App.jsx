@@ -12,6 +12,7 @@ import Login from './components/account/Login';
 import Signup from './components/account/Signup';
 import Feed from './components/feed/Feed';
 import Profile from './components/profile/Profile';
+import EditProfile from './components/editProfile/EditProfile';
 
 function App() {
   return (
@@ -60,6 +61,15 @@ function App() {
             element={
               <RequireAuth>
                 <Profile />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/edit"
+            element={
+              <RequireAuth>
+                <EditProfile />
               </RequireAuth>
             }
           />

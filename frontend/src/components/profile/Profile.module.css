@@ -1,72 +1,272 @@
-/* add these or merge into existing file */
+:root {
+  --bg: #fbfbe6;
+  --muted: #6b6a5a;
+  --text: #2f2e25;
+  --accent: #2f9a55;
+  --card-shadow: 0 12px 30px rgba(18, 18, 14, 0.06);
+}
 
-.form {
-  margin-top: 12px;
+.page {
+  max-width: 980px;
+  margin: 28px auto;
+  padding: 20px;
+  box-sizing: border-box;
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial;
+}
+
+.headerCard {
+  position: relative;
+  overflow: visible;
+  border-radius: 16px;
+  padding: 26px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 22px;
+  transition: transform 300ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    box-shadow 300ms ease;
+  will-change: transform;
+}
+.headerCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 46px rgba(18, 18, 14, 0.1);
+}
+
+.gradientGlow {
+  position: absolute;
+  right: -100px;
+  top: -60px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+      circle at 30% 30%,
+      rgba(47, 143, 77, 0.06),
+      transparent 30%
+    ),
+    radial-gradient(circle at 70% 70%, rgba(18, 18, 14, 0.02), transparent 30%);
+  filter: blur(12px);
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+/* header inner layout */
+.headerInner {
+  display: flex;
+  gap: 26px;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+
+/* avatar */
+.avatarWrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  flex: 0 0 140px;
+  display: grid;
+  place-items: center;
+}
+.avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 8px 30px rgba(12, 12, 12, 0.08);
+  transition: transform 380ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  transform-origin: center;
+}
+.avatarWrap:hover .avatar {
+  transform: translateY(-6px) scale(1.03);
+}
+
+/* subtle online/status pulse (decorative) */
+.statusPulse {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(47, 143, 77, 1),
+    rgba(47, 143, 77, 0.8)
+  );
+  box-shadow: 0 4px 12px rgba(47, 143, 77, 0.12);
+  border: 2px solid white;
+  animation: pulse 2600ms infinite;
+  pointer-events: none;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* title & actions */
+.title {
+  flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 8px;
+}
+.row {
+  display: flex;
+  align-items: center;
   gap: 12px;
 }
-
-.field .label {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 6px;
+.username {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.actions {
+  margin-left: auto;
+}
+.editBtn {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fff, #f7f7ee);
+  border: 1px solid #e6e6d0;
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.editBtn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(14, 14, 12, 0.12);
 }
 
-.input,
-.textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #e0dfc1;
-  background: #fff;
-  box-sizing: border-box;
-  font-size: 1rem;
-  color: #2f2e25;
+/* real name and bio */
+.realName {
+  margin: 6px 0 0 0;
+  font-weight: 600;
+  color: #3b3a33;
+}
+.bio {
+  margin-top: 8px;
+  color: var(--muted);
+  line-height: 1.45;
+  max-width: 70ch;
 }
 
-.smallNote {
+/* small meta row (posts/followers) */
+.metaRow {
+  display: flex;
+  gap: 18px;
+  margin-top: 14px;
+  align-items: center;
+}
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.metaNum {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+.metaLabel {
   font-size: 0.85rem;
-  color: #8b8a72;
-  margin-top: 6px;
+  color: var(--muted);
 }
 
-.saveBtn {
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid #2f8f4d;
-  background: #2f8f4d;
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
+/* content section */
+.content {
+  margin-top: 10px;
 }
-.saveBtn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.sectionTitle {
+  margin: 0 0 12px 0;
+  color: var(--text);
+  font-size: 1.05rem;
 }
-
-.cancelBtn {
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.postsPlaceholder {
   background: #fff;
-  color: #333;
-  cursor: pointer;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(18, 18, 14, 0.04);
+  color: #757561;
+}
+
+/* loading / no user */
+.loading,
+.noUser {
+  text-align: center;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(18, 18, 14, 0.04);
+}
+
+.backBtn {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #ffffff, #f0f0ea);
+  border: 1px solid #e6e6d0;
+  box-shadow: 0 6px 18px rgba(14, 14, 12, 0.06);
+  color: #2f2e25;
   font-weight: 600;
+  text-decoration: none;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.backBtn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(14, 14, 12, 0.12);
 }
 
-.error {
-  margin-top: 16px;
-  color: #b83232;
-  background: #fff3f3;
-  padding: 10px;
-  border-radius: 8px;
+/* responsive */
+@media (max-width: 860px) {
+  .headerInner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+  .avatarWrap {
+    width: 120px;
+    height: 120px;
+  }
+  .username {
+    font-size: 1.25rem;
+  }
+  .title {
+    gap: 6px;
+  }
+  .metaRow {
+    justify-content: center;
+    gap: 10px;
+  }
+  .bio {
+    max-width: 100%;
+  }
 }
 
-.success {
-  margin-top: 16px;
-  color: #225522;
-  background: #f3fff3;
-  padding: 10px;
-  border-radius: 8px;
+/* reduced-motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .headerCard,
+  .avatar,
+  .statusPulse,
+  .gradientGlow {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
 }

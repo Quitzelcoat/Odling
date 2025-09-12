@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
 
   const refreshUser = async () => {
     try {
-      const data = await api.request('/', { method: 'GET', token });
+      const data = await api.request('/auth/me', { method: 'GET', token });
       if (data?.user) setUser(data.user);
       return data.user;
     } catch (e) {
@@ -123,9 +123,9 @@ export function AuthProvider({ children }) {
       }
 
       try {
-        const data = await api.request('/', { method: 'GET', token });
+        const dataUser = await refreshUser();
         if (!ignore) {
-          if (data?.user) setUser(data.user);
+          if (dataUser) setUser(dataUser);
         }
       } catch (e) {
         console.log('Session restore failed:', e);
