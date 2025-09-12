@@ -108,13 +108,12 @@
         Also add edit user btn next to username but don’t make it work for now. (Done)
         The down area will include the posts so leave that for posts for now. (Done)
 
-    Now make the edit btn work. User can edit their profile info and change it.
-        When user clicks on edit btn it shows a pop up for the edit btn.
-        For the name it could be any.
-        For the image leave it for now.
-        The username, email should be unique. If it is used once the user can’t use it again.
-        The password to change user has to write previous password. For the security this is enough for now.
-        When click on the update btn it should update all info.
+    Now make the edit btn work. User can edit their profile info and change it. (Done)
+        When user clicks on edit btn it shows a pop up for the edit btn. (Done)
+        For the name it could be any. (Done)
+        For the image leave it for now. (Done)
+        The username, email should be unique. If it is used once the user can’t use it again. (Done)
+        When click on the update btn it should update all info. (Done)
 
     When user click on create a new post it will take them to a page for them to create a new post.
         When the user clicks create new post it will open up a pop up with a message place for the user to write the message and post it.
