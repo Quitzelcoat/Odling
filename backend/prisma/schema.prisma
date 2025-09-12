@@ -15,6 +15,7 @@ model User {
   email       String    @unique
   password    String
   bio         String?
+  profilePic  String?
   dateOfBirth DateTime?
   gender      String?
   createdAt   DateTime  @default(now())

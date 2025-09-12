@@ -1,3 +1,6 @@
+// controllers/profileController.js
+const bcrypt = require('bcrypt');
+const prisma = require('../prismaClient'); // ensure this path is correct
 const SALT_ROUNDS = 10;
 
 exports.updateProfile = async (req, res) => {
@@ -42,7 +45,7 @@ exports.updateProfile = async (req, res) => {
     return res.json({ message: 'Profile updated', user: updated });
   } catch (err) {
     // handle unique constraint error (Prisma P2002)
-    if (err.code === 'P2002') {
+    if (err && err.code === 'P2002') {
       const target = err.meta?.target?.join(', ') || 'field';
       return res.status(409).json({ error: `${target} already in use` });
     }

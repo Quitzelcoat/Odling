@@ -95,3 +95,34 @@ exports.logout = (req, res) => {
   });
   return res.json({ message: 'Logout successful' });
 };
+
+exports.getMe = async (req, res) => {
+  try {
+    // authenticate middleware already ensured req.user exists with id
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: 'Not authorized' });
+    }
+
+    const fullUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        username: true,
+        name: true,
+        email: true,
+        bio: true,
+        profilePic: true,
+      },
+    });
+
+    if (!fullUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    return res.json({ user: fullUser });
+  } catch (err) {
+    console.error('getMe error:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
