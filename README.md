@@ -117,8 +117,8 @@
 
     When user click on create a new post it will take them to a page for them to create a new post. (Done)
         When the user clicks create new post it will open up a pop up with a message place for the user to write the message and post it. (Done)
-        Make sure that on the dashboard we can see all the posts of other users included.
-        While on the profile, show only the posts of the user that is logged in.
+        Make sure that on the dashboard we can see all the posts of other users included. (Done)
+        While on the profile, show only the posts of the user that is logged in. (Done)
 
     On left bar have a friend’s btn to access friends page.
         On the page show 3 things.
@@ -128,6 +128,13 @@
         On the friends page only show suggestions and for 2 and 3 show it on the profile page.
         Show the suggestions tab with randomly choosing 5 users max on the dashboard right side.
         For now don’t show the follow btn.
+
+    Now Let's go back to the posts show part.
+        User can like posts.
+        When user clicks on the comment of feed or user profile it takes the user to that post where the user can comment.
+        User can open up each post where it'll show the post and down user can comment on the post.
+        User can edit the posts only the ones user created themselves.
+        User can delete their own posts.
 
     ALso create a notification page. And on the left side create the btn to access.
         Inside the notification page when we click it should show friend request from other users with a deny and accept btns.
