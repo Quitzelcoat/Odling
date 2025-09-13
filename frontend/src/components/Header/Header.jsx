@@ -14,10 +14,10 @@ const Header = () => {
               <a href="/feed">Feed</a>
             </li>
             <li>
-              <a>New Post</a>
+              <a href="/newPost">New Post</a>
             </li>
             <li>
-              <a>Search</a>
+              <a href="/profile">Profile</a>
             </li>
           </ul>
         </nav>

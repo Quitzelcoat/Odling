@@ -1,5 +1,5 @@
 // src/components/createPosts/CreatePosts.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import postStyle from './CreatePosts.module.css';
 import api from '../../auth/api';
 

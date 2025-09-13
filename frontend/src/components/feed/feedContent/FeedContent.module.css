@@ -1,0 +1,79 @@
+/* src/components/feed/FeedContent.module.css */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 8px 6px;
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 10px;
+  background: transparent;
+}
+
+.hTitle {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #2f2e22; /* accent */
+}
+
+.hSub {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #7b7a64;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.newPostBtn {
+  background: linear-gradient(90deg, #545333, #2f2e22);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(47, 46, 34, 0.12);
+}
+
+.center {
+  padding: 36px;
+  text-align: center;
+  color: #6b6a58;
+}
+
+.error {
+  padding: 14px;
+  background: rgba(127, 29, 29, 0.06);
+  color: #7f1d1d;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.empty {
+  padding: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(253, 251, 212, 0.6),
+    rgba(217, 215, 182, 0.2)
+  );
+  border-radius: 12px;
+  text-align: center;
+  color: #545333;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
