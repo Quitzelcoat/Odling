@@ -8,7 +8,7 @@ const LeftBar = () => {
   const links = [
     { name: 'Home', path: '/' },
     { name: 'Feed', path: '/feed' },
-    { name: 'Post', path: '/post' },
+    { name: 'New Post', path: '/newPost' },
     { name: 'Search', path: '#' }, // No path
     { name: 'Profile', path: '/profile' },
   ];

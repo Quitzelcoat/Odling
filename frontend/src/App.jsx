@@ -13,6 +13,7 @@ import Signup from './components/account/Signup';
 import Feed from './components/feed/Feed';
 import Profile from './components/profile/Profile';
 import EditProfile from './components/editProfile/EditProfile';
+import CreatePosts from './components/createPosts/CreatePosts';
 
 function App() {
   return (
@@ -70,6 +71,15 @@ function App() {
             element={
               <RequireAuth>
                 <EditProfile />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/newPost"
+            element={
+              <RequireAuth>
+                <CreatePosts />
               </RequireAuth>
             }
           />

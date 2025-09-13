@@ -115,11 +115,9 @@
         The username, email should be unique. If it is used once the user can’t use it again. (Done)
         When click on the update btn it should update all info. (Done)
 
-    When user click on create a new post it will take them to a page for them to create a new post.
-        When the user clicks create new post it will open up a pop up with a message place for the user to write the message and post it.
-        Also add a discharge/close button for them to close the pop up or just click out of the pop up and it will close.
-        When the user posts the middle area of the dashboard show the users image and on the profile of the user show the image of all the users.
-        But make sure that on the dashboard we can see all the images of other users included.
+    When user click on create a new post it will take them to a page for them to create a new post. (Done)
+        When the user clicks create new post it will open up a pop up with a message place for the user to write the message and post it. (Done)
+        Make sure that on the dashboard we can see all the posts of other users included.
         While on the profile, show only the posts of the user that is logged in.
 
     On left bar have a friend’s btn to access friends page.
