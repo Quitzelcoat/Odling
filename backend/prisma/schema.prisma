@@ -9,57 +9,54 @@ datasource db {
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  username    String    @unique
-  name        String
-  email       String    @unique
-  password    String
-  bio         String?
-  profilePic  String?
-  dateOfBirth DateTime?
-  gender      String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deleted     Boolean   @default(false)
-
-  posts    Post[]
-  comments Comment[]
-  likes    Like[]
-
-  followers Follow[] @relation("user_followedBy")
-  following Follow[] @relation("user_follows")
-
-  receivedFollowRequests FollowRequest[] @relation("received_follow_requests")
+  id                     Int             @id @default(autoincrement())
+  username               String          @unique
+  name                   String
+  email                  String          @unique
+  password               String
+  bio                    String?
+  dateOfBirth            DateTime?
+  gender                 String?
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime        @updatedAt
+  deleted                Boolean         @default(false)
+  profilePic             String?
+  comments               Comment[]
+  followers              Follow[]        @relation("user_followedBy")
+  following              Follow[]        @relation("user_follows")
   sentFollowRequests     FollowRequest[] @relation("sent_follow_requests")
-
-  notifications Notification[]
+  receivedFollowRequests FollowRequest[] @relation("received_follow_requests")
+  likes                  Like[]
+  notifications          Notification[]
+  posts                  Post[]
 }
 
 model Post {
   id        Int       @id @default(autoincrement())
-  author    User      @relation(fields: [authorId], references: [id])
   authorId  Int
+  title     String?     // <- add this line
   content   String
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  updatedAt DateTime @updatedAt
+  deleted   Boolean   @default(false)
   comments  Comment[]
   likes     Like[]
-  deleted   Boolean   @default(false)
+  author    User      @relation(fields: [authorId], references: [id])
 
   @@index([authorId])
 }
 
 model Comment {
   id        Int       @id @default(autoincrement())
-  author    User      @relation(fields: [authorId], references: [id])
   authorId  Int
-  post      Post      @relation(fields: [postId], references: [id])
   postId    Int
   content   String
-  parent    Comment?  @relation("comment_parent", fields: [parentId], references: [id])
   parentId  Int?
-  replies   Comment[] @relation("comment_parent")
   createdAt DateTime  @default(now())
+  author    User      @relation(fields: [authorId], references: [id])
+  parent    Comment?  @relation("comment_parent", fields: [parentId], references: [id])
+  replies   Comment[] @relation("comment_parent")
+  post      Post      @relation(fields: [postId], references: [id])
 
   @@index([authorId])
   @@index([postId])
@@ -67,11 +64,11 @@ model Comment {
 
 model Like {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
   userId    Int
-  post      Post     @relation(fields: [postId], references: [id])
   postId    Int
   createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, postId])
   @@index([userId])
@@ -79,17 +76,14 @@ model Like {
 }
 
 model Follow {
-  id Int @id @default(autoincrement())
-
-  follower   User @relation("user_follows", fields: [followerId], references: [id])
+  id         Int      @id @default(autoincrement())
   followerId Int
-
-  followed   User @relation("user_followedBy", fields: [followedId], references: [id])
   followedId Int
-
-  status    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  followed   User     @relation("user_followedBy", fields: [followedId], references: [id])
+  follower   User     @relation("user_follows", fields: [followerId], references: [id])
 
   @@unique([followerId, followedId])
   @@index([followerId])
@@ -97,18 +91,15 @@ model Follow {
 }
 
 model FollowRequest {
-  id Int @id @default(autoincrement())
-
-  from       User @relation("sent_follow_requests", fields: [fromUserId], references: [id])
+  id         Int      @id @default(autoincrement())
   fromUserId Int
-
-  to       User @relation("received_follow_requests", fields: [toUserId], references: [id])
-  toUserId Int
-
-  status    String   @default("pending")
-  message   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  toUserId   Int
+  status     String   @default("pending")
+  message    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  from       User     @relation("sent_follow_requests", fields: [fromUserId], references: [id])
+  to         User     @relation("received_follow_requests", fields: [toUserId], references: [id])
 
   @@unique([fromUserId, toUserId])
   @@index([toUserId])
@@ -116,13 +107,13 @@ model FollowRequest {
 
 model Notification {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
   userId    Int
   type      String
   data      Json?
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
