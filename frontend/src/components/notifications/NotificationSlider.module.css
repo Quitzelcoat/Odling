@@ -1,0 +1,203 @@
+/* src/components/notifications/NotificationSlider.module.css */
+
+:root {
+  --main-1: #fdfbd4;
+  --main-2: #d9d7b6;
+  --sec: #878672;
+  --accent: #545333;
+  --bg-panel: #fffaf2;
+  --glass: rgba(255, 255, 255, 0.7);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.22);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 220ms ease;
+  z-index: 1200;
+}
+.overlayOpen {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Sliding panel from right */
+.slider {
+  position: fixed;
+  right: -420px;
+  top: 0;
+  height: 100vh;
+  width: 380px;
+  max-width: 92%;
+  background: linear-gradient(180deg, var(--bg-panel), #fff);
+  box-shadow: -16px 14px 40px rgba(20, 20, 20, 0.08);
+  border-left: 1px solid rgba(84, 83, 51, 0.04);
+  padding: 18px;
+  z-index: 1300;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: right 260ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  backdrop-filter: blur(6px) saturate(120%);
+  border-radius: 12px 0 0 12px;
+}
+
+/* open state */
+.slider.open {
+  right: 18px;
+}
+
+/* header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.title {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+.sub {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--sec);
+}
+
+/* header actions */
+.headerActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.markAllBtn {
+  background: transparent;
+  border: 1px solid rgba(84, 83, 51, 0.08);
+  padding: 6px 10px;
+  border-radius: 9px;
+  font-weight: 700;
+  color: var(--accent);
+  cursor: pointer;
+}
+.closeBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.05rem;
+  color: var(--sec);
+  cursor: pointer;
+}
+
+/* sections */
+.section {
+  flex: 1;
+  overflow: auto;
+  padding-right: 6px;
+}
+.sectionTitle {
+  font-weight: 700;
+  color: var(--accent);
+  margin: 8px 0;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* notification item */
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  background: linear-gradient(
+    180deg,
+    rgba(247, 244, 228, 0.7),
+    rgba(245, 244, 236, 0.4)
+  );
+  border: 1px solid rgba(84, 83, 51, 0.03);
+}
+.itemLeft {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.avatarMock {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: var(--accent);
+  background: linear-gradient(
+    180deg,
+    rgba(84, 83, 51, 0.06),
+    rgba(135, 134, 114, 0.03)
+  );
+  border: 1px solid rgba(84, 83, 51, 0.05);
+}
+.itemText {
+  font-weight: 600;
+  color: #2f2e22;
+}
+.itemTime {
+  font-size: 0.82rem;
+  color: var(--sec);
+}
+
+/* icons on right */
+.itemRight {
+  display: grid;
+  place-items: center;
+}
+.iconLike {
+  font-size: 18px;
+  color: #d84b61;
+}
+.iconComment {
+  font-size: 18px;
+  color: #3b82f6;
+}
+.iconFollow {
+  font-size: 16px;
+  color: #2f9a55;
+}
+.iconAccept {
+  font-size: 16px;
+  color: #2f9a55;
+}
+.iconDefault {
+  font-size: 16px;
+  color: var(--sec);
+}
+
+/* small bell + badge reuse (for NotificationButton) */
+.bellBtn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0.92));
+  border: 1px solid rgba(84, 83, 51, 0.06);
+  cursor: pointer;
+}
+.badge {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  background: #d84b61;
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 6px;
+  border-radius: 999px;
+  box-shadow: 0 6px 12px rgba(216, 75, 97, 0.12);
+}
