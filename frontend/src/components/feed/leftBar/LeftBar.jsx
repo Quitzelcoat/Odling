@@ -9,7 +9,8 @@ const LeftBar = () => {
     { name: 'Home', path: '/' },
     { name: 'Feed', path: '/feed' },
     { name: 'New Post', path: '/newPost' },
-    { name: 'Search', path: '#' }, // No path
+    { name: 'Notifications', path: '/notifications' }, // No path
+    { name: 'Friends', path: '/friends' }, // No path
     { name: 'Profile', path: '/profile' },
   ];
 

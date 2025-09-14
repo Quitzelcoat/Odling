@@ -6,7 +6,9 @@ require('dotenv').config();
 
 const authRoute = require('./routes/authRoute');
 const profileRoute = require('./routes/profileRoute');
+const userRoute = require('./routes/userRoute');
 const postRoute = require('./routes/postRoute');
+const followsRoute = require('./routes/followsRoute');
 const { authenticate } = require('./middleware/auth');
 
 app.use(express.json());
@@ -24,7 +26,9 @@ app.get('/', authenticate, (req, res) => {
 
 app.use('/auth', authRoute);
 app.use('/profile', profileRoute);
+app.use('/users', userRoute);
 app.use('/posts', postRoute);
+app.use('/follows', followsRoute);
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Odling API');

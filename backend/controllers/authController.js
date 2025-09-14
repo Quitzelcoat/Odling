@@ -11,7 +11,7 @@ exports.signUp = async (req, res) => {
     req.body;
   if (!username || !name || !email || !password) {
     return res
-      .status(4004)
+      .status(404)
       .json({ error: 'Username, name, email, and password are required' });
   }
 

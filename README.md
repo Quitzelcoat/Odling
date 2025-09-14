@@ -120,14 +120,32 @@
         Make sure that on the dashboard we can see all the posts of other users included. (Done)
         While on the profile, show only the posts of the user that is logged in. (Done)
 
-    On left bar have a friend’s btn to access friends page.
-        On the page show 3 things.
-        1 suggestions. In this show all the users.
-        2 requests. The users we have sent the friend request.
-        3 friends. It shows all the friends which we already follow.
-        On the friends page only show suggestions and for 2 and 3 show it on the profile page.
-        Show the suggestions tab with randomly choosing 5 users max on the dashboard right side.
-        For now don’t show the follow btn.
+    Create a notification side bar only for now.
+        When click on it it will show a slider on which we will show the likes, comments, follow requests, and follow accepted things.
+
+    Create a find user page.
+        On this page include a search as well as show different users
+        Add follow btn on each user to follow the user.
+        Now if we click on the follow btn it sends follow request to the user and on the btn it shows requested.
+        The follow request is shown on the notification tab of the other user.
+        If the other user accepts the follow show following. ANd update the following list.
+        If the other user rejects the follow request that user will be removed from the reqested list and the follow btn now instead of showing requested will showing follow again.
+        And if we click on the btn showing following it unfollows them but gives us a pop up to ask weather to unfollow or not.
+        Also show a requested users list separate only.
+        Add a search btn so search for a specific user by their user id which is not the same one for everyone.
+
+    On the right bar on feed page show the recommended followers.
+        On the right bar on the feed page show max of 3 or less random users to follow. They will be called recommended users.
+        Also create the follow btn there as well and make it work. The follow btn will work same everywhere.
+
+    Show following and the followers of the user on the user profile.
+        Make the following and the followers place work on the profile.
+        Make sure when click on the following and the followers links it opens a pop up and shows the followers and the following of that user.
+
+    Users can send follow requests to other users
+        user can see the people user is following, the followers who are following the user, all other users,
+        User can reject follow request and accept obviously. User can also unfollow other users.
+        All following requests user have sent.
 
     Now Let's go back to the posts show part.
         User can like posts.
@@ -135,18 +153,6 @@
         User can open up each post where it'll show the post and down user can comment on the post.
         User can edit the posts only the ones user created themselves.
         User can delete their own posts.
-
-    ALso create a notification page. And on the left side create the btn to access.
-        Inside the notification page when we click it should show friend request from other users with a deny and accept btns.
-
-    Create a follow btn next to suggested users and let the user follow others.
-        Do this on both dashboard and friends page.
-        When the user clicks on the follow btn show requested on that btn and also send the request to the other user.
-        And for the other user to receive the friend request first create the notification page.
-        If follow request accepted we can see their profiles but only see them.
-        And also add those users which we sent request to the request place.
-        When a user accepts the follow request remove them from request place and add to the friends list.
-        If denied remove from the request page only and don’t remove from the suggestions section tho. But change the request btn to follow btn.
 
 ## CSS:
 
