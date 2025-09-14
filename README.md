@@ -123,17 +123,19 @@
     Create a notification side bar only for now. (Done)
         When click on it it will show a slider on which we will show the likes, comments, follow requests, and follow accepted things. (Done)
 
-    Create a find user page.
-        On this page include a search as well as show different users
-        Add follow btn on each user to follow the user.
-        Now if we click on the follow btn it sends follow request to the user and on the btn it shows requested.
-        The follow request is shown on the notification tab of the other user. Make the notification bar work for getting the friend requests now.
-        If the other user accepts the follow show following. ANd update the following list.
+    Create a find user page. (Done)
+        On this page include a search as well as show different users (Done)
+        Add follow btn on each user to follow the user. (Done)
+        Add a search btn so search for a specific user by their user id which is not the same one for everyone. (Done)
+        Now if we click on the follow btn it sends follow request to the user and on the btn it shows requested. (Done)
+        User can view other users profile and interact with them. Put on the profile how it shows on the user profile instead of editing or stuff of that user we can only request to follow them and see the posts and stuff with their posts followers etc. IF already sent follow request will show requested etc.
+        The follow request is shown on the notification tab of the other user. And sent to the other user. Make the notification bar work for getting the friend requests now.
+        User can accept and reject the follow request.
+        If the other user accepts the follow show following on that user. And update the following list on the profile page.
         If the other user rejects the follow request that user will be removed from the reqested list and the follow btn now instead of showing requested will be showing follow again.
         Make sure to add the accept and reject btn inside the notification bar for them as well.
         And if we click on the btn showing following it unfollows them but gives us a pop up to ask weather to unfollow or not.
         Also show a requested users list separate only.
-        Add a search btn so search for a specific user by their user id which is not the same one for everyone.
 
     On the right bar on feed page show the recommended followers.
         On the right bar on the feed page show max of 3 or less random users to follow. They will be called recommended users.
