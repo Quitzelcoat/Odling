@@ -9,6 +9,7 @@ const profileRoute = require('./routes/profileRoute');
 const userRoute = require('./routes/userRoute');
 const postRoute = require('./routes/postRoute');
 const followsRoute = require('./routes/followsRoute');
+const notificationRoute = require('./routes/notificationRoute');
 const { authenticate } = require('./middleware/auth');
 
 app.use(express.json());
@@ -29,6 +30,7 @@ app.use('/profile', profileRoute);
 app.use('/users', userRoute);
 app.use('/posts', postRoute);
 app.use('/follows', followsRoute);
+app.use('/notifications', notificationRoute);
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Odling API');
