@@ -11,7 +11,7 @@ const LeftBar = () => {
     { name: 'Home', path: '/' },
     { name: 'Feed', path: '/feed' },
     { name: 'New Post', path: '/newPost' },
-    { name: 'Friends', path: '/friends' },
+    { name: 'Friends', path: '/find' },
     { name: 'Profile', path: '/profile' },
   ];
 

@@ -185,7 +185,7 @@
 }
 
 .primaryBtn {
-  background: linear-gradient(90deg, var(--accent), #2f2e22);
+  background: linear-gradient(90deg, var(--accent));
   color: white;
   padding: 10px 16px;
   border-radius: 12px;

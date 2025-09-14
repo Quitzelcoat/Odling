@@ -14,6 +14,8 @@ import Feed from './components/feed/Feed';
 import Profile from './components/profile/Profile';
 import EditProfile from './components/editProfile/EditProfile';
 import CreatePosts from './components/createPosts/CreatePosts';
+import FindUsers from './components/find/FindUsers';
+import PublicProfile from './components/profile/PublicProfile';
 
 function App() {
   return (
@@ -80,6 +82,24 @@ function App() {
             element={
               <RequireAuth>
                 <CreatePosts />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/find"
+            element={
+              <RequireAuth>
+                <FindUsers />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/profile/:id"
+            element={
+              <RequireAuth>
+                <PublicProfile />
               </RequireAuth>
             }
           />

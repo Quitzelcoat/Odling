@@ -1,11 +1,14 @@
+/* PublicProfile.module.css - based on your Profile.module.css variables */
 :root {
   --bg: #fbfbe6;
   --muted: #6b6a5a;
   --text: #2f2e25;
-  --accent: #2f9a55;
+  --accent: #2f9a55; /* keep some green accent for actions */
   --card-shadow: 0 12px 30px rgba(18, 18, 14, 0.06);
+  --accent-dark: #545333;
 }
 
+/* reuse many of your existing selectors so markup matches */
 .page {
   max-width: 980px;
   margin: 28px auto;
@@ -50,7 +53,6 @@
   opacity: 0.95;
 }
 
-/* header inner layout */
 .headerInner {
   display: flex;
   gap: 26px;
@@ -59,7 +61,6 @@
   z-index: 2;
 }
 
-/* avatar */
 .avatarWrap {
   position: relative;
   width: 140px;
@@ -81,7 +82,6 @@
   transform: translateY(-6px) scale(1.03);
 }
 
-/* subtle online/status pulse (decorative) */
 .statusPulse {
   position: absolute;
   right: 6px;
@@ -114,7 +114,6 @@
   }
 }
 
-/* title & actions */
 .title {
   flex: 1;
   display: flex;
@@ -130,29 +129,85 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text);
+  color: var(--accent-dark);
   letter-spacing: -0.02em;
 }
 .actions {
   margin-left: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
-.editBtn {
+
+/* follow / request buttons */
+.followBtn {
   display: inline-block;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #545333, #2f2e22);
+  color: white;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+
+.followingBtn {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid rgba(84, 83, 51, 0.08);
+  color: var(--accent-dark);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.requestedBtn {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0.95));
+  border: 1px dashed rgba(84, 83, 51, 0.08);
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 8px;
+  margin-left: 8px;
+  text-decoration: underline;
+}
+
+.requestWrap {
+  display: flex;
+  align-items: center;
+}
+
+/* back link */
+.backBtn {
+  display: inline-block;
+  margin-left: 12px;
   padding: 8px 14px;
   border-radius: 10px;
-  background: linear-gradient(180deg, #fff, #f7f7ee);
+  background: linear-gradient(180deg, #ffffff, #f0f0ea);
   border: 1px solid #e6e6d0;
-  color: var(--text);
+  box-shadow: 0 6px 18px rgba(14, 14, 12, 0.06);
+  color: #2f2e25;
   font-weight: 600;
   text-decoration: none;
   transition: transform 220ms ease, box-shadow 220ms ease;
 }
-.editBtn:hover {
+.backBtn:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 30px rgba(14, 14, 12, 0.12);
 }
 
-/* real name and bio */
+/* bio & meta */
 .realName {
   margin: 6px 0 0 0;
   font-weight: 600;
@@ -165,7 +220,6 @@
   max-width: 70ch;
 }
 
-/* small meta row (posts/followers) */
 .metaRow {
   display: flex;
   gap: 18px;
@@ -187,7 +241,7 @@
   color: var(--muted);
 }
 
-/* content section */
+/* content & posts */
 .content {
   margin-top: 10px;
 }
@@ -196,6 +250,7 @@
   color: var(--text);
   font-size: 1.05rem;
 }
+
 .postsPlaceholder {
   background: #fff;
   padding: 18px;
@@ -204,53 +259,18 @@
   color: #757561;
 }
 
-/* loading / no user */
-.loading,
-.noUser {
-  text-align: center;
-  padding: 24px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(18, 18, 14, 0.04);
-}
-
-.backBtn {
-  display: inline-block;
-  margin-left: 12px;
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #ffffff, #f0f0ea);
-  border: 1px solid #e6e6d0;
-  box-shadow: 0 6px 18px rgba(14, 14, 12, 0.06);
-  color: #2f2e25;
-  font-weight: 600;
-  text-decoration: none;
-  transition: transform 220ms ease, box-shadow 220ms ease;
-}
-.backBtn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(14, 14, 12, 0.12);
-}
-
 .postsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
-  margin-top: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
 }
-
 .postWrap {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
 }
 
-/* responsive */
-@media (max-width: 860px) {
-  .headerInner {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 16px;
+@media (max-width: 920px) {
+  .postsGrid {
+    grid-template-columns: 1fr;
   }
   .avatarWrap {
     width: 120px;
@@ -259,19 +279,12 @@
   .username {
     font-size: 1.25rem;
   }
-  .title {
-    gap: 6px;
-  }
-  .metaRow {
-    justify-content: center;
-    gap: 10px;
-  }
   .bio {
     max-width: 100%;
   }
 }
 
-/* reduced-motion accessibility */
+/* reduce motion */
 @media (prefers-reduced-motion: reduce) {
   .headerCard,
   .avatar,

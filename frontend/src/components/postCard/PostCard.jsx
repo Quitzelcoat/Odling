@@ -3,10 +3,6 @@ import React from 'react';
 import postCardStyle from './PostCard.module.css';
 import { Link } from 'react-router-dom';
 
-/**
- * Small helper to show "x minutes/hours/days ago".
- * Keeps things lightweight - you can replace with date-fns later.
- */
 function timeAgo(dateString) {
   if (!dateString) return '';
   const then = new Date(dateString).getTime();

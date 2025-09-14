@@ -1,0 +1,103 @@
+/* UserCard.module.css - small card matching palette */
+:root {
+  --main-1: #fdfbd4;
+  --main-2: #d9d7b6;
+  --sec: #878672;
+  --accent: #545333;
+}
+
+.card {
+  background: linear-gradient(180deg, #ffffff, #fbfaf2);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 8px 24px rgba(20, 20, 20, 0.04);
+  border: 1px solid rgba(84, 83, 51, 0.04);
+  color: var(--accent);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid rgba(84, 83, 51, 0.05);
+  box-shadow: 0 6px 18px rgba(20, 20, 20, 0.04);
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  display: block;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  margin-bottom: 4px;
+}
+
+.name:hover {
+  text-decoration: underline;
+}
+
+.handle {
+  color: var(--sec);
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.followBtn {
+  background: linear-gradient(90deg, var(--accent), #2f2e22);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.requestedBtn {
+  background: transparent;
+  border: 1px dashed rgba(84, 83, 51, 0.08);
+  color: var(--sec);
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.followBtn:disabled,
+.requestedBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.bio {
+  margin: 0;
+  color: #3b3a2f;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.error {
+  color: #7f1d1d;
+  font-weight: 700;
+  font-size: 0.9rem;
+}

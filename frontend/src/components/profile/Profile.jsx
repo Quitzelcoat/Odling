@@ -4,8 +4,7 @@ import { useAuth } from '../../auth/context';
 import styles from './Profile.module.css';
 import api from '../../auth/api';
 
-// adjust this path if your PostCard lives elsewhere:
-import PostCard from '../postCard/PostCard';
+import PostCardWrapper from './PostCardWraper';
 
 const Profile = () => {
   const { user, loading } = useAuth();
@@ -137,9 +136,7 @@ const Profile = () => {
         ) : (
           <div className={styles.postsGrid}>
             {posts.map((post) => (
-              <div key={post.id} className={styles.postWrap}>
-                <PostCard post={post} />
-              </div>
+              <PostCardWrapper key={post.id} post={post} />
             ))}
           </div>
         )}
