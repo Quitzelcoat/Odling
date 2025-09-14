@@ -120,16 +120,17 @@
         Make sure that on the dashboard we can see all the posts of other users included. (Done)
         While on the profile, show only the posts of the user that is logged in. (Done)
 
-    Create a notification side bar only for now.
-        When click on it it will show a slider on which we will show the likes, comments, follow requests, and follow accepted things.
+    Create a notification side bar only for now. (Done)
+        When click on it it will show a slider on which we will show the likes, comments, follow requests, and follow accepted things. (Done)
 
     Create a find user page.
         On this page include a search as well as show different users
         Add follow btn on each user to follow the user.
         Now if we click on the follow btn it sends follow request to the user and on the btn it shows requested.
-        The follow request is shown on the notification tab of the other user.
+        The follow request is shown on the notification tab of the other user. Make the notification bar work for getting the friend requests now.
         If the other user accepts the follow show following. ANd update the following list.
-        If the other user rejects the follow request that user will be removed from the reqested list and the follow btn now instead of showing requested will showing follow again.
+        If the other user rejects the follow request that user will be removed from the reqested list and the follow btn now instead of showing requested will be showing follow again.
+        Make sure to add the accept and reject btn inside the notification bar for them as well.
         And if we click on the btn showing following it unfollows them but gives us a pop up to ask weather to unfollow or not.
         Also show a requested users list separate only.
         Add a search btn so search for a specific user by their user id which is not the same one for everyone.
@@ -149,7 +150,10 @@
 
     Now Let's go back to the posts show part.
         User can like posts.
+        Also show the like posts on the notification as well.
         When user clicks on the comment of feed or user profile it takes the user to that post where the user can comment.
+        If the user comments it should also show on the notification.
+        Also make sure for the notification that it only shows the first 10 notifications and all others it deletes on itself so it doesn't give too much burden on the system.
         User can open up each post where it'll show the post and down user can comment on the post.
         User can edit the posts only the ones user created themselves.
         User can delete their own posts.
