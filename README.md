@@ -128,12 +128,15 @@
         Add follow btn on each user to follow the user. (Done)
         Add a search btn so search for a specific user by their user id which is not the same one for everyone. (Done)
         Now if we click on the follow btn it sends follow request to the user and on the btn it shows requested. (Done)
-        User can view other users profile and interact with them. Put on the profile how it shows on the user profile instead of editing or stuff of that user we can only request to follow them and see the posts and stuff with their posts followers etc. IF already sent follow request will show requested etc.
-        The follow request is shown on the notification tab of the other user. And sent to the other user. Make the notification bar work for getting the friend requests now.
-        User can accept and reject the follow request.
+        User can view other users profile and interact with them. Put on the profile how it shows on the user profile instead of editing or stuff of that user we can only request to follow them and see the posts and stuff with their posts followers etc. IF already sent follow request will show requested etc. (Done)
+        The follow request should show on the notification tab of the other user (the one we sent the follow request) (If request canceled remove the follow request notification so it doesn't create any problem) And sent to the other user. Make the notification bar work for getting the friend requests now. (Done)
+        If the other user rejects the follow request that user will be removed from the reqested list and the follow btn now instead of showing requested will be showing follow again.(Done)
+        User can accept and reject the follow request.(Done)
+        Make sure to add the accept and reject btn inside the notification bar for them as well.(Done)
+        Now the follow btn should show following if the user we sent friend request to accepts it. And if we click on it again it should give us a popup saying are you sure to unfollow. And if we unfollow it removes from our following list.
         If the other user accepts the follow show following on that user. And update the following list on the profile page.
-        If the other user rejects the follow request that user will be removed from the reqested list and the follow btn now instead of showing requested will be showing follow again.
-        Make sure to add the accept and reject btn inside the notification bar for them as well.
+        On the profile page of the user update the following and followers list. Also when click on the list it should show the popup with the followers one with the followers, and following one with users we are following.
+        Also if the user has sent the follow request it should also show the request on that user's profile page and also the btn which says follow should say accept request or something so that it's clear for the user.
         And if we click on the btn showing following it unfollows them but gives us a pop up to ask weather to unfollow or not.
         Also show a requested users list separate only.
 
