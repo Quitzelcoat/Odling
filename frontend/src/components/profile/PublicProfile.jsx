@@ -48,7 +48,7 @@ export default function PublicProfile() {
       try {
         const data = await api.request(`/users/${userId}`);
         if (!mounted) return;
-        setTarget(data.user || data); // controller might return { user } or user
+        setTarget(data.user || data);
       } catch (err) {
         console.error('load user error', err);
         setTargetError(
