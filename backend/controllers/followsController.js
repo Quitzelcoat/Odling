@@ -1,5 +1,60 @@
-// controllers/followController.js
 const prisma = require('../prismaClient');
+
+const createFollowRequestNotification = async ({
+  toUserId,
+  fromUserId,
+  requestId,
+}) => {
+  const fromUser = await prisma.user.findUnique({
+    where: { id: fromUserId },
+    select: { id: true, username: true, name: true, profilePic: true },
+  });
+
+  const payload = {
+    fromUserId,
+    requestId, // include sender username & name so frontend can display a friendly message
+
+    fromUsername: fromUser?.username || null,
+    fromName: fromUser?.name || null,
+    fromProfilePic: fromUser?.profilePic || null,
+  };
+
+  console.log('Creating notification for user', toUserId, 'payload', payload);
+
+  return prisma.notification.create({
+    data: {
+      userId: toUserId,
+      type: 'follow_request',
+      data: payload,
+    },
+  });
+};
+
+const removeFollowRequestNotification = async ({
+  toUserId,
+  fromUserId,
+  requestId,
+}) => {
+  try {
+    await prisma.notification.deleteMany({
+      where: {
+        userId: toUserId,
+        type: 'follow_request',
+        data: { equals: { fromUserId, requestId } },
+      },
+    });
+  } catch (err) {
+    console.warn('delete by exact JSON failed, trying fallback', err);
+    await prisma.notification.deleteMany({
+      where: {
+        userId: toUserId,
+        type: 'follow_request',
+
+        OR: [{ data: { path: ['requestId'], equals: requestId } }, {}],
+      },
+    });
+  }
+};
 
 exports.sendFollowRequest = async (req, res) => {
   try {
@@ -54,6 +109,18 @@ exports.sendFollowRequest = async (req, res) => {
       },
     });
 
+    // create a notification for the target user (recipient)
+    try {
+      await createFollowRequestNotification({
+        toUserId,
+        fromUserId,
+        requestId: request.id,
+      });
+    } catch (notifErr) {
+      console.error('create notification failed', notifErr);
+      // don't fail the main flow if notification creation fails
+    }
+
     return res.status(201).json({ request });
   } catch (err) {
     console.error('sendFollowRequest error', err);
@@ -78,9 +145,21 @@ exports.cancelFollowRequest = async (req, res) => {
       return res.status(404).json({ error: 'No pending request to cancel' });
     }
 
+    // delete the follow request
     await prisma.followRequest.delete({
       where: { id: existing.id },
     });
+
+    // remove the notification that was created for the recipient
+    try {
+      await removeFollowRequestNotification({
+        toUserId,
+        fromUserId,
+        requestId: existing.id,
+      });
+    } catch (notifErr) {
+      console.error('remove notification failed', notifErr);
+    }
 
     return res.json({ message: 'Follow request cancelled' });
   } catch (err) {
@@ -133,7 +212,7 @@ exports.getOutgoingRequests = async (req, res) => {
  */
 exports.respondToRequest = async (req, res) => {
   try {
-    const userId = req.user.id; // the recipient
+    const userId = req.user.id; // the recipient (the one who got the request)
     const requestId = parseInt(req.params.requestId, 10);
     const { action } = req.body;
 
@@ -159,11 +238,25 @@ exports.respondToRequest = async (req, res) => {
         where: { id: requestId },
         data: { status: 'rejected', updatedAt: new Date() },
       });
+
+      // remove original follow_request notification for recipient (handled)
+      try {
+        await removeFollowRequestNotification({
+          toUserId: request.toUserId,
+          fromUserId: request.fromUserId,
+          requestId: request.id,
+        });
+      } catch (notifErr) {
+        console.error('remove notification after reject failed', notifErr);
+      }
+
+      // optionally create a "rejected" notification for requester - skipped for now
+
       return res.json({ request: updated });
     }
 
     // action === 'accept' -> create Follow and mark request accepted in a transaction
-    const [follow] = await prisma.$transaction(async (tx) => {
+    const [follow, updatedReq] = await prisma.$transaction(async (tx) => {
       // create follow if not already exists
       const maybeFollow = await tx.follow.findUnique({
         where: {
@@ -176,11 +269,11 @@ exports.respondToRequest = async (req, res) => {
 
       if (maybeFollow) {
         // still update request status
-        const updatedReq = await tx.followRequest.update({
+        const updated = await tx.followRequest.update({
           where: { id: requestId },
           data: { status: 'accepted', updatedAt: new Date() },
         });
-        return [maybeFollow, updatedReq];
+        return [maybeFollow, updated];
       }
 
       // create follow
@@ -199,6 +292,30 @@ exports.respondToRequest = async (req, res) => {
 
       return [createdFollow, updatedReq];
     });
+
+    // Remove the follow_request notification (recipient handled it)
+    try {
+      await removeFollowRequestNotification({
+        toUserId: request.toUserId,
+        fromUserId: request.fromUserId,
+        requestId: request.id,
+      });
+    } catch (notifErr) {
+      console.error('remove notification after accept failed', notifErr);
+    }
+
+    // create a notification for the requester to tell them their request was accepted
+    try {
+      await prisma.notification.create({
+        data: {
+          userId: request.fromUserId,
+          type: 'follow_accepted',
+          data: { byUserId: request.toUserId, followId: follow.id ?? null },
+        },
+      });
+    } catch (notifErr) {
+      console.error('create accepted notification failed', notifErr);
+    }
 
     return res.json({ follow });
   } catch (err) {
