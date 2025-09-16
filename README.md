@@ -140,28 +140,32 @@
         Also if the user has sent the follow request it should also show the request on that user's profile page and also the btn which says follow should say accept request or something so that it's clear for the user.(Done)
         And if we click on the btn showing following it unfollows them but gives us a pop up to ask weather to unfollow or not.(Done)
 
-    On the right bar on feed page show the recommended followers.
-        On the right bar on the feed page show max of 3 or less random users to follow. They will be called recommended users.
-        Also create the follow btn there as well and make it work. The follow btn will work same everywhere.
+    On the right bar on feed page show the recommended followers.(Done)
+        On the right bar on the feed page show max of 3 or less random users to follow. They will be called recommended users.(Done)
+        Also create the follow btn there as well and make it work. The follow btn will work same everywhere.(Done)
 
-    Show following and the followers of the user on the user profile.
-        Make the following and the followers place work on the profile.
-        Make sure when click on the following and the followers links it opens a pop up and shows the followers and the following of that user.
+    Show following and the followers of the user on the user profile.(Done)
+        Make the following and the followers place work on the profile.(Done)
+        Make sure when click on the following and the followers links it opens a pop up and shows the followers and the following of that user.(Done)
 
-    Users can send follow requests to other users
-        user can see the people user is following, the followers who are following the user, all other users,
-        User can reject follow request and accept obviously. User can also unfollow other users.
-        All following requests user have sent.
+    Users can send follow requests to other users(Done)
+        user can see the people user is following, the followers who are following the user, all other users,(Done)
+        User can reject follow request and accept obviously. User can also unfollow other users.(Done)
+        All following requests user have sent.(Done)
 
     Now Let's go back to the posts show part.
         User can like posts.
         Also show the like posts on the notification as well.
         When user clicks on the comment of feed or user profile it takes the user to that post where the user can comment.
         If the user comments it should also show on the notification.
-        Also make sure for the notification that it only shows the first 10 notifications and all others it deletes on itself so it doesn't give too much burden on the system.
+        Also make sure for the notification that it only shows the first 10 notifications and all others it hides them so it doesn't give too much burden on the system. So that When we delete the others it shows the previous.
         User can open up each post where it'll show the post and down user can comment on the post.
         User can edit the posts only the ones user created themselves.
         User can delete their own posts.
+
+    The Main extra functions.
+        Starting with images working.
+        Guest users.
 
 ## CSS:
 
