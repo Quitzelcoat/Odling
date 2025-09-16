@@ -188,7 +188,6 @@
   align-items: center;
 }
 
-/* back link */
 .backBtn {
   display: inline-block;
   margin-left: 12px;
@@ -241,7 +240,60 @@
   color: var(--muted);
 }
 
-/* content & posts */
+.metaItemButton {
+  background: transparent;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: background 150ms ease, transform 120ms ease;
+}
+.metaItemButton:hover {
+  background: rgba(84, 83, 51, 0.03);
+  transform: translateY(-2px);
+}
+
+.metaItemButton .metaNum {
+  font-weight: 700;
+  color: var(--text);
+}
+.metaItemButton .metaLabel {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* optional avatar stack next to a count (small preview) */
+.avatarStack {
+  display: inline-flex;
+  margin-left: 8px;
+  gap: -8px;
+  align-items: center;
+}
+.avatarStack img {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  box-shadow: 0 6px 18px rgba(20, 20, 20, 0.06);
+  object-fit: cover;
+}
+
+/* ensure metaItem (used for 'Posts') keeps same vertical layout */
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* small accessibility: show pointer for the whole area */
+.metaItemButton:focus,
+.metaItemButton:hover {
+  outline: none;
+}
+
 .content {
   margin-top: 10px;
 }
@@ -284,7 +336,6 @@
   }
 }
 
-/* reduce motion */
 @media (prefers-reduced-motion: reduce) {
   .headerCard,
   .avatar,

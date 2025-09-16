@@ -1,16 +1,16 @@
 /* eslint-disable react-refresh/only-export-components */
-import {
+import React, {
   createContext,
   useContext,
   useEffect,
   useState,
   useCallback,
+  useRef,
 } from 'react';
 import api from '../../auth/api';
 import { useAuth } from '../../auth/context';
 
 const NotificationUIContext = createContext();
-
 export const useNotificationUI = () => useContext(NotificationUIContext);
 
 export default function NotificationProvider({ children }) {
@@ -20,10 +20,14 @@ export default function NotificationProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  // keep track of previously seen notification ids to detect new ones
+  const prevIdsRef = useRef(new Set());
+
   const fetchNotifications = useCallback(async () => {
     if (!token) {
       setNotifications([]);
       setUnreadCount(0);
+      prevIdsRef.current = new Set();
       return;
     }
     setLoading(true);
@@ -32,6 +36,25 @@ export default function NotificationProvider({ children }) {
       const items = Array.isArray(data.notifications) ? data.notifications : [];
       setNotifications(items);
       setUnreadCount(items.filter((n) => n.read === false).length);
+
+      // detect newly arrived notifications
+      const prevIds = prevIdsRef.current;
+      const newItems = items.filter((n) => !prevIds.has(n.id));
+      if (newItems.length > 0) {
+        // check for follow_accepted notifications — trigger app-wide update
+        const accepted = newItems.find((n) => n.type === 'follow_accepted');
+        if (accepted) {
+          // notify other UI to refresh follow lists immediately
+          window.dispatchEvent(
+            new CustomEvent('follows:updated', {
+              detail: { action: 'follow_accepted', notification: accepted },
+            })
+          );
+        }
+      }
+
+      // update prevIds
+      prevIdsRef.current = new Set(items.map((n) => n.id));
     } catch (err) {
       console.error('fetch notifications', err);
     } finally {
@@ -41,7 +64,6 @@ export default function NotificationProvider({ children }) {
 
   useEffect(() => {
     fetchNotifications();
-    // optional: poll every 20s
     const id = setInterval(() => {
       fetchNotifications();
     }, 20000);
@@ -75,7 +97,7 @@ export default function NotificationProvider({ children }) {
     }
   };
 
-  // accept / reject follow request (by requestId and notification id)
+  // respond to follow request: accept | reject
   const respondToFollowRequest = async ({
     requestId,
     notificationId,
@@ -89,21 +111,15 @@ export default function NotificationProvider({ children }) {
         body: { action },
       });
 
-      // remove the follow_request notification (handled), mark it read or delete it
-      if (notificationId) {
-        await deleteNotification(notificationId);
-      } else {
-        // fallback: refresh notifications
-        await fetchNotifications();
-      }
+      // delete the follow_request notification (recipient handled it)
+      if (notificationId) await deleteNotification(notificationId);
 
-      // trigger a global event so other parts of UI can refresh
+      // dispatch global update (recipient browser)
       window.dispatchEvent(
         new CustomEvent('follows:updated', { detail: { action, requestId } })
       );
 
-      // if accepted, the server also created a 'follow_accepted' notification for the requester
-      // refresh notifications to pick up any new ones
+      // re-fetch notifications to pick up follow_accepted created for requester
       await fetchNotifications();
 
       return { ok: true };

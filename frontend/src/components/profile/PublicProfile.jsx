@@ -1,13 +1,12 @@
 /* eslint-disable no-unused-vars */
-// src/pages/profile/PublicProfile.jsx
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../../auth/api';
 import { useAuth } from '../../auth/context';
 import styles from './PublicProfile.module.css';
 
-// Reuse your PostCard component (path may vary)
 import PostCard from '../postCard/PostCard';
+import FollowersModal from './FollowersModal';
 
 export default function PublicProfile() {
   const { id: paramId } = useParams(); // route: /profile/:id
@@ -33,11 +32,34 @@ export default function PublicProfile() {
   const [actionState, setActionState] = useState({
     loading: false,
     error: '',
-    // this will be true when follow relationship exists
     following: false,
-    // when a request has been sent (pending)
     requested: false,
   });
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState('followers');
+
+  const fetchFollows = useCallback(async () => {
+    if (Number.isNaN(userId)) return;
+    setLoadingFollowers(true);
+    try {
+      const [fRes, gRes] = await Promise.all([
+        api.request(`/follows/followers/${userId}`),
+        api.request(`/follows/following/${userId}`),
+      ]);
+      const fUsers = Array.isArray(fRes.users) ? fRes.users : [];
+      const gUsers = Array.isArray(gRes.users) ? gRes.users : [];
+      setFollowers(fUsers);
+      setFollowing(gUsers);
+
+      const amFollowing = !!fUsers.find((u) => u.id === meId);
+      setActionState((s) => ({ ...s, following: amFollowing }));
+    } catch (err) {
+      console.error('load follows error', err);
+    } finally {
+      setLoadingFollowers(false);
+    }
+  }, [userId, meId]);
 
   // load target user info
   useEffect(() => {
@@ -63,7 +85,6 @@ export default function PublicProfile() {
     return () => (mounted = false);
   }, [userId]);
 
-  // load all posts and filter for this author
   useEffect(() => {
     let mounted = true;
     async function loadPosts() {
@@ -84,35 +105,13 @@ export default function PublicProfile() {
     return () => (mounted = false);
   }, [userId]);
 
-  // load followers & following counts + determine if current user is following
   useEffect(() => {
-    let mounted = true;
-    async function loadFollows() {
-      setLoadingFollowers(true);
-      try {
-        const [fRes, gRes] = await Promise.all([
-          api.request(`/follows/followers/${userId}`),
-          api.request(`/follows/following/${userId}`),
-        ]);
-        if (!mounted) return;
-        const fUsers = Array.isArray(fRes.users) ? fRes.users : [];
-        const gUsers = Array.isArray(gRes.users) ? gRes.users : [];
-        setFollowers(fUsers);
-        setFollowing(gUsers);
+    fetchFollows();
+    const handler = () => fetchFollows();
+    window.addEventListener('follows:updated', handler);
+    return () => window.removeEventListener('follows:updated', handler);
+  }, [fetchFollows]);
 
-        const amFollowing = !!fUsers.find((u) => u.id === meId);
-        setActionState((s) => ({ ...s, following: amFollowing }));
-      } catch (err) {
-        console.error('load follows error', err);
-      } finally {
-        if (mounted) setLoadingFollowers(false);
-      }
-    }
-    if (!Number.isNaN(userId)) loadFollows();
-    return () => (mounted = false);
-  }, [userId, meId]);
-
-  // load outgoing follow requests for current user to check if a request to this target exists
   useEffect(() => {
     let mounted = true;
     async function loadOutgoing() {
@@ -143,13 +142,6 @@ export default function PublicProfile() {
     return () => (mounted = false);
   }, [userId, token]);
 
-  // Derived states for rendering
-  const isMe = meId && meId === userId;
-  const postsCount = posts.length;
-  const followersCount = followers.length;
-  const followingCount = following.length;
-
-  // Action handlers
   const sendRequest = async () => {
     setActionState((s) => ({ ...s, loading: true, error: '' }));
     try {
@@ -187,12 +179,25 @@ export default function PublicProfile() {
   };
 
   const doUnfollow = async () => {
+    const ok = window.confirm(
+      `Are you sure you want to unfollow ${
+        (target && (target.username || target.name)) || 'this user'
+      }?`
+    );
+    if (!ok) return;
+
     setActionState((s) => ({ ...s, loading: true, error: '' }));
     try {
       await api.request(`/follows/${userId}`, { method: 'DELETE', token });
+
       setActionState((s) => ({ ...s, following: false, loading: false }));
-      // update follower list locally
       setFollowers((prev) => prev.filter((u) => u.id !== meId));
+
+      window.dispatchEvent(
+        new CustomEvent('follows:updated', {
+          detail: { action: 'unfollowed', targetId: userId },
+        })
+      );
     } catch (err) {
       console.error('unfollow error', err);
       setActionState((s) => ({
@@ -203,10 +208,19 @@ export default function PublicProfile() {
     }
   };
 
-  // Render action button depending on state
+  const openModal = (type) => {
+    setModalType(type);
+    fetchFollows().then(() => setModalOpen(true));
+  };
+  const closeModal = () => setModalOpen(false);
+
+  const isMe = meId && meId === userId;
+  const postsCount = posts.length;
+  const followersCount = followers.length;
+  const followingCount = following.length;
+
   function ActionButton() {
     if (!token) {
-      // logged out users see a prompt to login (or follow disabled)
       return (
         <Link to="/auth/login" className={styles.followBtn}>
           Login to follow
@@ -214,9 +228,8 @@ export default function PublicProfile() {
       );
     }
 
-    if (isMe) return null; // don't show follow controls on own profile (keep edit flow elsewhere)
+    if (isMe) return null;
 
-    // prefer specific actionState flags
     const { loading, following: isFollowing, requested } = actionState;
 
     if (loading) {
@@ -252,7 +265,6 @@ export default function PublicProfile() {
       );
     }
 
-    // default
     return (
       <button className={styles.followBtn} onClick={sendRequest}>
         Follow
@@ -307,18 +319,30 @@ export default function PublicProfile() {
                 </div>
                 <div className={styles.metaLabel}>Posts</div>
               </div>
-              <div className={styles.metaItem}>
+
+              <button
+                className={styles.metaItemButton}
+                onClick={() => openModal('followers')}
+                aria-label="Open followers"
+                title="View followers"
+              >
                 <div className={styles.metaNum}>
                   {loadingFollowers ? '—' : followersCount}
                 </div>
                 <div className={styles.metaLabel}>Followers</div>
-              </div>
-              <div className={styles.metaItem}>
+              </button>
+
+              <button
+                className={styles.metaItemButton}
+                onClick={() => openModal('following')}
+                aria-label="Open following"
+                title="View following"
+              >
                 <div className={styles.metaNum}>
                   {loadingFollowers ? '—' : followingCount}
                 </div>
                 <div className={styles.metaLabel}>Following</div>
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -348,6 +372,34 @@ export default function PublicProfile() {
           </div>
         )}
       </section>
+
+      {modalOpen && (
+        <FollowersModal
+          open={modalOpen}
+          type={modalType}
+          onClose={closeModal}
+          followers={followers}
+          following={following}
+          onUnfollow={async (id) => {
+            if (!meId) return;
+            const ok = window.confirm(
+              'Are you sure you want to unfollow this user?'
+            );
+            if (!ok) return;
+            try {
+              await api.request(`/follows/${id}`, { method: 'DELETE', token });
+              await fetchFollows();
+              window.dispatchEvent(
+                new CustomEvent('follows:updated', {
+                  detail: { action: 'unfollowed', targetId: id },
+                })
+              );
+            } catch (err) {
+              console.error('unfollow error', err);
+            }
+          }}
+        />
+      )}
     </main>
   );
 }
