@@ -133,12 +133,12 @@
         If the other user rejects the follow request that user will be removed from the reqested list and the follow btn now instead of showing requested will be showing follow again.(Done)
         User can accept and reject the follow request.(Done)
         Make sure to add the accept and reject btn inside the notification bar for them as well.(Done)
-        Now the follow btn should show following if the user we sent friend request to accepts it. And if we click on it again it should give us a popup saying are you sure to unfollow. And if we unfollow it removes from our following list.
-        If the other user accepts the follow show following on that user. And update the following list on the profile page.
-        On the profile page of the user update the following and followers list. Also when click on the list it should show the popup with the followers one with the followers, and following one with users we are following.
-        Also if the user has sent the follow request it should also show the request on that user's profile page and also the btn which says follow should say accept request or something so that it's clear for the user.
-        And if we click on the btn showing following it unfollows them but gives us a pop up to ask weather to unfollow or not.
-        Also show a requested users list separate only.
+        Now the follow btn should show following if the user we sent friend request to accepts it on the friend page (On their profile it's showing correctly).(Done)
+        And if we click on follow btn again after unfollowing it should give us a popup saying are you sure to unfollow. And if we unfollow it removes from our following list. Also make sure all of this is also updated over the database because that's important.(Done)
+        If the other user accepts the follow show following on that user. And update the following list on the profile page.(Done)
+        On the profile page of the user update the following and followers list. Also when click on the list it should show the popup with the followers one with the followers, and following one with users we are following.(Done)
+        Also if the user has sent the follow request it should also show the request on that user's profile page and also the btn which says follow should say accept request or something so that it's clear for the user.(Done)
+        And if we click on the btn showing following it unfollows them but gives us a pop up to ask weather to unfollow or not.(Done)
 
     On the right bar on feed page show the recommended followers.
         On the right bar on the feed page show max of 3 or less random users to follow. They will be called recommended users.
