@@ -349,6 +349,18 @@ exports.unfollowUser = async (req, res) => {
       where: { id: existing.id },
     });
 
+    try {
+      await prisma.followRequest.deleteMany({
+        where: {
+          fromUserId: followerId,
+          toUserId: followedId,
+          status: 'accepted',
+        },
+      });
+    } catch (delErr) {
+      console.error('Error cleaning up followRequest after unfollow', delErr);
+    }
+
     return res.json({ message: 'Unfollowed' });
   } catch (err) {
     console.error('unfollowUser error', err);
