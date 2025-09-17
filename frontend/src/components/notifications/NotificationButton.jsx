@@ -1,11 +1,12 @@
 // src/components/notifications/NotificationButton.jsx
 import React from 'react';
 import { useNotificationUI } from './NotificationProvider';
-import styles from './NotificationSlider.module.css'; // re-use badge + bell styles
+import styles from './NotificationSlider.module.css'; // badge + bell styles reused
 
 const NotificationButton = () => {
   const { toggle, unreadCount } = useNotificationUI();
-  const unread = Number(unreadCount || 0);
+
+  const unread = Number.isFinite(unreadCount) ? unreadCount : 0;
 
   return (
     <button
@@ -21,14 +22,14 @@ const NotificationButton = () => {
           strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
-        />
+        ></path>
         <path
           d="M13.73 21a2 2 0 0 1-3.46 0"
           stroke="currentColor"
           strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
-        />
+        ></path>
       </svg>
 
       {unread > 0 && (
