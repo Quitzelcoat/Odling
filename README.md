@@ -154,8 +154,8 @@
         All following requests user have sent.(Done)
 
     Now Let's go back to the posts show part.
-        User can like posts.
-        Also show the like posts on the notification as well.
+        User can like posts.(Done)
+        Also show the like posts on the notification as well.(Done)
         When user clicks on the comment of feed or user profile it takes the user to that post where the user can comment.
         If the user comments it should also show on the notification.
         Also make sure for the notification that it only shows the first 10 notifications and all others it hides them so it doesn't give too much burden on the system. So that When we delete the others it shows the previous.
