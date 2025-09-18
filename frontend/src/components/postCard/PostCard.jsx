@@ -1,7 +1,7 @@
 // src/components/feed/postCard/PostCard.jsx
 import React, { useEffect, useState } from 'react';
 import postCardStyle from './PostCard.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/context';
 import api from '../../auth/api';
 
@@ -18,16 +18,20 @@ function timeAgo(dateString) {
   return new Date(dateString).toLocaleDateString();
 }
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, showAuthorActions = true }) => {
   const author = post.author || {};
   const username = author.username || author.name || `User ${author.id || ''}`;
   const avatar = author.profilePic || '/default-avatar.png';
 
   const { token, user } = useAuth();
+  const navigate = useNavigate();
 
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post._count?.likes || 0);
   const [processingLike, setProcessingLike] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [removed, setRemoved] = useState(false);
+
   const isAuthor = user && author && user.id === author.id;
 
   useEffect(() => {
@@ -96,6 +100,43 @@ const PostCard = ({ post }) => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!token) {
+      window.location.href = '/auth/login';
+      return;
+    }
+    if (!isAuthor) return;
+
+    const ok = window.confirm(
+      'Are you sure you want to delete this post? This action cannot be undone.'
+    );
+    if (!ok) return;
+
+    setDeleting(true);
+    try {
+      await api.request(`/posts/${post.id}`, { method: 'DELETE', token });
+      setRemoved(true);
+      window.dispatchEvent(
+        new CustomEvent('posts:updated', {
+          detail: { action: 'deleted', postId: post.id },
+        })
+      );
+    } catch (err) {
+      console.error('delete post error', err);
+      alert(err?.body?.error || err?.message || 'Could not delete post');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  // navigate to post page and ask it to open editor immediately
+  const handleEdit = () => {
+    if (!isAuthor) return;
+    navigate(`/posts/${post.id}?edit=1`);
+  };
+
+  if (removed) return null;
+
   return (
     <article className={postCardStyle.card}>
       <header className={postCardStyle.header}>
@@ -114,6 +155,27 @@ const PostCard = ({ post }) => {
             <div className={postCardStyle.handle}>{author.name}</div>
           )}
         </div>
+
+        {/* Author actions — only when allowed and when PostCard is allowed to show them */}
+        {showAuthorActions && isAuthor && (
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+            <button
+              className={postCardStyle.editBtn}
+              onClick={handleEdit}
+              title="Edit post"
+            >
+              Edit
+            </button>
+            <button
+              className={postCardStyle.deleteBtn}
+              onClick={handleDelete}
+              disabled={deleting}
+              title="Delete post"
+            >
+              {deleting ? 'Deleting…' : 'Delete'}
+            </button>
+          </div>
+        )}
       </header>
 
       {post.title ? (

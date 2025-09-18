@@ -16,6 +16,8 @@ import EditProfile from './components/editProfile/EditProfile';
 import CreatePosts from './components/createPosts/CreatePosts';
 import FindUsers from './components/find/FindUsers';
 import PublicProfile from './components/profile/PublicProfile';
+import PostPage from './components/postCard/PostPage';
+import CommentPage from './components/comment/CommentPage';
 
 function App() {
   return (
@@ -104,7 +106,24 @@ function App() {
             }
           />
 
-          {/* fallback */}
+          <Route
+            path="/posts/:id"
+            element={
+              <RequireAuth>
+                <PostPage />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/comments/:id"
+            element={
+              <RequireAuth>
+                <CommentPage />
+              </RequireAuth>
+            }
+          />
+
           <Route path="*" element={<div>404</div>} />
         </Routes>
       </BrowserRouter>

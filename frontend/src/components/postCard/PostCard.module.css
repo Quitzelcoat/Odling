@@ -122,6 +122,33 @@
   font-weight: 700;
 }
 
+/* Edit / Delete buttons used for author actions in header */
+.editBtn {
+  background: transparent;
+  border: 1px solid rgba(84, 83, 51, 0.08);
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.editBtn:hover {
+  transform: translateY(-2px);
+}
+
+.deleteBtn {
+  background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0.95));
+  border: 1px solid rgba(127, 29, 29, 0.08);
+  padding: 6px 8px;
+  border-radius: 8px;
+  color: #7f1d1d;
+  font-weight: 700;
+  cursor: pointer;
+}
+.deleteBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 @media (max-width: 880px) {
   .avatar {
     width: 44px;
