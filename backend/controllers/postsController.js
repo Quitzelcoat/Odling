@@ -108,22 +108,37 @@ exports.updatePost = async (req, res) => {
     if (existing.authorId !== userId)
       return res.status(403).json({ error: 'Not allowed' });
 
-    const { content } = req.body;
-    if (content === undefined)
+    const { content, title } = req.body;
+    if (content === undefined && title === undefined) {
       return res.status(400).json({ error: 'No fields to update' });
-    if (!content || typeof content !== 'string' || content.trim().length < 1) {
-      return res
-        .status(400)
-        .json({ error: 'Content must be a non-empty string' });
+    }
+
+    const data = {};
+    if (content !== undefined) {
+      if (
+        !content ||
+        typeof content !== 'string' ||
+        content.trim().length < 1
+      ) {
+        return res
+          .status(400)
+          .json({ error: 'Content must be a non-empty string' });
+      }
+      data.content = content.trim();
+    }
+    if (title !== undefined) {
+      data.title =
+        title === null ? null : typeof title === 'string' ? title.trim() : null;
     }
 
     const updated = await prisma.post.update({
       where: { id },
-      data: { content: content.trim() },
+      data,
       include: {
         author: {
           select: { id: true, username: true, name: true, profilePic: true },
         },
+        _count: { select: { comments: true, likes: true } },
       },
     });
 
@@ -148,8 +163,19 @@ exports.deletePost = async (req, res) => {
     if (existing.authorId !== userId)
       return res.status(403).json({ error: 'Not allowed' });
 
-    // Soft delete (set deleted = true)
-    await prisma.post.update({ where: { id }, data: { deleted: true } });
+    await prisma.$transaction(async (tx) => {
+      await tx.like.deleteMany({
+        where: { postId: id },
+      });
+
+      await tx.comment.deleteMany({
+        where: { postId: id },
+      });
+
+      await tx.post.delete({
+        where: { id },
+      });
+    });
 
     return res.json({ message: 'Post deleted' });
   } catch (err) {

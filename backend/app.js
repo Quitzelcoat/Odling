@@ -30,9 +30,9 @@ app.use('/auth', authRoute);
 app.use('/profile', profileRoute);
 app.use('/users', userRoute);
 app.use('/posts', postRoute);
+app.use('/comments', commentsRoute);
 app.use('/follows', followsRoute);
 app.use('/notifications', notificationRoute);
-app.use('/comments', commentsRoute);
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Odling API');
