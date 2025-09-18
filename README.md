@@ -153,15 +153,14 @@
         User can reject follow request and accept obviously. User can also unfollow other users.(Done)
         All following requests user have sent.(Done)
 
-    Now Let's go back to the posts show part.
+    Now Let's go back to the posts show part.(Done)
         User can like posts.(Done)
         Also show the like posts on the notification as well.(Done)
-        When user clicks on the comment of feed or user profile it takes the user to that post where the user can comment.
-        If the user comments it should also show on the notification.
-        Also make sure for the notification that it only shows the first 10 notifications and all others it hides them so it doesn't give too much burden on the system. So that When we delete the others it shows the previous.
-        User can open up each post where it'll show the post and down user can comment on the post.
-        User can edit the posts only the ones user created themselves.
-        User can delete their own posts.
+        When user clicks on the comment of feed or user profile it takes the user to that post where the user can comment.(Done)
+        If the user comments it should also show on the notification.(Done)
+        User can open up each post where it'll show the post and down user can comment on the post.(done)
+        User can edit the posts only the ones user created themselves.(Done)
+        User can delete their own posts.(Done)
 
     The Main extra functions.
         Starting with images working.
