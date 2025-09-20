@@ -162,9 +162,16 @@
         User can edit the posts only the ones user created themselves.(Done)
         User can delete their own posts.(Done)
 
+    Make the Images Work.
+        First make the backend so that the user can create images and save it in the backend. If possible use gravatar.
+        Second Now create it's frontend to fetch the images links from the database and take them to the frontend and show them on the frontend.
+        Now make the images appear on all the places.
+
     The Main extra functions.
-        Starting with images working.
-        Guest users.
+        Firstly the user can create new posts with images. Check the odin for how and where to save those images.
+        Now change their profile photos.
+        Guest users can sign in to test the app.
+        Make the deisgn futuristic and simple.
 
 ## CSS:
 
