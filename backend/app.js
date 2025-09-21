@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
+const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
 
 const authRoute = require('./routes/authRoute');
@@ -12,6 +14,12 @@ const followsRoute = require('./routes/followsRoute');
 const notificationRoute = require('./routes/notificationRoute');
 const commentsRoute = require('./routes/commentsRoute');
 const { authenticate } = require('./middleware/auth');
+const pictureRoute = require('./routes/pictureRoute');
+
+const UPLOAD_DIR = process.env.UPLOAD_DIR
+  ? path.resolve(process.env.UPLOAD_DIR)
+  : path.join(__dirname, 'uploads');
+if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 app.use(express.json());
 app.use(cookieParser());
@@ -21,6 +29,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use('/uploads', express.static(UPLOAD_DIR));
 
 app.get('/', authenticate, (req, res) => {
   res.json({ message: 'Authenticated', user: req.user });
@@ -33,6 +43,7 @@ app.use('/posts', postRoute);
 app.use('/comments', commentsRoute);
 app.use('/follows', followsRoute);
 app.use('/notifications', notificationRoute);
+app.use('/pictures', pictureRoute);
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Odling API');
