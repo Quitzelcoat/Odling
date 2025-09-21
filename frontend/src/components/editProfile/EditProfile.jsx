@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/context';
 import api from '../../auth/api';
 import styles from './EditProfile.module.css';
+import { makeImageUrl } from '../../auth/urls';
 
 const EditProfile = () => {
-  const { user, token, refreshUser, setUser } = useAuth(); // if setUser exposed, will update global immediately
+  const { user, token, refreshUser, setUser } = useAuth(); // setUser optional
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -19,6 +20,10 @@ const EditProfile = () => {
   const [error, setError] = useState('');
   const [preview, setPreview] = useState('');
 
+  // upload states
+  const [uploading, setUploading] = useState(false);
+  const [removing, setRemoving] = useState(false);
+
   useEffect(() => {
     if (user) {
       setForm({
@@ -27,18 +32,21 @@ const EditProfile = () => {
         bio: user.bio || '',
         profilePic: user.profilePic || '',
       });
-      setPreview(user.profilePic || '/default-avatar.png');
+      // preview should be absolute URL (so cross-origin works)
+      setPreview(
+        user.profilePic ? makeImageUrl(user.profilePic) : '/default-avatar.png'
+      );
     }
   }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((s) => ({ ...s, [name]: value }));
-    if (name === 'profilePic') setPreview(value || '/default-avatar.png');
+    if (name === 'profilePic')
+      setPreview(value ? value : '/default-avatar.png');
   };
 
   const validate = () => {
-    // username rules: 3-30 chars, letters/numbers/._- allowed
     if (
       form.username &&
       (form.username.length < 3 || form.username.length > 30)
@@ -76,10 +84,9 @@ const EditProfile = () => {
         token,
       });
 
-      // use returned user to update preview/form and global user if possible
       if (data?.user) {
         const newPic = data.user.profilePic || '/default-avatar.png';
-        setPreview(newPic);
+        setPreview(newPic ? makeImageUrl(newPic) : '/default-avatar.png');
         setForm((f) => ({
           ...f,
           username: data.user.username || f.username,
@@ -88,7 +95,6 @@ const EditProfile = () => {
           profilePic: data.user.profilePic || f.profilePic,
         }));
 
-        // update global user immediately if AuthProvider exposed setUser
         if (typeof setUser === 'function') {
           setUser(data.user);
         }
@@ -98,9 +104,111 @@ const EditProfile = () => {
       navigate('/profile', { replace: true });
     } catch (err) {
       console.error(err);
-      setError(err.body?.error || err.message || 'Update failed.');
+      setError(err?.body?.error || err?.message || 'Update failed.');
     } finally {
       setSaving(false);
+    }
+  };
+
+  // File select handler (shows local preview and uploads)
+  const handleFileChange = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    // quick client-side validation
+    if (!file.type.startsWith('image/')) {
+      setError('Please select an image file.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('File too large (max 5MB).');
+      return;
+    }
+    setError('');
+    // show local preview
+    const reader = new FileReader();
+    reader.onload = () => setPreview(reader.result);
+    reader.readAsDataURL(file);
+
+    // upload to backend
+    await uploadProfilePicture(file);
+  };
+
+  const uploadProfilePicture = async (file) => {
+    if (!token) {
+      // if not authenticated, redirect to login
+      window.location.href = '/auth/login';
+      return;
+    }
+    setUploading(true);
+    setError('');
+    try {
+      const fd = new FormData();
+      fd.append('picture', file);
+
+      const res = await fetch(
+        `${makeImageUrl('/uploads').replace(/\/uploads$/, '')}/pictures`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // DO NOT set Content-Type; browser sets multipart boundary
+          },
+          body: fd,
+        }
+      );
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || `Upload failed (${res.status})`);
+      }
+      const json = await res.json();
+      // backend returns { user: updated }
+      if (json?.user) {
+        const u = json.user;
+        // update form + preview with returned path
+        setForm((f) => ({ ...f, profilePic: u.profilePic || '' }));
+        setPreview(
+          u.profilePic ? makeImageUrl(u.profilePic) : '/default-avatar.png'
+        );
+
+        if (typeof setUser === 'function') setUser(u);
+        if (refreshUser) await refreshUser();
+      }
+    } catch (err) {
+      console.error('upload error', err);
+      setError(err?.message || 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeProfilePicture = async () => {
+    if (!token) {
+      window.location.href = '/auth/login';
+      return;
+    }
+    const ok = window.confirm('Remove your profile picture?');
+    if (!ok) return;
+
+    setRemoving(true);
+    setError('');
+    try {
+      const data = await api.request('/pictures', { method: 'DELETE', token });
+      if (data?.user) {
+        setForm((f) => ({ ...f, profilePic: data.user.profilePic || '' }));
+        setPreview('/default-avatar.png');
+        if (typeof setUser === 'function') setUser(data.user);
+        if (refreshUser) await refreshUser();
+      } else {
+        // fallback
+        setForm((f) => ({ ...f, profilePic: '' }));
+        setPreview('/default-avatar.png');
+      }
+    } catch (err) {
+      console.error('remove error', err);
+      setError(err?.body?.error || err?.message || 'Could not remove picture');
+    } finally {
+      setRemoving(false);
     }
   };
 
@@ -158,9 +266,36 @@ const EditProfile = () => {
                   placeholder="https://..."
                 />
                 <div className={styles.smallNote}>
-                  You can paste an image link for now.
+                  You can paste an image link or upload one below.
                 </div>
               </label>
+
+              <label className={styles.label}>
+                Upload profile picture
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className={styles.input}
+                  disabled={uploading}
+                />
+                <div className={styles.smallNote}>
+                  Max 5MB. Choosing a file uploads it immediately.
+                </div>
+              </label>
+
+              {preview && preview !== '/default-avatar.png' && (
+                <div style={{ marginTop: 8 }}>
+                  <button
+                    type="button"
+                    onClick={removeProfilePicture}
+                    className={styles.deleteBtn}
+                    disabled={removing}
+                  >
+                    {removing ? 'Removing…' : 'Remove picture'}
+                  </button>
+                </div>
+              )}
 
               {error && <div className={styles.error}>{error}</div>}
 
@@ -176,7 +311,7 @@ const EditProfile = () => {
                   type="button"
                   className={styles.cancelBtn}
                   onClick={() => navigate('/profile')}
-                  disabled={saving}
+                  disabled={saving || uploading}
                 >
                   Cancel
                 </button>
@@ -190,6 +325,7 @@ const EditProfile = () => {
                 src={preview || '/default-avatar.png'}
                 alt="preview"
                 className={styles.previewAvatar}
+                style={{ width: 140, height: 140 }}
               />
               <h3 className={styles.previewName}>
                 {form.name || form.username || user?.username}

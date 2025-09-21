@@ -4,6 +4,7 @@ import postCardStyle from './PostCard.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/context';
 import api from '../../auth/api';
+import { makeImageUrl } from '../../auth/urls';
 
 function timeAgo(dateString) {
   if (!dateString) return '';
@@ -21,7 +22,9 @@ function timeAgo(dateString) {
 const PostCard = ({ post, showAuthorActions = true }) => {
   const author = post.author || {};
   const username = author.username || author.name || `User ${author.id || ''}`;
-  const avatar = author.profilePic || '/default-avatar.png';
+  const avatar = author.profilePic
+    ? makeImageUrl(author.profilePic)
+    : '/default-avatar.png';
 
   const { token, user } = useAuth();
   const navigate = useNavigate();

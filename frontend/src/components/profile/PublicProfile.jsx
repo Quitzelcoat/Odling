@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../../auth/api';
 import { useAuth } from '../../auth/context';
+import { makeImageUrl } from '../../auth/urls';
 import styles from './PublicProfile.module.css';
 
 import PostCard from '../postCard/PostCard';
@@ -279,7 +280,11 @@ export default function PublicProfile() {
         <div className={styles.headerInner}>
           <div className={styles.avatarWrap}>
             <img
-              src={(target && target.profilePic) || '/default-avatar.png'}
+              src={
+                target?.profilePic
+                  ? makeImageUrl(target.profilePic)
+                  : '/default-avatar.png'
+              }
               alt={(target && (target.username || target.name)) || 'user'}
               className={styles.avatar}
               loading="lazy"

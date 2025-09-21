@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './UserCard.module.css';
 import api from '../../auth/api';
 import { Link } from 'react-router-dom';
+import { makeImageUrl } from '../../auth/urls';
 
 export default function UserCard({
   user,
@@ -115,16 +116,11 @@ export default function UserCard({
     return () => window.removeEventListener('follows:updated', handler);
   }, []);
 
-  // Render logic for action button:
-  // - if logged out -> show link to login
-  // - if following -> "Following" (click -> unfollow confirm)
-  // - else if requested -> show "Requested" with cancel option
-  // - else -> "Follow"
   return (
     <div className={styles.card}>
       <div className={styles.top}>
         <img
-          src={profilePic || '/default-avatar.png'}
+          src={profilePic ? makeImageUrl(profilePic) : '/default-avatar.png'}
           alt={username}
           className={styles.avatar}
           width="72"

@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../../../auth/api';
 import { useAuth } from '../../../auth/context';
 import styles from './RightBar.module.css';
+import { makeImageUrl } from '../../../auth/urls';
 
 const shuffle = (arr) => {
   const a = [...arr];
@@ -30,14 +31,11 @@ const RightBar = () => {
     setErr('');
     setLoading(true);
     try {
-      // load all users (server returns users array)
       const usersRes = await api.request('/users');
       const allUsers = Array.isArray(usersRes.users) ? usersRes.users : [];
 
-      // filter out self
       const possible = allUsers.filter((u) => u.id !== user?.id);
 
-      // fetch following list for "me" (to exclude people we already follow)
       let followingSet = new Set();
       if (token && user?.id) {
         try {
@@ -46,12 +44,10 @@ const RightBar = () => {
           followingSet = new Set(fUsers.map((u) => u.id));
           setFollowingIds(followingSet);
         } catch (err) {
-          // ignore if not authenticated or API error — we'll still show recs
           console.error('fetch following (rightbar) error', err);
         }
       }
 
-      // fetch outgoing requests to mark requested
       let requestedSet = new Set();
       if (token) {
         try {
@@ -70,14 +66,8 @@ const RightBar = () => {
         }
       }
 
-      // pick candidates: prefer those not already followed; if not enough, include others
       let candidates = possible.filter((u) => !followingSet.has(u.id));
-      if (candidates.length < 3) {
-        // include some who we already follow only if not enough people exist
-        candidates = possible;
-      }
-
-      // randomize & slice up to 3
+      if (candidates.length < 3) candidates = possible;
       const selected = shuffle(candidates).slice(0, 3);
       setRecs(selected);
     } catch (err) {
@@ -97,10 +87,8 @@ const RightBar = () => {
     return () => window.removeEventListener('follows:updated', handler);
   }, [fetchRecommendations]);
 
-  // follow -> send follow request
   const handleFollow = async (toId) => {
     if (!token) {
-      // send to login
       navigate('/auth/login');
       return;
     }
@@ -109,7 +97,6 @@ const RightBar = () => {
     try {
       await api.request(`/follows/requests/${toId}`, { method: 'POST', token });
       setRequestedIds((prev) => new Set(prev).add(toId));
-      // notify other components to refresh
       window.dispatchEvent(
         new CustomEvent('follows:updated', {
           detail: { action: 'requested', toUserId: toId },
@@ -122,7 +109,6 @@ const RightBar = () => {
     }
   };
 
-  // cancel outgoing request
   const handleCancelRequest = async (toId) => {
     setActionLoadingId(toId);
     try {
@@ -147,7 +133,6 @@ const RightBar = () => {
     }
   };
 
-  // unfollow (confirm)
   const handleUnfollow = async (followedId) => {
     const ok = window.confirm('Are you sure you want to unfollow this user?');
     if (!ok) return;
@@ -171,7 +156,6 @@ const RightBar = () => {
     }
   };
 
-  // helper to get state
   const isRequested = (id) => requestedIds.has(id);
   const isFollowing = (id) => followingIds.has(id);
 
@@ -180,7 +164,11 @@ const RightBar = () => {
       <div className={styles.userInfo}>
         <Link to="/profile" className={styles.userLink}>
           <img
-            src={user?.profilePic || '/default-avatar.png'}
+            src={
+              user?.profilePic
+                ? makeImageUrl(user.profilePic)
+                : '/default-avatar.png'
+            }
             alt={user?.username || 'You'}
             className={styles.avatar}
           />
@@ -205,7 +193,11 @@ const RightBar = () => {
               <li key={u.id} className={styles.item}>
                 <Link to={`/profile/${u.id}`} className={styles.left}>
                   <img
-                    src={u.profilePic || '/default-avatar.png'}
+                    src={
+                      u.profilePic
+                        ? makeImageUrl(u.profilePic)
+                        : '/default-avatar.png'
+                    }
                     alt={u.username}
                     className={styles.itemAvatar}
                   />

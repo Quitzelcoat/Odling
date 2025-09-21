@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../auth/context';
 import styles from './Profile.module.css';
 import api from '../../auth/api';
+import { makeImageUrl } from '../../auth/urls';
 
 import PostCardWrapper from './PostCardWraper';
 import FollowersModal from './FollowersModal';
@@ -118,7 +119,11 @@ const Profile = () => {
         <div className={styles.headerInner}>
           <div className={styles.avatarWrap}>
             <img
-              src={user.profilePic || '/default-avatar.png'}
+              src={
+                user.profilePic
+                  ? makeImageUrl(user.profilePic)
+                  : '/default-avatar.png'
+              }
               alt={username}
               className={styles.avatar}
               loading="lazy"
