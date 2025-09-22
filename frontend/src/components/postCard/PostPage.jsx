@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import api from '../../auth/api';
 import { useAuth } from '../../auth/context';
+import { makeImageUrl } from '../../auth/urls';
 import PostCard from './PostCard';
 import styles from './PostPage.module.css';
 
@@ -21,12 +22,41 @@ export default function PostPage() {
   const [commentText, setCommentText] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  const [editImageFile, setEditImageFile] = useState(null);
+  const [editImagePreview, setEditImagePreview] = useState('');
+  const [removeImageFlag, setRemoveImageFlag] = useState(false);
+
   // edit state
   const [editMode, setEditMode] = useState(false);
   const [editTitle, setEditTitle] = useState('');
   const [editContent, setEditContent] = useState('');
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  function onEditImageChoose(e) {
+    const f = e.target.files && e.target.files[0];
+    if (!f) {
+      setEditImageFile(null);
+      setEditImagePreview('');
+      return;
+    }
+    if (!f.type.startsWith('image/')) {
+      setError('Please select an image file');
+      return;
+    }
+    setEditImageFile(f);
+    setRemoveImageFlag(false); // replacing, not removing
+    const reader = new FileReader();
+    reader.onload = () => setEditImagePreview(String(reader.result || ''));
+    reader.readAsDataURL(f);
+  }
+
+  function clearEditImageSelection() {
+    setEditImageFile(null);
+    setEditImagePreview('');
+    const el = document.getElementById('edit-post-image-input');
+    if (el) el.value = '';
+  }
 
   const load = async () => {
     setError('');
@@ -71,8 +101,10 @@ export default function PostPage() {
     if (!isAuthor) return;
     setEditTitle(post?.title || '');
     setEditContent(post?.content || '');
+    setEditImageFile(null);
+    setEditImagePreview(post?.image ? makeImageUrl(post.image) : '');
+    setRemoveImageFlag(false);
     setEditMode(true);
-    // strip query if any
     navigate(`/posts/${postId}`, { replace: true });
   };
 
@@ -92,23 +124,47 @@ export default function PostPage() {
     setSaving(true);
     setError('');
     try {
-      const body = { content: editContent.trim(), title: editTitle || null };
-      const res = await api.request(`/posts/${postId}`, {
-        method: 'PUT',
-        token,
-        body,
-      });
+      let res;
+      if (editImageFile) {
+        const form = new FormData();
+        form.append('content', editContent.trim());
+        form.append('title', editTitle || '');
+        form.append('image', editImageFile);
+        res = await api.request(`/posts/${postId}`, {
+          method: 'PUT',
+          body: form,
+          token,
+        });
+      } else if (removeImageFlag) {
+        res = await api.request(`/posts/${postId}`, {
+          method: 'PUT',
+          token,
+          body: {
+            content: editContent.trim(),
+            title: editTitle || null,
+            removeImage: true,
+          },
+        });
+      } else {
+        // Normal json update (no image changes)
+        res = await api.request(`/posts/${postId}`, {
+          method: 'PUT',
+          token,
+          body: { content: editContent.trim(), title: editTitle || null },
+        });
+      }
 
       const updated = res.post || res;
       setPost(updated);
       setEditMode(false);
       setEditTitle('');
       setEditContent('');
+      setEditImageFile(null);
+      setEditImagePreview('');
+      setRemoveImageFlag(false);
 
-      // remove edit query if any
       navigate(`/posts/${postId}`, { replace: true });
 
-      // notify others
       window.dispatchEvent(
         new CustomEvent('posts:updated', {
           detail: { action: 'updated', postId },
@@ -213,12 +269,82 @@ export default function PostPage() {
               onChange={(e) => setEditTitle(e.target.value)}
               placeholder="Optional title"
             />
+
             <textarea
               className={styles.contentInput}
               value={editContent}
               onChange={(e) => setEditContent(e.target.value)}
               rows={6}
             />
+
+            <label className={styles.field}>
+              <span className={styles.labelText}>Post image</span>
+              <div className={styles.fileInput}>
+                <input
+                  id="edit-post-image-input"
+                  type="file"
+                  accept="image/*"
+                  onChange={onEditImageChoose}
+                />
+              </div>
+
+              {editImagePreview ? (
+                <div className={styles.previewWrap}>
+                  <div className={styles.preview}>
+                    <img src={editImagePreview} alt="image preview" />
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      className={styles.removeBtn}
+                      onClick={() => {
+                        // if there is an existing image on the post and user hasn't selected a new image,
+                        // toggling remove flag will clear it on next save
+                        if (editImageFile) clearEditImageSelection();
+                        setRemoveImageFlag((s) => !s);
+                        if (!editImageFile && !removeImageFlag && post?.image) {
+                          // show removal intent to user
+                          setEditImagePreview(makeImageUrl(post.image));
+                        } else if (!editImageFile) {
+                          setEditImagePreview('');
+                        }
+                      }}
+                    >
+                      {removeImageFlag ? 'Undo remove' : 'Remove image'}
+                    </button>
+                    {editImageFile && (
+                      <button
+                        type="button"
+                        className={styles.removeBtn}
+                        onClick={clearEditImageSelection}
+                      >
+                        Clear selection
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                post?.image &&
+                !removeImageFlag && (
+                  <div className={styles.previewWrap}>
+                    <div className={styles.preview}>
+                      <img
+                        src={makeImageUrl(post.image)}
+                        alt="current post image"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      className={styles.removeBtn}
+                      onClick={() => setRemoveImageFlag(true)}
+                    >
+                      Remove image
+                    </button>
+                  </div>
+                )
+              )}
+            </label>
+
             <div className={styles.editorActions}>
               <button
                 className={styles.saveBtn}
@@ -237,7 +363,6 @@ export default function PostPage() {
             </div>
           </div>
         ) : (
-          // hide PostCard's own author actions since page renders its own bar
           <PostCard post={post} showAuthorActions={false} />
         )}
       </section>

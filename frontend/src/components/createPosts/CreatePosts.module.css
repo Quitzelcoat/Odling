@@ -1,11 +1,5 @@
 /* src/components/createPosts/CreatePosts.module.css */
 
-/* Palette:
-   Main 60%: #FDFBD4, #d9d7b6, black
-   Secondary 30%: #878672, black
-   Last touch 10%: #545333, white
-*/
-
 :root {
   --main-1: #fdfbd4;
   --main-2: #d9d7b6;
@@ -60,6 +54,53 @@
   margin-bottom: 14px;
   padding-bottom: 8px;
   border-bottom: 1px dashed rgba(135, 134, 114, 0.12);
+}
+
+/* header row to house title + actions */
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* header actions wrapper */
+.headerActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* back/return button (small secondary style) */
+.backBtn {
+  background: transparent;
+  border: 1px solid rgba(84, 83, 51, 0.08);
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: #2f2e22;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease,
+    background-color 0.12s ease;
+}
+
+.backBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(47, 46, 34, 0.06);
+  background: linear-gradient(
+    90deg,
+    rgba(84, 83, 51, 0.06),
+    rgba(47, 46, 34, 0.02)
+  );
+}
+
+.backBtn:active {
+  transform: translateY(-1px);
+}
+
+.backBtn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(84, 83, 51, 0.06);
 }
 
 .title {

@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import postStyle from './CreatePosts.module.css';
 import api from '../../auth/api';
-
 import { useAuth } from '../../auth/context';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,11 +11,42 @@ export default function CreatePosts() {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [previewSrc, setPreviewSrc] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
   const MAX_CHARS = 1000;
+
+  function onChooseFile(e) {
+    const f = e.target.files && e.target.files[0];
+    if (!f) {
+      setImageFile(null);
+      setPreviewSrc('');
+      return;
+    }
+    // basic client-side type check
+    if (!f.type.startsWith('image/')) {
+      setError('Please choose an image file.');
+      return;
+    }
+    setError('');
+    setImageFile(f);
+
+    // preview
+    const reader = new FileReader();
+    reader.onload = () => setPreviewSrc(String(reader.result || ''));
+    reader.readAsDataURL(f);
+  }
+
+  function removeImage() {
+    setImageFile(null);
+    setPreviewSrc('');
+    // also clear file input by resetting value - simplest: find input by id and clear
+    const el = document.getElementById('create-post-image-input');
+    if (el) el.value = '';
+  }
 
   async function handlePublish(e) {
     e.preventDefault();
@@ -36,17 +66,21 @@ export default function CreatePosts() {
     setLoading(true);
 
     try {
-      const body = {
-        title: title.trim() || null,
-        content: content.trim(),
-      };
+      // Use FormData when there is an image, otherwise either JSON or FormData both work.
+      const form = new FormData();
+      if (title.trim()) form.append('title', title.trim());
+      form.append('content', content.trim());
+      if (imageFile) form.append('image', imageFile);
 
-      await api.request('/posts', { method: 'POST', body, token });
+      // api.request should accept FormData (see patch below). Do not set Content-Type here.
+      await api.request('/posts', { method: 'POST', body: form, token });
 
       setSuccessMsg('Post published!');
       setTitle('');
       setContent('');
+      removeImage();
 
+      // small delay so user sees success
       setTimeout(() => navigate('/feed'), 600);
     } catch (err) {
       console.error('Publish error', err);
@@ -60,10 +94,25 @@ export default function CreatePosts() {
     <div className={postStyle.pageWrap}>
       <div className={postStyle.canvas}>
         <header className={postStyle.header}>
-          <h1 className={postStyle.title}>Create a Post — The Odin Book</h1>
-          <p className={postStyle.subtitle}>
-            Share your thoughts. Keep it kind, simple and aesthetic.
-          </p>
+          <div className={postStyle.headerRow}>
+            <div>
+              <h1 className={postStyle.title}>Create a Post — The Odin Book</h1>
+              <p className={postStyle.subtitle}>
+                Share your thoughts. Keep it kind, simple and aesthetic.
+              </p>
+            </div>
+
+            <div className={postStyle.headerActions}>
+              <button
+                type="button"
+                className={postStyle.backBtn}
+                onClick={() => navigate('/feed')}
+                aria-label="Return to feed"
+              >
+                ← Return
+              </button>
+            </div>
+          </div>
         </header>
 
         <form className={postStyle.form} onSubmit={handlePublish}>
@@ -95,6 +144,33 @@ export default function CreatePosts() {
             </div>
           </label>
 
+          <label className={postStyle.field}>
+            <span className={postStyle.labelText}>Attach image (optional)</span>
+            <div className={postStyle.fileInput}>
+              <input
+                id="create-post-image-input"
+                type="file"
+                accept="image/*"
+                onChange={onChooseFile}
+              />
+            </div>
+
+            {previewSrc && (
+              <div className={postStyle.previewWrap}>
+                <div className={postStyle.preview}>
+                  <img src={previewSrc} alt="preview" />
+                </div>
+                <button
+                  type="button"
+                  className={postStyle.removeBtn}
+                  onClick={removeImage}
+                >
+                  Remove
+                </button>
+              </div>
+            )}
+          </label>
+
           <div className={postStyle.actions}>
             <button
               type="submit"
@@ -111,6 +187,7 @@ export default function CreatePosts() {
                 setContent('');
                 setError('');
                 setSuccessMsg('');
+                removeImage();
               }}
             >
               Clear

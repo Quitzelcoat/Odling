@@ -1,7 +1,7 @@
 // src/components/feed/postCard/PostCard.jsx
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import postCardStyle from './PostCard.module.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../auth/context';
 import api from '../../auth/api';
 import { makeImageUrl } from '../../auth/urls';
@@ -28,6 +28,7 @@ const PostCard = ({ post, showAuthorActions = true }) => {
 
   const { token, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post._count?.likes || 0);
@@ -140,6 +141,8 @@ const PostCard = ({ post, showAuthorActions = true }) => {
 
   if (removed) return null;
 
+  const onPostPage = location.pathname === `/posts/${post.id}`;
+
   return (
     <article className={postCardStyle.card}>
       <header className={postCardStyle.header}>
@@ -159,7 +162,6 @@ const PostCard = ({ post, showAuthorActions = true }) => {
           )}
         </div>
 
-        {/* Author actions — only when allowed and when PostCard is allowed to show them */}
         {showAuthorActions && isAuthor && (
           <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
             <button
@@ -183,6 +185,15 @@ const PostCard = ({ post, showAuthorActions = true }) => {
 
       {post.title ? (
         <h3 className={postCardStyle.title}>{post.title}</h3>
+      ) : null}
+
+      {post.image ? (
+        <img
+          src={makeImageUrl(post.image)}
+          alt={post.title || `Post ${post.id}`}
+          className={postCardStyle.postImage}
+          loading="lazy"
+        />
       ) : null}
 
       <div className={postCardStyle.content}>{post.content}</div>
@@ -210,9 +221,19 @@ const PostCard = ({ post, showAuthorActions = true }) => {
           </Link>
         </div>
         <div className={postCardStyle.actions}>
-          <Link to={`/posts/${post.id}`} className={postCardStyle.viewBtn}>
-            View
-          </Link>
+          {onPostPage ? (
+            <button
+              type="button"
+              className={postCardStyle.viewBtn}
+              onClick={() => navigate('/feed')}
+            >
+              ← Return
+            </button>
+          ) : (
+            <Link to={`/posts/${post.id}`} className={postCardStyle.viewBtn}>
+              View
+            </Link>
+          )}
         </div>
       </footer>
     </article>

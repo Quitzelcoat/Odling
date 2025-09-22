@@ -1,16 +1,38 @@
-const API_URL = 'http://localhost:3000';
+// src/auth/api.js
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+function isPlainObject(v) {
+  return v && typeof v === 'object' && v.constructor === Object;
+}
 
 async function request(path, { method = 'GET', body, token } = {}) {
   if (!path.startsWith('/')) path = '/' + path;
 
   const headers = {};
-  if (body) headers['Content-Type'] = 'application/json';
+  let payload;
+
+  if (typeof FormData !== 'undefined' && body instanceof FormData) {
+    payload = body;
+  } else if (
+    typeof URLSearchParams !== 'undefined' &&
+    body instanceof URLSearchParams
+  ) {
+    payload = body;
+  } else if (isPlainObject(body)) {
+    headers['Content-Type'] = 'application/json';
+    payload = JSON.stringify(body);
+  } else if (body !== undefined) {
+    payload = body;
+  } else {
+    payload = undefined;
+  }
+
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
   const res = await fetch(`${API_URL}${path}`, {
     method,
     headers,
-    body: body ? JSON.stringify(body) : undefined,
+    body: payload,
     credentials: 'include',
   });
 
