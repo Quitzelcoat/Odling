@@ -168,7 +168,7 @@
         Now make the images appear on all the places.(Done)
 
     The Main extra functions.
-        Firstly the user can create new posts with images. Check the odin for how and where to save those images.
+        Firstly the user can create new posts with images. Check the odin for how and where to save those images.(Done)
         Now change their profile photos.(Done)
         Guest users can sign in to test the app.
         Make the deisgn futuristic and simple.
