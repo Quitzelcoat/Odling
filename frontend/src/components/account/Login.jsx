@@ -19,10 +19,22 @@ export default function Login() {
     setError(null);
     try {
       await auth.login({ emailOrUsername, password });
-      // client logged in -> go to protected page
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.body?.error || err.message || 'Login failed');
+    }
+  };
+
+  const handleGuest = async () => {
+    setError(null);
+    try {
+      await auth.guestSignIn();
+      navigate(from, { replace: true });
+    } catch (err) {
+      console.error('guest sign-in error', err);
+      setError(
+        err?.body?.error || err?.message || 'Could not sign in as guest'
+      );
     }
   };
 
@@ -65,6 +77,15 @@ export default function Login() {
               onClick={() => navigate('/signup')}
             >
               Create account
+            </button>
+
+            {/* NEW: Continue as guest */}
+            <button
+              type="button"
+              className={loginStyle.linkBtn}
+              onClick={handleGuest}
+            >
+              Continue as guest
             </button>
           </div>
 

@@ -1,3 +1,4 @@
+// src/auth/AuthProvider.jsx  (or wherever your provider lives)
 import { useEffect, useState, useRef } from 'react';
 import api from './api';
 import { parseJwt } from './utils';
@@ -100,6 +101,15 @@ export function AuthProvider({ children }) {
     return data;
   };
 
+  const guestSignIn = async () => {
+    const data = await api.request('/auth/guest', { method: 'POST' });
+    const receivedToken = data?.token;
+    if (!receivedToken)
+      throw new Error('No token returned from server (guest)');
+    await applyToken(receivedToken);
+    return data;
+  };
+
   useEffect(() => {
     let ignore = false;
     const init = async () => {
@@ -143,7 +153,17 @@ export function AuthProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const value = { user, token, loading, login, logout, signup, refreshUser };
+  const value = {
+    user,
+    token,
+    loading,
+    login,
+    logout,
+    signup,
+    refreshUser,
+    guestSignIn,
+    setUser,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
