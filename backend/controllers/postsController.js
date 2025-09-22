@@ -1,37 +1,31 @@
-// controllers/postsController.js
 const prisma = require('../prismaClient');
+const path = require('path');
+const { safeUnlink } = require('../middleware/fileUtils');
 
-// controllers/postsController.js (createPost)
 exports.createPost = async (req, res) => {
   try {
-    console.log('>>> createPost called:', {
-      user: req.user?.id,
-      body: req.body,
-    });
-
     const userId = req.user?.id;
-    if (!userId) {
-      console.log('>>> createPost: unauthenticated');
-      return res.status(401).json({ error: 'Not authorized' });
-    }
+    if (!userId) return res.status(401).json({ error: 'Not authorized' });
 
     const { title, content } = req.body;
-    console.log('>>> title:', title, 'content:', content);
 
     if (!content || typeof content !== 'string' || content.trim().length < 1) {
-      console.log('>>> createPost validation failed');
       return res.status(400).json({ error: 'Content is required' });
     }
+
+    const imagePath = req.file
+      ? path.posix.join('/uploads', 'post-images', req.file.filename)
+      : null;
 
     const post = await prisma.post.create({
       data: {
         content: content.trim(),
         title: title && typeof title === 'string' ? title.trim() : null,
         authorId: userId,
+        image: imagePath,
       },
     });
 
-    console.log('>>> created post id:', post.id);
     return res.status(201).json({ post });
   } catch (err) {
     console.error('createPost error:', err);
@@ -70,7 +64,7 @@ exports.getPost = async (req, res) => {
           select: { id: true, username: true, name: true, profilePic: true },
         },
         comments: {
-          where: {}, // you can add pagination / ordering here
+          where: {},
           include: {
             author: {
               select: {
@@ -108,27 +102,41 @@ exports.updatePost = async (req, res) => {
     if (existing.authorId !== userId)
       return res.status(403).json({ error: 'Not allowed' });
 
-    const { content, title } = req.body;
-    if (content === undefined && title === undefined) {
-      return res.status(400).json({ error: 'No fields to update' });
-    }
+    // We support:
+    // - JSON body { content, title, removeImage } (when not uploading new file)
+    // - multipart/form-data with optional file field 'image' (handled by multer in route)
+    const { content } = req.body;
+    const removeImage =
+      req.body.removeImage === '1' || req.body.removeImage === 'true';
 
-    const data = {};
+    // require content to be non-empty when provided
     if (content !== undefined) {
-      if (
-        !content ||
-        typeof content !== 'string' ||
-        content.trim().length < 1
-      ) {
+      if (!content || typeof content !== 'string' || !content.trim()) {
         return res
           .status(400)
           .json({ error: 'Content must be a non-empty string' });
       }
-      data.content = content.trim();
     }
-    if (title !== undefined) {
+
+    // prepare update data
+    const data = {};
+    if (content !== undefined) data.content = content.trim();
+    if (req.body.title !== undefined) {
       data.title =
-        title === null ? null : typeof title === 'string' ? title.trim() : null;
+        req.body.title && typeof req.body.title === 'string'
+          ? req.body.title.trim()
+          : null;
+    }
+
+    if (req.file) {
+      // new image uploaded: prepare path, and schedule old image for removal
+      data.image = path.posix.join(
+        '/uploads',
+        'post-images',
+        req.file.filename
+      );
+    } else if (removeImage) {
+      data.image = null;
     }
 
     const updated = await prisma.post.update({
@@ -138,9 +146,13 @@ exports.updatePost = async (req, res) => {
         author: {
           select: { id: true, username: true, name: true, profilePic: true },
         },
-        _count: { select: { comments: true, likes: true } },
       },
     });
+
+    // If we replaced/removed an existing image — remove file from disk (best-effort)
+    if ((req.file || removeImage) && existing.image) {
+      await safeUnlink(existing.image);
+    }
 
     return res.json({ post: updated });
   } catch (err) {
@@ -163,19 +175,17 @@ exports.deletePost = async (req, res) => {
     if (existing.authorId !== userId)
       return res.status(403).json({ error: 'Not allowed' });
 
+    // Delete child records then post (hard delete). After success, remove image on disk.
     await prisma.$transaction(async (tx) => {
-      await tx.like.deleteMany({
-        where: { postId: id },
-      });
-
-      await tx.comment.deleteMany({
-        where: { postId: id },
-      });
-
-      await tx.post.delete({
-        where: { id },
-      });
+      await tx.like.deleteMany({ where: { postId: id } });
+      await tx.comment.deleteMany({ where: { postId: id } });
+      await tx.post.delete({ where: { id } });
     });
+
+    // remove image file if present (best-effort)
+    if (existing.image) {
+      await safeUnlink(existing.image);
+    }
 
     return res.json({ message: 'Post deleted' });
   } catch (err) {
