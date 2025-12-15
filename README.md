@@ -5,7 +5,7 @@
 ### Main Functions:
 
     User can signup and login.
-    User can create posts (text only for now)
+    User can create posts. (text only for now)
     User can like other users posts and comment on them.
     Page where it shows the new posts of the users we are following.
     Can send and receive follow requestes.
@@ -175,19 +175,53 @@
 
 ## CSS:
 
+1.  First the Homepage:
+
+        Create the background color.
+        Randomly on the background write text short quotes from peole like franz kafka or literature people. Text like (vision), (thought), (Express) etc.
+        But on the bottom middle the text will be a big one or 2 short words.
+        On the left side the words will be verticle with one word each or two short words each.
+        In the middle horizontal everywhere one word and the words will shuffle on each refresh.
+        On the right corner horizontal but one small quote but each first line will have 1word, 2nd 2words and 3rd 4words and then last 4th line 3words.
+
+        In the middle of the page we will create a mobile. The mobile will be like Iphone. In the top middle of phone black camera like how we show on real.
+        The edges of mobile a bit round and the corners with borders of 2 colors like how with real phone.
+        ON the top left corner of mobile real life time and on the right corner one sim signals icon and middle wifi icon and left battery icon.
+        In the middle the name of the app.
+
+        On the nav only create 2 things. Firstly on the top right of the page there's a login btn.
+        On the left side there will be another btn (name: Phenomenon). It will be to toggle color of the website to dark and light mode.
+        Make the background blend with the background of the homepage of the btn.
+        Make a circle on it.
+        On hover some kind of animation.
+
+        If the user is not logged in, user can still access the main home page but they can only sign up, login or login as a guest.
+        When the user logIn this login btn text will be replaced to show home page which will take the user to the feed page.
+        And the create new text will be replaced by Profile page which will take the user to the Profile page.
+        If the user tries to go to the feed page when not logged in they will be redirected to the home page.
+        And if the user tries to go to the login page if logged in they will be redirected to the feed page.
+
+        Add animation for the mobile to appear.
+        Add animation to start from zoomed in and then zoomed out showing the home page with all the text of the back moving in swings left right etc like floating in air or something.
+        And obviously the animation of mobile in the middle of the website of how it shows up.
+
+        Polish everything up to move to next step of creating a login page.
+
+2.  Login Page:
+
+        The background will remain the same for the Login Page.
+        When click on the app on the mobile screen anywhere it will automatically swip up as if doing on a real mobile. Add animation.
+        When swip on the top middle
+
+3.  New User Page:
+    The background will remain the same for the new user Page.
+
 ### Color Palette:
 
-    Main: (60%)
-        #FDFBD4
-        #d9d7b6
-        (Black works with it)
-
-    Secondary: (30%)
-        #878672
-        (Black works with it)
-
-    Last Touch: (10%)
-        #545333
-        (white works with it)
+    #1E212B
+    #6E747B
+    #AEBAB1
+    #D8CFC7
+    #F5F4F2
 
     Reverse for dark color.
