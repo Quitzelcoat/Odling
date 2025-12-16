@@ -7,9 +7,9 @@ import GuestOnly from './components/GuestOnly';
 import './style/main.css';
 
 import HeaderLayout from './components/Header/HeaderLayout';
-import Home from './components/dashboard/Home';
-import Login from './components/account/Login';
-import Signup from './components/account/Signup';
+import Home from './pages/dashboard/Home';
+import Login from './pages/account/Login';
+import Signup from './pages/account/Signup';
 import Feed from './components/feed/Feed';
 import Profile from './components/profile/Profile';
 import EditProfile from './components/editProfile/EditProfile';

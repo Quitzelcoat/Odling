@@ -1,0 +1,70 @@
+.work {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f4f2;
+  color: #1e212b;
+  letter-spacing: 0.2rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.textDesign {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.heading {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 700;
+  color: #1e212b;
+  padding-bottom: 0.8rem;
+}
+
+.subHeading {
+  font-family: 'Zilla Slab', serif;
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
+  font-weight: 400;
+  color: #6e747b;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #6e747b;
+  width: 0;
+  animation: typing 2s steps(var(--steps), end) forwards,
+    blink 0.6s step-end infinite;
+}
+
+/* Optional: add a tiny fade‑in for the whole block */
+.work {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--finalWidth);
+  }
+}
+
+@keyframes blink {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #6e747b;
+  }
+}
