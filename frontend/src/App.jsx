@@ -6,6 +6,7 @@ import RequireAuth from './components/RequireAuth';
 import GuestOnly from './components/GuestOnly';
 import './style/main.css';
 
+import AuthLayout from './pages/account/AuthLayout';
 import HeaderLayout from './components/Header/HeaderLayout';
 import Home from './pages/dashboard/Home';
 import Login from './pages/account/Login';
@@ -34,23 +35,24 @@ function App() {
             <Route path="/" element={<Home />} />
           </Route>
 
-          <Route
-            path="/login"
-            element={
-              <GuestOnly>
-                <Login />
-              </GuestOnly>
-            }
-          />
-
-          <Route
-            path="/signup"
-            element={
-              <GuestOnly>
-                <Signup />
-              </GuestOnly>
-            }
-          />
+          <Route path="/" element={<AuthLayout />}>
+            <Route
+              path="login"
+              element={
+                <GuestOnly>
+                  <Login />
+                </GuestOnly>
+              }
+            />
+            <Route
+              path="signup"
+              element={
+                <GuestOnly>
+                  <Signup />
+                </GuestOnly>
+              }
+            />
+          </Route>
 
           <Route
             path="/feed"
