@@ -1,7 +1,7 @@
 // src/pages/find/FindUsers.jsx
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import styles from './FindUsers.module.css';
-import feedStyle from '../feed/Feed.module.css'; // reuse container layout
+import feedStyle from '../../pages/feedPage/Feed.module.css'; // reuse container layout
 import api from '../../auth/api';
 import { useAuth } from '../../auth/context';
 import { Link } from 'react-router-dom';

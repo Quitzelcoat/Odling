@@ -6,12 +6,12 @@ import RequireAuth from './components/RequireAuth';
 import GuestOnly from './components/GuestOnly';
 import './style/main.css';
 
-import AuthLayout from './pages/account/AuthLayout';
+import AuthLayout from './pages/logPage/AuthLayout';
 import HeaderLayout from './components/Header/HeaderLayout';
 import Home from './pages/dashboard/Home';
-import Login from './pages/account/Login';
-import Signup from './pages/account/Signup';
-import Feed from './components/feed/Feed';
+import Login from './pages/logPage/Login';
+import Signup from './pages/logPage/Signup';
+import Feed from './pages/feedPage/Feed';
 import Profile from './components/profile/Profile';
 import EditProfile from './components/editProfile/EditProfile';
 import CreatePosts from './components/createPosts/CreatePosts';
