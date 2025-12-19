@@ -20,9 +20,7 @@ const LeftBar = () => {
       <h1 className={leftStyle.leftHeading}>Odling</h1>
 
       {/* Notification bell centered under heading */}
-      <div
-        style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}
-      >
+      <div className={leftStyle.notificationCenter}>
         <NotificationButton />
       </div>
 

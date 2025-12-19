@@ -1,56 +1,68 @@
-/* Feed.module.css */
+/* src/components/feed/Feed.module.css - Professional 3-column layout */
 
 .appShell {
   min-height: 100vh;
   width: 100%;
   background-color: #f5f4f2;
-  padding: 16px 24px;
-  box-sizing: border-box;
 }
 
+/* Full-width professional container - NO centering */
 .container {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 300px;
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  grid-template-columns: 280px 1fr 350px;
+  gap: 0;
+  min-height: 100vh;
+  max-width: none;
 }
 
-/* left + right panels as refined cards */
-.container > :first-child,
-.container > :last-child {
+/* Left sidebar - full height card */
+.container > :first-child {
   background-color: #ffffff;
-  color: #1e212b;
-  border-radius: 16px;
-  padding: 18px 16px;
-  box-shadow: 0 16px 40px rgba(30, 33, 43, 0.08);
-  border: 1px solid #aebab1;
+  border-right: 1px solid #aebab1;
+  padding: 20px 16px;
+  height: 100vh;
   position: sticky;
-  top: 20px;
-  align-self: flex-start;
-  max-height: calc(100vh - 40px);
-  overflow: hidden;
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0 12px rgba(30, 33, 43, 0.06);
+  overflow-y: auto;
+  z-index: 10;
 }
 
-/* main scrollable feed */
+/* Center feed - full height scrollable */
 .container > :nth-child(2) {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  height: calc(100vh - 40px);
+  background-color: #f5f4f2;
+  height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 4px 0 12px;
+  padding: 20px 0;
+  border-right: 1px solid #aebab1;
 }
 
-/* generic feed card if you need it */
+/* Right sidebar - full height card */
+.container > :last-child {
+  background-color: #ffffff;
+  border-left: 1px solid #aebab1;
+  padding: 20px 16px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  right: 0;
+  box-shadow: -2px 0 12px rgba(30, 33, 43, 0.06);
+  overflow-y: auto;
+  z-index: 10;
+}
+
+/* Feed cards in center */
 .feedCard {
   background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(30, 33, 43, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(30, 33, 43, 0.08);
   border: 1px solid #aebab1;
-  padding: 16px;
+  padding: 20px;
   color: #1e212b;
+  margin: 0 auto 16px;
+  max-width: 600px;
 }
 
 h1,
@@ -59,10 +71,10 @@ h3 {
   color: #1e212b;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
+/* Tablet - hide right bar */
+@media (max-width: 1200px) {
   .container {
-    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-columns: 260px 1fr;
   }
 
   .container > :last-child {
@@ -70,31 +82,30 @@ h3 {
   }
 }
 
-/* Mobile */
+/* Mobile - stack vertically */
 @media (max-width: 768px) {
-  .appShell {
-    padding: 8px 8px 16px;
-  }
-
   .container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .container > :first-child,
   .container > :last-child {
     position: static;
-    top: auto;
-    max-height: none;
-    overflow: visible;
-    padding: 12px 10px;
-    border-radius: 12px;
-    box-shadow: 0 10px 24px rgba(30, 33, 43, 0.12);
+    height: auto;
+    border: none;
+    box-shadow: 0 4px 16px rgba(30, 33, 43, 0.1);
+    margin-bottom: 16px;
   }
 
   .container > :nth-child(2) {
     height: auto;
-    overflow: visible;
+    border: none;
+    padding: 16px 12px;
+  }
+
+  .feedCard {
+    max-width: none;
+    margin-bottom: 12px;
   }
 }

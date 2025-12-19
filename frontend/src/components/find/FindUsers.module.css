@@ -1,71 +1,90 @@
-:root {
-  --main-1: #fdfbd4;
-  --main-2: #d9d7b6;
-  --sec: #878672;
-  --accent: #545333;
-  --bg: #fbf6e8;
-}
+/* src/pages/find/FindUsers.module.css */
 
 .page {
   max-width: 1100px;
-  margin: 28px auto;
-  padding: 18px;
+  margin: 24px auto;
+  padding: 16px 12px 20px;
   box-sizing: border-box;
-  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial;
-  color: var(--accent);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  color: #1e212b;
 }
 
+/* header row */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #aebab1;
 }
 
 .title {
   margin: 0;
-  font-size: 1.25rem;
-  color: var(--accent);
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #1e212b;
 }
 
 .subtitle {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--sec);
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+  color: #6e747b;
 }
 
+/* search row */
 .searchWrap {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
 }
 
 .searchInput {
-  width: 360px;
-  max-width: 60vw;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(84, 83, 51, 0.06);
+  flex: 1;
+  max-width: 400px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid #aebab1;
   outline: none;
-  box-shadow: 0 6px 18px rgba(20, 20, 20, 0.03);
-  background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0.95));
-  color: #2f2e22;
+  background-color: #f5f4f2;
+  color: #1e212b;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  background-color: #ffffff;
+  border-color: #1e212b;
+  box-shadow: 0 0 0 3px rgba(30, 33, 43, 0.1);
 }
 
 .searchInput::placeholder {
-  color: rgba(80, 78, 66, 0.4);
+  color: rgba(110, 116, 123, 0.6);
 }
 
+/* quick new post link */
 .quickLink {
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: linear-gradient(90deg, var(--accent), #2f2e22);
-  color: #fff;
-  font-weight: 700;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background-color: #1e212b;
+  color: #f5f4f2;
+  font-weight: 600;
+  font-size: 0.9rem;
   text-decoration: none;
-  box-shadow: 0 8px 18px rgba(47, 46, 34, 0.12);
+  box-shadow: 0 8px 24px rgba(30, 33, 43, 0.2);
+  transition: background-color 0.15s ease, transform 0.1s ease,
+    box-shadow 0.15s ease;
+}
+
+.quickLink:hover {
+  background-color: #111318;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(30, 33, 43, 0.3);
 }
 
 /* main content */
@@ -73,40 +92,82 @@
   display: block;
 }
 
+/* loading + error + empty centers */
 .center {
-  padding: 26px;
+  padding: 32px 8px;
   text-align: center;
-  color: var(--sec);
+  color: #6e747b;
+  font-size: 1rem;
 }
 
 .centerError {
-  padding: 18px;
+  padding: 24px 16px;
   text-align: center;
-  color: #7f1d1d;
-  font-weight: 700;
+  color: #1e212b;
+  font-weight: 500;
+  background-color: #d8cfc7;
+  border: 1px solid #aebab1;
+  border-radius: 12px;
 }
 
 /* grid of user cards */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 14px;
-  margin-top: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
 }
 
 /* empty state */
 .empty {
-  padding: 18px;
-  border-radius: 12px;
-  background: linear-gradient(
-    180deg,
-    rgba(253, 251, 212, 0.6),
-    rgba(217, 215, 182, 0.2)
-  );
-  color: var(--accent);
+  padding: 28px 24px;
+  border-radius: 16px;
+  background-color: #f5f4f2;
+  border: 1px dashed #aebab1;
+  color: #1e212b;
+  text-align: center;
+}
+
+.empty p {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
 }
 
 .emptyNote {
-  color: var(--sec);
-  margin-top: 8px;
+  color: #6e747b;
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.emptyNote a {
+  color: #1e212b;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(30, 33, 43, 0.3);
+}
+
+.emptyNote a:hover {
+  border-bottom-color: #1e212b;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .page {
+    margin: 16px auto;
+    padding: 12px 8px 20px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .searchWrap {
+    flex-direction: column;
+  }
+
+  .searchInput {
+    max-width: none;
+  }
 }
