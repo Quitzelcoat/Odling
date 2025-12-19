@@ -155,9 +155,9 @@ export default function FindUsers() {
         <main className={styles.page}>
           <header className={styles.header}>
             <div>
-              <h1 className={styles.title}>Find people</h1>
+              <h1 className={styles.title}>Friends</h1>
               <p className={styles.subtitle}>
-                Search users and send follow requests
+                Your connections and people you may know
               </p>
             </div>
 
@@ -165,9 +165,9 @@ export default function FindUsers() {
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by username or name"
+                placeholder="Search friends or suggestions"
                 className={styles.searchInput}
-                aria-label="Search users"
+                aria-label="Search friends"
               />
               <Link to="/newPost" className={styles.quickLink}>
                 + Post
