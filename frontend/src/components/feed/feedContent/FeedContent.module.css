@@ -136,9 +136,14 @@
 
 /* Mobile tweak */
 @media (max-width: 768px) {
+  .column {
+    padding-top: 70px; /* Space for hamburger */
+  }
+
   .header {
     padding: 8px 10px;
     border-radius: 10px;
+    top: 60px; /* Below hamburger button */
   }
 
   .hTitle {

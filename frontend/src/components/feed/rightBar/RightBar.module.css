@@ -202,3 +202,81 @@
   font-size: 0.8rem;
   border-top: 1px solid #aebab1;
 }
+
+@media (max-width: 768px) {
+  .completeBar {
+    height: auto;
+  }
+
+  .userInfo {
+    padding: 16px 0 12px;
+    border-bottom: 1px solid #aebab1;
+  }
+
+  .userLink {
+    padding: 10px 8px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .username {
+    font-size: 0.95rem;
+  }
+
+  .recommended {
+    padding: 16px 0 12px;
+    overflow-y: visible;
+  }
+
+  .title {
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+  }
+
+  .list {
+    gap: 10px;
+  }
+
+  .item {
+    padding: 10px 8px;
+  }
+
+  .itemAvatar {
+    width: 34px;
+    height: 34px;
+  }
+
+  .uname {
+    font-size: 0.9rem;
+  }
+
+  .small {
+    font-size: 0.8rem;
+  }
+
+  .footerNote {
+    padding: 12px 0 4px;
+    font-size: 0.75rem;
+    border-top: none;
+  }
+}
+
+@media (max-width: 425px) {
+  .item {
+    gap: 8px;
+  }
+
+  .actions {
+    gap: 4px;
+  }
+
+  .followBtn,
+  .followingBtn,
+  .requestedBtn {
+    padding: 4px 8px;
+    font-size: 0.78rem;
+  }
+}
