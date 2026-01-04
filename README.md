@@ -1,227 +1,322 @@
 # Odling
 
-## Project: Odin-Book
+A modern, full-stack social media application built as a capstone project for The Odin Project curriculum. Odling enables users to connect, share posts, and build their social networks with an intuitive, user-friendly interface.
 
-### Main Functions:
+## Live Demo
 
-    User can signup and login.
-    User can create posts. (text only for now)
-    User can like other users posts and comment on them.
-    Page where it shows the new posts of the users we are following.
-    Can send and receive follow requestes.
-    User can get notifications for follow requests.
-    User should be able to post images now as well (using cloudinary or superbase storage)
-    Users should be able to update their profile photo.
-    User can login as a guest user without an account or any credentials.
+[Add your deployed link here]
 
-### To Do First:
+---
 
-    Create a signup and login page. Remember to choose which authentication method you should use.
-    The main dashboard, where the user can view the posts of people that the user is following.
-    User should be able to create posts, but only text for now.
-    Each post shows the user’s author, likes, and comments.
-    The user can like and comment.
-    User profile page (basic info only and no images yet).
-    Basic info includes: Profile info, empty place for image for now, all posts of that user.
-    Edit button for the user to edit their profile info.
-    User can change email, password, username (only the one which was not used before), name (could be same doesn’t matter), bio.
-    Show a list of all users and a follow button to send a request to other users.
-    Now the feed. It should show the posts of the people that the user is following.
+## Features
 
-### Later On:
+### Core Functionality
 
-    Profile picture (Gravatar or uploads)
-    Users can update/change their profile photos.
-    Should be able to upload images with the posts (Cloudinary/Supabase).
-    Guests Login without account.
-    UI/UX design.
-    Deploy online for everyone to see.
+- **User Authentication**: Secure sign-up and login using Passport.js with JWT token-based authentication
+- **Guest Access**: Test the app without creating an account
+- **Post Creation**: Share text and image posts with other users
+- **Interactions**: Like and comment on posts from users you follow
+- **Follow System**: Send follow requests, accept or reject requests, and manage your followers and following lists
+- **User Profiles**: Customize your profile with profile pictures, bio, name, and personal information
+- **Notifications**: Real-time alerts for follow requests, accepted follows, likes, and comments
+- **User Discovery**: Browse all users, search by username, and view public profiles
+- **Image Upload**: Upload profile pictures and post images using cloud storage integration
 
-### Database:
+### Implemented Features (Completed)
 
-        User:
-            id, username, name, email, password, bio, dob(date of birth), gender, createdAt, updatedAt, posts, comments, likes, sentFollowRequest,
-            receivedFollowRequest, followers, following, notifications, deletedAt.
+✓ User signup and login with JWT authentication  
+✓ Post creation (text and images)  
+✓ Like and comment system with notifications  
+✓ Follow/unfollow with request management  
+✓ User profile pages with bio and profile pictures  
+✓ Edit profile information (username, email, name, bio)  
+✓ Feed page showing posts from followed users  
+✓ Notification sidebar for requests and interactions  
+✓ User discovery and search functionality  
+✓ Image uploads (profile photos and post images)  
+✓ Guest user login
 
-        Post:
-            id, author, authorId, content, createdAt, updatedAt, comments, likes, isDeleted
+---
 
-        Comments:
-            id, author, authorId, post, postId, content, parentId, createdAt
+## Tech Stack
 
-        Likes:
-            id, user, userId, post, postId, createdAt
+### Frontend
 
-        follower:
-            id, sender, senderId, receiver, receiverId, status, createdAt, updatedAt
+- **Framework**: React
+- **Styling**: CSS3 with animations and responsive design
+- **State Management**: [Your state management choice - Redux/Context API/etc.]
+- **HTTP Client**: Axios
+- **Additional Libraries**: [List any other libraries you used]
 
-        following:
-            id, follower, followerId, following, followingId, createdAt
+### Backend
 
-        notification:
-            id, user, userId, type, data, isRead, createdAt
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: PostgreSQL
+- **Authentication**: Passport.js with JWT
+- **Image Storage**: Cloudinary / Supabase
 
-### Implementation and Tools:
+---
 
-    First thing set up the backend. (done)
+## Installation & Setup
 
-    Create the database and set it up. (done)
+### Prerequisites
 
-    Create frontend and connect them. (done)
+- Node.js (v14 or higher)
+- PostgreSQL (v12 or higher)
+- npm or yarn
+- Cloudinary account (for image uploads)
 
-    User can create new account using passport-js. (Done)
-        Make sure users can’t access other pages until or unless they are logged in. (Done)
-        For user to sign up make sure to get their following things: (Done)
-        Username (cannot be same should be different for every user), (Done)
-        Name, email, pass, description/bio. (for now these only) (Done)
-        Their date of birth and their gender. (Done)
+### Backend Setup
 
-    For the password encryption we will use jwt token. (Done)
-        Make sure you are getting the jwt token correctly and when log in console show that jwt token for later purposes. (Done)
+1. Clone the repository:
 
-    After logging in create the main dashboard just design to put coming soon but some good designing. (Done)
-        Later on we will show posts etc here on this page. (Done)
-        Create an header with Logout and also attach there on the homepage. Also make sure to design it and make it sticky animated. (Done)
+```bash
+git clone https://github.com/Quitzelcoat/Odling
+cd odling/backend
+```
 
-    On the top we will create a nav bar for now only show home, create new post, Feed, Notifications and (on the left) sign out buttons for now. (Done)
-        User can go home,
-        Click on create new posts to create new post, (make this work later). (Done)
-        Also later we will create a circle with user image and right next to it write profile for the user to go to their profile. (Later Done)
-        Finally a log out btn for the user to log out. (Done)
+2. Install dependencies:
 
-    Design the Login and the Signup pages simple for now. (Done)
-        Follow the color palette correctly. (Done)
-        Design good as it'll be used later on. (Done)
+```bash
+npm install
+```
 
-    Create a Feed page which is the main posts page.
-        User can see the new posts created in the middle here. (Create Later) (Section Done)
-        On the left it will be menue with different options. (Done)
-        On the right user image logo with it's name and suggestions where all the users will be shown with their logo/images. (Create Later)
-        On the right top side of the Feed page create user name which has logged. (Done)
-        It should show profile circle, right next to it should be username. (Done)
-        Don’t make it clickable for now. Later user can click on it and go to their profile. (Done)
+3. Create a `.env` file in the backend root directory:
 
-    User profile page for now show basic info. (Done)
-        User can see their profile image place (can’t edit or add images for now) (Done)
-        Their Right next to the profile image area the username. (Done)
-        Down the user name the name of the user and under it the description. (Done)
-        Also add edit user btn next to username but don’t make it work for now. (Done)
-        The down area will include the posts so leave that for posts for now. (Done)
+```
+DATABASE_URL=postgresql://username:password@localhost:5432/messenger_app
+JWT_SECRET=your_jwt_secret_key
+PORT=5000
+NODE_ENV=development
+```
 
-    Now make the edit btn work. User can edit their profile info and change it. (Done)
-        When user clicks on edit btn it shows a pop up for the edit btn. (Done)
-        For the name it could be any. (Done)
-        For the image leave it for now. (Done)
-        The username, email should be unique. If it is used once the user can’t use it again. (Done)
-        When click on the update btn it should update all info. (Done)
+4. Set up the PostgreSQL database:
 
-    When user click on create a new post it will take them to a page for them to create a new post. (Done)
-        When the user clicks create new post it will open up a pop up with a message place for the user to write the message and post it. (Done)
-        Make sure that on the dashboard we can see all the posts of other users included. (Done)
-        While on the profile, show only the posts of the user that is logged in. (Done)
+```bash
+npx prisma migrate dev --name init
+```
 
-    Create a notification side bar only for now. (Done)
-        When click on it it will show a slider on which we will show the likes, comments, follow requests, and follow accepted things. (Done)
+This command will:
 
-    Create a find user page. (Done)
-        On this page include a search as well as show different users (Done)
-        Add follow btn on each user to follow the user. (Done)
-        Add a search btn so search for a specific user by their user id which is not the same one for everyone. (Done)
-        Now if we click on the follow btn it sends follow request to the user and on the btn it shows requested. (Done)
-        User can view other users profile and interact with them. Put on the profile how it shows on the user profile instead of editing or stuff of that user we can only request to follow them and see the posts and stuff with their posts followers etc. IF already sent follow request will show requested etc. (Done)
-        The follow request should show on the notification tab of the other user (the one we sent the follow request) (If request canceled remove the follow request notification so it doesn't create any problem) And sent to the other user. Make the notification bar work for getting the friend requests now. (Done)
-        If the other user rejects the follow request that user will be removed from the reqested list and the follow btn now instead of showing requested will be showing follow again.(Done)
-        User can accept and reject the follow request.(Done)
-        Make sure to add the accept and reject btn inside the notification bar for them as well.(Done)
-        Now the follow btn should show following if the user we sent friend request to accepts it on the friend page (On their profile it's showing correctly).(Done)
-        And if we click on follow btn again after unfollowing it should give us a popup saying are you sure to unfollow. And if we unfollow it removes from our following list. Also make sure all of this is also updated over the database because that's important.(Done)
-        If the other user accepts the follow show following on that user. And update the following list on the profile page.(Done)
-        On the profile page of the user update the following and followers list. Also when click on the list it should show the popup with the followers one with the followers, and following one with users we are following.(Done)
-        Also if the user has sent the follow request it should also show the request on that user's profile page and also the btn which says follow should say accept request or something so that it's clear for the user.(Done)
-        And if we click on the btn showing following it unfollows them but gives us a pop up to ask weather to unfollow or not.(Done)
+- Create the PostgreSQL database
+- Run all migrations
+- Generate Prisma client
 
-    On the right bar on feed page show the recommended followers.(Done)
-        On the right bar on the feed page show max of 3 or less random users to follow. They will be called recommended users.(Done)
-        Also create the follow btn there as well and make it work. The follow btn will work same everywhere.(Done)
+5. (Optional) Seed the database with sample data:
 
-    Show following and the followers of the user on the user profile.(Done)
-        Make the following and the followers place work on the profile.(Done)
-        Make sure when click on the following and the followers links it opens a pop up and shows the followers and the following of that user.(Done)
+```bash
+npx prisma db seed
+```
 
-    Users can send follow requests to other users(Done)
-        user can see the people user is following, the followers who are following the user, all other users,(Done)
-        User can reject follow request and accept obviously. User can also unfollow other users.(Done)
-        All following requests user have sent.(Done)
+6. Start the backend server:
 
-    Now Let's go back to the posts show part.(Done)
-        User can like posts.(Done)
-        Also show the like posts on the notification as well.(Done)
-        When user clicks on the comment of feed or user profile it takes the user to that post where the user can comment.(Done)
-        If the user comments it should also show on the notification.(Done)
-        User can open up each post where it'll show the post and down user can comment on the post.(done)
-        User can edit the posts only the ones user created themselves.(Done)
-        User can delete their own posts.(Done)
+```bash
+npm start
+```
 
-    Make the Images Work. (Done)
-        First make the backend so that the user can create images and save it in the backend. If possible use gravatar.(Done)
-        Second Now create it's frontend to fetch the images links from the database and take them to the frontend and show them on the frontend.(Done)
-        Now make the images appear on all the places.(Done)
+The backend server will run on `http://localhost:3000`
 
-    The Main extra functions.
-        Firstly the user can create new posts with images. Check the odin for how and where to save those images.(Done)
-        Now change their profile photos.(Done)
-        Guest users can sign in to test the app.(Done)
-        Make the deisgn futuristic and simple.(Done)
+### Frontend Setup
 
-## CSS:
+1. Navigate to the frontend directory:
 
-1.  First the Homepage:
+```bash
+cd ../frontend
+```
 
-        Create the background color.
-        Randomly on the background write text short quotes from peole like franz kafka or literature people. Text like (vision), (thought), (Express) etc.
-        But on the bottom middle the text will be a big one or 2 short words.
-        On the left side the words will be verticle with one word each or two short words each.
-        In the middle horizontal everywhere one word and the words will shuffle on each refresh.
-        On the right corner horizontal but one small quote but each first line will have 1word, 2nd 2words and 3rd 4words and then last 4th line 3words.
+2. Install dependencies:
 
-        In the middle of the page we will create a mobile. The mobile will be like Iphone. In the top middle of phone black camera like how we show on real.
-        The edges of mobile a bit round and the corners with borders of 2 colors like how with real phone.
-        ON the top left corner of mobile real life time and on the right corner one sim signals icon and middle wifi icon and left battery icon.
-        In the middle the name of the app.
+```bash
+npm install
+```
 
-        On the nav only create 2 things. Firstly on the top right of the page there's a login btn.
-        On the left side there will be another btn (name: Phenomenon). It will be to toggle color of the website to dark and light mode.
-        Make the background blend with the background of the homepage of the btn.
-        Make a circle on it.
-        On hover some kind of animation.
+3. Create a `.env` file in the frontend root directory:
 
-        If the user is not logged in, user can still access the main home page but they can only sign up, login or login as a guest.
-        When the user logIn this login btn text will be replaced to show home page which will take the user to the feed page.
-        And the create new text will be replaced by Profile page which will take the user to the Profile page.
-        If the user tries to go to the feed page when not logged in they will be redirected to the home page.
-        And if the user tries to go to the login page if logged in they will be redirected to the feed page.
+```
+REACT_APP_API_URL=http://localhost:5000
+```
 
-        Add animation for the mobile to appear.
-        Add animation to start from zoomed in and then zoomed out showing the home page with all the text of the back moving in swings left right etc like floating in air or something.
-        And obviously the animation of mobile in the middle of the website of how it shows up.
+4. Start the development server:
 
-        Polish everything up to move to next step of creating a login page.
+```bash
+npm start
+```
 
-2.  Login Page:
+The frontend will run on `http://localhost:3000`
 
-        The background will remain the same for the Login Page.
-        When click on the app on the mobile screen anywhere it will automatically swip up as if doing on a real mobile. Add animation.
-        When swip on the top middle
+## Key Pages & Components
 
-3.  New User Page:
-    The background will remain the same for the new user Page.
+### Home Page
 
-### Color Palette:
+- Landing page with modern design and interactive mobile mockup
+- Featured typography and design elements
+- Login and signup buttons
+- Dark/Light mode toggle
 
-    #1E212B
-    #6E747B
-    #AEBAB1
-    #D8CFC7
-    #F5F4F2
+### Feed Page
 
-    Reverse for dark color.
+- Posts from users you follow
+- Sidebar with navigation menu
+- Right sidebar with recommended users to follow
+- Like and comment functionality on each post
+
+### User Profile
+
+- User information (name, username, bio, profile picture)
+- All posts created by the user
+- Followers and following lists
+- Edit profile button (for your own profile)
+
+### User Discovery
+
+- Browse all users on the platform
+- Search users by username
+- Follow buttons with request status indicators
+- View public user profiles
+
+### Create Post
+
+- Modal for writing new posts
+- Option to upload images
+- Text editor for post content
+
+### Notifications
+
+- Sidebar showing all notifications
+- Follow requests with accept/reject buttons
+- Like and comment notifications
+- Mark as read functionality
+
+---
+
+---
+
+## Design System
+
+### Color Palette
+
+| Color       | Hex Code  | Usage                |
+| ----------- | --------- | -------------------- |
+| Dark Navy   | `#1E212B` | Primary background   |
+| Medium Gray | `#6E747B` | Secondary text       |
+| Light Gray  | `#AEBAB1` | Borders and dividers |
+| Beige       | `#D8CFC7` | Accent elements      |
+| Off-White   | `#F5F4F2` | Light backgrounds    |
+
+The design implements a dark/light mode toggle, with the color palette reversed in light mode for optimal contrast and user experience.
+
+### Design Features
+
+- Clean, minimalist interface
+- Smooth animations and transitions
+- Responsive design for mobile and desktop
+- Dark/light mode support
+- Intuitive navigation
+
+---
+
+## Future Enhancements
+
+- [ ] Direct messaging between users
+- [ ] User-generated collections or boards
+- [ ] Advanced feed filtering and sorting
+- [ ] Post sharing and reposting
+- [ ] User blocking functionality
+- [ ] Hashtags and trending topics
+- [ ] Video uploads
+- [ ] Real-time notifications using WebSockets
+- [ ] User recommendations algorithm
+- [ ] Progressive Web App (PWA) capabilities
+
+---
+
+## Learning Outcomes
+
+This project demonstrates proficiency in:
+
+- Full-stack web development (MERN stack)
+- User authentication and authorization
+- RESTful API design and implementation
+- Database design and management
+- Frontend state management
+- Responsive UI/UX design
+- Real-world application architecture
+- Version control with Git
+- Deployment and DevOps basics
+
+---
+
+## How to Use
+
+### As a Regular User
+
+1. Click "Sign Up" to create a new account
+2. Fill in your information (username, email, password, name, bio, etc.)
+3. Log in with your credentials
+4. Start exploring! Create posts, follow users, and interact with content
+5. Visit your profile to customize your information and profile picture
+
+### As a Guest
+
+1. Click "Login as Guest" on the home page
+2. Browse the app with limited functionality
+3. Explore posts and user profiles without creating an account
+
+---
+
+## Credits
+
+This project was built as a capstone project for **The Odin Project** curriculum, which is an excellent free resource for learning web development.
+
+- **The Odin Project**: https://www.theodinproject.com/
+
+---
+
+## License
+
+This project is open source and available under the MIT License.
+
+---
+
+## Contact & Portfolio
+
+This project is part of my portfolio and demonstrates my full-stack development capabilities.
+
+- **GitHub**: https://github.com/Quitzelcoat/Odling
+- **Portfolio**: [Your portfolio website]
+- **Email**: haris76689@gmail.com
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+**PostgreSQL Connection Failed**
+
+- Ensure PostgreSQL is running on your system
+- Verify your `DATABASE_URL` in `.env` is correct
+- Check that the database user has proper permissions
+
+**Image Upload Not Working**
+
+- Verify Cloudinary credentials in `.env`
+- Check that image file size is under 5MB
+- Ensure the image format is supported (JPG, PNG, etc.)
+
+**Port Already in Use**
+
+- Change the `PORT` in your backend `.env` file
+- Or kill the process using the port: `lsof -ti:5000 | xargs kill -9`
+
+**CORS Errors**
+
+- Ensure your backend `CORS` configuration includes your frontend URL
+- Check that both frontend and backend are running
+
+For additional help, please open an issue on the GitHub repository.
+
+---
+
+**Last Updated**: January 2026
