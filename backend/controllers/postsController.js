@@ -1,6 +1,5 @@
 const prisma = require('../prismaClient');
-const path = require('path');
-const { safeUnlink } = require('../middleware/fileUtils');
+const cloudinary = require('../config/cloudinary');
 
 exports.createPost = async (req, res) => {
   try {
@@ -13,16 +12,32 @@ exports.createPost = async (req, res) => {
       return res.status(400).json({ error: 'Content is required' });
     }
 
-    const imagePath = req.file
-      ? path.posix.join('/uploads', 'post-images', req.file.filename)
-      : null;
+    let imageUrl = null;
+    if (req.file) {
+      // Upload to Cloudinary
+      const result = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              folder: 'post-images',
+              transformation: [{ width: 1200, height: 630, crop: 'limit' }],
+            },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          )
+          .end(req.file.buffer);
+      });
+      imageUrl = result.secure_url;
+    }
 
     const post = await prisma.post.create({
       data: {
         content: content.trim(),
         title: title && typeof title === 'string' ? title.trim() : null,
         authorId: userId,
-        image: imagePath,
+        image: imageUrl,
       },
     });
 
@@ -102,14 +117,10 @@ exports.updatePost = async (req, res) => {
     if (existing.authorId !== userId)
       return res.status(403).json({ error: 'Not allowed' });
 
-    // We support:
-    // - JSON body { content, title, removeImage } (when not uploading new file)
-    // - multipart/form-data with optional file field 'image' (handled by multer in route)
     const { content } = req.body;
     const removeImage =
       req.body.removeImage === '1' || req.body.removeImage === 'true';
 
-    // require content to be non-empty when provided
     if (content !== undefined) {
       if (!content || typeof content !== 'string' || !content.trim()) {
         return res
@@ -118,7 +129,46 @@ exports.updatePost = async (req, res) => {
       }
     }
 
-    // prepare update data
+    let imageUrl = existing.image;
+
+    if (req.file) {
+      // Delete old image from Cloudinary if exists
+      if (existing.image) {
+        const publicId = existing.image
+          .replace('https://res.cloudinary.com/', '')
+          .split('/')[1]
+          .split('.')[0];
+        await cloudinary.uploader.destroy(publicId).catch(() => {});
+      }
+
+      // Upload new image to Cloudinary
+      const result = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              folder: 'post-images',
+              transformation: [{ width: 1200, height: 630, crop: 'limit' }],
+            },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          )
+          .end(req.file.buffer);
+      });
+      imageUrl = result.secure_url;
+    } else if (removeImage) {
+      // Delete image from Cloudinary
+      if (existing.image) {
+        const publicId = existing.image
+          .replace('https://res.cloudinary.com/', '')
+          .split('/')[1]
+          .split('.')[0];
+        await cloudinary.uploader.destroy(publicId).catch(() => {});
+      }
+      imageUrl = null;
+    }
+
     const data = {};
     if (content !== undefined) data.content = content.trim();
     if (req.body.title !== undefined) {
@@ -127,17 +177,7 @@ exports.updatePost = async (req, res) => {
           ? req.body.title.trim()
           : null;
     }
-
-    if (req.file) {
-      // new image uploaded: prepare path, and schedule old image for removal
-      data.image = path.posix.join(
-        '/uploads',
-        'post-images',
-        req.file.filename
-      );
-    } else if (removeImage) {
-      data.image = null;
-    }
+    data.image = imageUrl;
 
     const updated = await prisma.post.update({
       where: { id },
@@ -148,11 +188,6 @@ exports.updatePost = async (req, res) => {
         },
       },
     });
-
-    // If we replaced/removed an existing image — remove file from disk (best-effort)
-    if ((req.file || removeImage) && existing.image) {
-      await safeUnlink(existing.image);
-    }
 
     return res.json({ post: updated });
   } catch (err) {
@@ -175,17 +210,21 @@ exports.deletePost = async (req, res) => {
     if (existing.authorId !== userId)
       return res.status(403).json({ error: 'Not allowed' });
 
-    // Delete child records then post (hard delete). After success, remove image on disk.
+    // Delete image from Cloudinary if present
+    if (existing.image) {
+      const publicId = existing.image
+        .replace('https://res.cloudinary.com/', '')
+        .split('/')[1]
+        .split('.')[0];
+      await cloudinary.uploader.destroy(publicId).catch(() => {});
+    }
+
+    // Delete child records then post
     await prisma.$transaction(async (tx) => {
       await tx.like.deleteMany({ where: { postId: id } });
       await tx.comment.deleteMany({ where: { postId: id } });
       await tx.post.delete({ where: { id } });
     });
-
-    // remove image file if present (best-effort)
-    if (existing.image) {
-      await safeUnlink(existing.image);
-    }
 
     return res.json({ message: 'Post deleted' });
   } catch (err) {

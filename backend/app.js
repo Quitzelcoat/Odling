@@ -2,9 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
-const path = require('path');
-const fs = require('fs');
 require('dotenv').config();
+
+// Cloudinary config
+const cloudinary = require('./config/cloudinary');
 
 const authRoute = require('./routes/authRoute');
 const profileRoute = require('./routes/profileRoute');
@@ -16,11 +17,6 @@ const commentsRoute = require('./routes/commentsRoute');
 const { authenticate } = require('./middleware/auth');
 const pictureRoute = require('./routes/pictureRoute');
 
-const UPLOAD_DIR = process.env.UPLOAD_DIR
-  ? path.resolve(process.env.UPLOAD_DIR)
-  : path.join(__dirname, 'uploads');
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -30,7 +26,8 @@ app.use(
   })
 );
 
-app.use('/uploads', express.static(UPLOAD_DIR));
+// REMOVED: No more local uploads static serving
+// app.use('/uploads', express.static(UPLOAD_DIR));
 
 app.get('/', authenticate, (req, res) => {
   res.json({ message: 'Authenticated', user: req.user });
@@ -52,6 +49,5 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
   if (error) throw error;
-
   console.log(`Server is running on http://localhost:${PORT}`);
 });

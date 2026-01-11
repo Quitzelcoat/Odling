@@ -1,31 +1,6 @@
 // controllers/pictureController.js
-const path = require('path');
-const fsPromises = require('fs').promises;
+const cloudinary = require('../config/cloudinary');
 const prisma = require('../prismaClient');
-
-async function safeUnlink(fileUrlOrPath) {
-  if (!fileUrlOrPath) return;
-  try {
-    const uploadsRoot =
-      process.env.UPLOAD_DIR || path.join(__dirname, '..', 'uploads');
-
-    let p = fileUrlOrPath;
-    if (p.startsWith('/uploads')) {
-      p = path.join(uploadsRoot, p.replace(/^\/uploads\/?/, ''));
-    } else if (!path.isAbsolute(p) && p.includes('uploads')) {
-      p = path.join(uploadsRoot, p.replace(/^uploads\/?/, ''));
-    } else if (p.startsWith('http')) {
-      return;
-    }
-
-    const normalized = path.resolve(p);
-    if (!normalized.startsWith(path.resolve(uploadsRoot))) return;
-
-    await fsPromises.unlink(normalized).catch(() => {});
-  } catch (err) {
-    console.warn('safeUnlink failed', err?.message || err);
-  }
-}
 
 exports.uploadProfilePicture = async (req, res) => {
   try {
@@ -36,21 +11,36 @@ exports.uploadProfilePicture = async (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const fileRelPath = path.join(
-      '/uploads',
-      'profile-pics',
-      req.file.filename
-    );
+    // Upload to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          {
+            folder: 'profile-pics',
+            transformation: [{ width: 300, height: 300, crop: 'limit' }],
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        )
+        .end(req.file.buffer);
+    });
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
 
+    // Delete old image from Cloudinary if exists (FIXED publicId extraction)
     if (user?.profilePic) {
-      await safeUnlink(user.profilePic);
+      const publicId = user.profilePic
+        .replace('https://res.cloudinary.com/', '')
+        .split('/')[1]
+        .split('.')[0];
+      await cloudinary.uploader.destroy(publicId).catch(() => {});
     }
 
     const updated = await prisma.user.update({
       where: { id: userId },
-      data: { profilePic: fileRelPath },
+      data: { profilePic: result.secure_url },
       select: { id: true, username: true, name: true, profilePic: true },
     });
 
@@ -69,8 +59,13 @@ exports.deleteProfilePicture = async (req, res) => {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) return res.status(404).json({ error: 'User not found' });
 
+    // Delete image from Cloudinary if exists (FIXED publicId extraction)
     if (user.profilePic) {
-      await safeUnlink(user.profilePic);
+      const publicId = user.profilePic
+        .replace('https://res.cloudinary.com/', '')
+        .split('/')[1]
+        .split('.')[0];
+      await cloudinary.uploader.destroy(publicId).catch(() => {});
     }
 
     const updated = await prisma.user.update({
