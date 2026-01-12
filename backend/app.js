@@ -1,23 +1,23 @@
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
+import express, { json } from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 const app = express();
-require('dotenv').config();
+import 'dotenv/config';
 
 // Cloudinary config
-const cloudinary = require('./config/cloudinary');
+import cloudinary from './config/cloudinary.js';
 
-const authRoute = require('./routes/authRoute');
-const profileRoute = require('./routes/profileRoute');
-const userRoute = require('./routes/userRoute');
-const postRoute = require('./routes/postRoute');
-const followsRoute = require('./routes/followsRoute');
-const notificationRoute = require('./routes/notificationRoute');
-const commentsRoute = require('./routes/commentsRoute');
-const { authenticate } = require('./middleware/auth');
-const pictureRoute = require('./routes/pictureRoute');
+import authRoute from './routes/authRoute.js';
+import profileRoute from './routes/profileRoute.js';
+import userRoute from './routes/userRoute.js';
+import postRoute from './routes/postRoute.js';
+import followsRoute from './routes/followsRoute.js';
+import notificationRoute from './routes/notificationRoute.js';
+import commentsRoute from './routes/commentsRoute.js';
+import { authenticate } from './middleware/auth.js';
+import pictureRoute from './routes/pictureRoute.js';
 
-app.use(express.json());
+app.use(json());
 app.use(cookieParser());
 app.use(
   cors({
@@ -25,9 +25,6 @@ app.use(
     credentials: true,
   })
 );
-
-// REMOVED: No more local uploads static serving
-// app.use('/uploads', express.static(UPLOAD_DIR));
 
 app.get('/', authenticate, (req, res) => {
   res.json({ message: 'Authenticated', user: req.user });

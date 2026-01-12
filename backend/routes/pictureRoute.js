@@ -1,20 +1,15 @@
-// routes/pictureRoute.js
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+import { authenticate } from '../middleware/auth.js';
+import upload from '../middleware/upload.js';
+import {
+  uploadProfilePicture,
+  deleteProfilePicture,
+} from '../controllers/pictureController.js';
 
-const pictureController = require('../controllers/pictureController');
-const { authenticate } = require('../middleware/auth');
-const upload = require('../middleware/upload');
+const router = Router();
 
-// Upload a new profile picture (form field: 'picture')
-router.put(
-  '/',
-  authenticate,
-  upload.single('picture'),
-  pictureController.uploadProfilePicture
-);
+router.put('/', authenticate, upload.single('picture'), uploadProfilePicture);
 
-// Delete current profile picture
-router.delete('/', authenticate, pictureController.deleteProfilePicture);
+router.delete('/', authenticate, deleteProfilePicture);
 
-module.exports = router;
+export default router;

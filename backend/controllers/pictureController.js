@@ -1,8 +1,8 @@
 // controllers/pictureController.js
-const cloudinary = require('../config/cloudinary');
-const prisma = require('../prismaClient');
+import prisma from '../prismaClient.js';
+import cloudinary from '../config/cloudinary.js';
 
-exports.uploadProfilePicture = async (req, res) => {
+export const uploadProfilePicture = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });
@@ -51,7 +51,7 @@ exports.uploadProfilePicture = async (req, res) => {
   }
 };
 
-exports.deleteProfilePicture = async (req, res) => {
+export const deleteProfilePicture = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });

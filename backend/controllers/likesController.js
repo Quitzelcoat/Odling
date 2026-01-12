@@ -1,7 +1,7 @@
 // controllers/likesController.js
-const prisma = require('../prismaClient');
+import prisma from '../prismaClient.js';
 
-exports.checkLiked = async (req, res) => {
+export const checkLiked = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });
@@ -23,7 +23,7 @@ exports.checkLiked = async (req, res) => {
   }
 };
 
-exports.likePost = async (req, res) => {
+export const likePost = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });
@@ -83,7 +83,7 @@ exports.likePost = async (req, res) => {
   }
 };
 
-exports.unlikePost = async (req, res) => {
+export const unlikePost = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });
@@ -104,6 +104,11 @@ exports.unlikePost = async (req, res) => {
 
     // Try to remove the corresponding 'like' notification (exact JSON match)
     try {
+      const post = await prisma.post.findUnique({
+        where: { id: postId },
+        select: { authorId: true },
+      });
+
       const notifData = {
         fromUserId: userId,
         fromUsername: req.user.username || req.user.name || null,
@@ -111,12 +116,7 @@ exports.unlikePost = async (req, res) => {
       };
       await prisma.notification.deleteMany({
         where: {
-          userId: (
-            await prisma.post.findUnique({
-              where: { id: postId },
-              select: { authorId: true },
-            })
-          ).authorId,
+          userId: post.authorId,
           type: 'like',
           data: { equals: notifData },
         },

@@ -1,6 +1,5 @@
 // middleware/uploadPost.js
-const multer = require('multer');
-const crypto = require('crypto');
+import multer from 'multer';
 
 const MAX_FILE_BYTES = 8 * 1024 * 1024;
 
@@ -19,4 +18,4 @@ const uploadPost = multer({
   fileFilter,
 });
 
-module.exports = uploadPost;
+export default uploadPost;

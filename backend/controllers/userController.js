@@ -1,7 +1,7 @@
 // controllers/userController.js
-const prisma = require('../prismaClient');
+import prisma from '../prismaClient.js';
 
-exports.getUserById = async (req, res) => {
+export const getUserById = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (Number.isNaN(id))
@@ -27,12 +27,7 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-/**
- * GET /users?q=search&page=1&limit=20
- * - searches username/name/email (case-insensitive) and returns a simple list
- * - safe defaults for paging
- */
-exports.searchUsers = async (req, res) => {
+export const searchUsers = async (req, res) => {
   try {
     const q = (req.query.q || '').trim();
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);

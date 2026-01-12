@@ -1,7 +1,7 @@
-// middleware/upload.js
-const multer = require('multer');
+// middleware/uploadPost.js
+import multer from 'multer';
 
-const MAX_FILE_BYTES = 5 * 1024 * 1024;
+const MAX_FILE_BYTES = 8 * 1024 * 1024;
 
 const storage = multer.memoryStorage();
 
@@ -12,10 +12,10 @@ function fileFilter(req, file, cb) {
   cb(null, true);
 }
 
-const upload = multer({
+const uploadPost = multer({
   storage,
   limits: { fileSize: MAX_FILE_BYTES },
   fileFilter,
 });
 
-module.exports = upload;
+export default uploadPost;

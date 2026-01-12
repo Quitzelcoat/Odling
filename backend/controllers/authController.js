@@ -1,14 +1,14 @@
 // controllers/authController.js
-const prisma = require('../prismaClient');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
+import prisma from '../prismaClient.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 const SALT_ROUNDS = 10;
 const JWT_SECRET = process.env.JWT_SECRET || 'change_this_in_production';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1d';
 
-exports.signUp = async (req, res) => {
+export const signUp = async (req, res) => {
   const { username, email, password, name, bio, dateOfBirth, gender } =
     req.body;
   if (!username || !name || !email || !password) {
@@ -43,7 +43,7 @@ exports.signUp = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   const { emailOrUsername, password } = req.body;
   if (!emailOrUsername || !password) {
     return res
@@ -95,7 +95,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.logout = (req, res) => {
+export const logout = (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
     sameSite: 'lax',
@@ -104,7 +104,7 @@ exports.logout = (req, res) => {
   return res.json({ message: 'Logout successful' });
 };
 
-exports.getMe = async (req, res) => {
+export const getMe = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) {
@@ -134,7 +134,7 @@ exports.getMe = async (req, res) => {
   }
 };
 
-exports.guestLogin = async (req, res) => {
+export const guestLogin = async (req, res) => {
   try {
     const rand = crypto.randomBytes(4).toString('hex');
     const short = `${Date.now().toString(36)}${rand}`;

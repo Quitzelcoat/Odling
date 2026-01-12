@@ -1,7 +1,7 @@
 // controllers/commentsController.js
-const prisma = require('../prismaClient');
+import prisma from '../prismaClient.js';
 
-exports.createComment = async (req, res) => {
+export const createComment = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });
@@ -96,7 +96,7 @@ exports.createComment = async (req, res) => {
   }
 };
 
-exports.createReply = async (req, res) => {
+export const createReply = async (req, res) => {
   try {
     const parentId = parseInt(req.params.commentId, 10);
     if (Number.isNaN(parentId))
@@ -179,7 +179,7 @@ exports.createReply = async (req, res) => {
   }
 };
 
-exports.getComment = async (req, res) => {
+export const getComment = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
@@ -232,7 +232,7 @@ exports.getComment = async (req, res) => {
   }
 };
 
-exports.updateComment = async (req, res) => {
+export const updateComment = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });
@@ -271,7 +271,7 @@ exports.updateComment = async (req, res) => {
   }
 };
 
-exports.deleteComment = async (req, res) => {
+export const deleteComment = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });

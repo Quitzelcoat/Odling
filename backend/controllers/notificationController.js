@@ -1,12 +1,7 @@
 // controllers/notificationController.js
-const prisma = require('../prismaClient');
+import prisma from '../prismaClient.js';
 
-/**
- * GET /notifications
- * Authenticated - list notifications for current user (latest first)
- * Query: ?limit=40&unreadOnly=true
- */
-exports.listNotifications = async (req, res) => {
+export const listNotifications = async (req, res) => {
   try {
     const userId = req.user.id;
     const limit = Math.min(parseInt(req.query.limit || '40', 10), 200);
@@ -27,12 +22,7 @@ exports.listNotifications = async (req, res) => {
   }
 };
 
-/**
- * POST /notifications
- * Create a notification (server-side use). Body: { userId, type, data }
- * Authenticated — you may restrict this to internal usage only if desired.
- */
-exports.createNotification = async (req, res) => {
+export const createNotification = async (req, res) => {
   try {
     const { userId, type, data } = req.body;
     if (!userId || !type)
@@ -53,11 +43,7 @@ exports.createNotification = async (req, res) => {
   }
 };
 
-/**
- * POST /notifications/:id/read
- * Mark a single notification as read
- */
-exports.markAsRead = async (req, res) => {
+export const markAsRead = async (req, res) => {
   try {
     const userId = req.user.id;
     const id = parseInt(req.params.id, 10);
@@ -78,11 +64,7 @@ exports.markAsRead = async (req, res) => {
   }
 };
 
-/**
- * POST /notifications/mark-all-read
- * Mark all notifications for current user as read
- */
-exports.markAllRead = async (req, res) => {
+export const markAllRead = async (req, res) => {
   try {
     const userId = req.user.id;
     await prisma.notification.updateMany({
@@ -96,11 +78,7 @@ exports.markAllRead = async (req, res) => {
   }
 };
 
-/**
- * DELETE /notifications/:id
- * Delete a notification (user-owned)
- */
-exports.deleteNotification = async (req, res) => {
+export const deleteNotification = async (req, res) => {
   try {
     const userId = req.user.id;
     const id = parseInt(req.params.id, 10);

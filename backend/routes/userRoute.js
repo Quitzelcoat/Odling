@@ -1,12 +1,9 @@
-// routes/userRoute.js
-const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/userController');
+import { Router } from 'express';
+import { getUserById, searchUsers } from '../controllers/userController.js';
 
-// public: get user by numeric id (e.g. /users/123)
-router.get('/:id', userController.getUserById);
+const router = Router();
 
-// public: search users by query (username, name, or custom userId string)
-router.get('/', userController.searchUsers);
+router.get('/:id', getUserById);
+router.get('/', searchUsers);
 
-module.exports = router;
+export default router;

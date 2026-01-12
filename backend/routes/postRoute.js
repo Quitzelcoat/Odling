@@ -1,34 +1,36 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+import { authenticate } from '../middleware/auth.js';
+import uploadPost from '../middleware/uploadPost.js';
 
-const {
+import {
   createPost,
   getPosts,
   getPost,
   updatePost,
   deletePost,
-} = require('../controllers/postsController');
+} from '../controllers/postsController.js';
 
-const likesController = require('../controllers/likesController');
-const commentsController = require('../controllers/commentsController');
-const { authenticate } = require('../middleware/auth');
+import {
+  likePost,
+  unlikePost,
+  checkLiked,
+} from '../controllers/likesController.js';
 
-const uploadPost = require('../middleware/uploadPost');
+import { createComment } from '../controllers/commentsController.js';
+
+const router = Router();
+
 router.post('/', authenticate, uploadPost.single('image'), createPost);
 router.get('/', getPosts);
 
-router.get('/:id/liked', authenticate, likesController.checkLiked);
+router.get('/:id/liked', authenticate, checkLiked);
 router.get('/:id', getPost);
 router.put('/:id', authenticate, uploadPost.single('image'), updatePost);
 router.delete('/:id', authenticate, deletePost);
 
-router.post(
-  '/:postId/comments',
-  authenticate,
-  commentsController.createComment
-);
+router.post('/:postId/comments', authenticate, createComment);
 
-router.post('/:id/like', authenticate, likesController.likePost);
-router.delete('/:id/like', authenticate, likesController.unlikePost);
+router.post('/:id/like', authenticate, likePost);
+router.delete('/:id/like', authenticate, unlikePost);
 
-module.exports = router;
+export default router;

@@ -1,18 +1,18 @@
-// routes/commentsRoute.js
-const express = require('express');
-const router = express.Router();
-const { authenticate } = require('../middleware/auth');
-const commentsController = require('../controllers/commentsController');
+// routes/commentsRoute.js (ESM)
+import { Router } from 'express';
+import { authenticate } from '../middleware/auth.js';
+import {
+  getComment,
+  createReply,
+  updateComment,
+  deleteComment,
+} from '../controllers/commentsController.js';
 
-router.get('/:id', commentsController.getComment);
+const router = Router();
 
-router.post(
-  '/:commentId/replies',
-  authenticate,
-  commentsController.createReply
-);
+router.get('/:id', getComment);
+router.post('/:commentId/replies', authenticate, createReply);
+router.put('/:id', authenticate, updateComment);
+router.delete('/:id', authenticate, deleteComment);
 
-router.put('/:id', authenticate, commentsController.updateComment);
-router.delete('/:id', authenticate, commentsController.deleteComment);
-
-module.exports = router;
+export default router;

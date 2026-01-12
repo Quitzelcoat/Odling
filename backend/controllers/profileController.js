@@ -1,9 +1,8 @@
 // controllers/profileController.js
-const bcrypt = require('bcrypt');
-const prisma = require('../prismaClient'); // ensure this path is correct
-const SALT_ROUNDS = 10;
+import bcrypt from 'bcrypt';
+import prisma from '../prismaClient.js';
 
-exports.updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) {

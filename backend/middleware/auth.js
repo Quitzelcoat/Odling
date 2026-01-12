@@ -1,7 +1,8 @@
-const jwt = require('jsonwebtoken');
-const prisma = require('../prismaClient');
+// middleware/auth.js
+import jwt from 'jsonwebtoken';
+import prisma from '../prismaClient.js';
 
-const authenticate = async (req, res, next) => {
+export const authenticate = async (req, res, next) => {
   try {
     const token =
       req.cookies?.token ||
@@ -27,10 +28,11 @@ const authenticate = async (req, res, next) => {
       res.clearCookie('token', { httpOnly: true });
       return res.status(401).json({ error: 'Token expired' });
     }
+    return res.status(401).json({ error: 'Invalid token' });
   }
 };
 
-const guestOnly = (req, res, next) => {
+export const guestOnly = (req, res, next) => {
   const token =
     req.cookies?.token ||
     (req.header('Authorization') || '').replace(/^Bearer\s+/i, '');
@@ -47,4 +49,5 @@ const guestOnly = (req, res, next) => {
   }
 };
 
-module.exports = { authenticate, guestOnly };
+// optional default for backward compatibility
+export default { authenticate, guestOnly };

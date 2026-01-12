@@ -1,6 +1,7 @@
-const prisma = require('../prismaClient');
+// controllers/followsController.js
+import prisma from '../prismaClient.js';
 
-const createFollowRequestNotification = async ({
+export const createFollowRequestNotification = async ({
   toUserId,
   fromUserId,
   requestId,
@@ -12,8 +13,7 @@ const createFollowRequestNotification = async ({
 
   const payload = {
     fromUserId,
-    requestId, // include sender username & name so frontend can display a friendly message
-
+    requestId,
     fromUsername: fromUser?.username || null,
     fromName: fromUser?.name || null,
     fromProfilePic: fromUser?.profilePic || null,
@@ -30,7 +30,7 @@ const createFollowRequestNotification = async ({
   });
 };
 
-const removeFollowRequestNotification = async ({
+export const removeFollowRequestNotification = async ({
   toUserId,
   fromUserId,
   requestId,
@@ -49,14 +49,13 @@ const removeFollowRequestNotification = async ({
       where: {
         userId: toUserId,
         type: 'follow_request',
-
         OR: [{ data: { path: ['requestId'], equals: requestId } }, {}],
       },
     });
   }
 };
 
-exports.sendFollowRequest = async (req, res) => {
+export const sendFollowRequest = async (req, res) => {
   try {
     const fromUserId = req.user.id;
     const toUserId = parseInt(req.params.toUserId, 10);
@@ -66,12 +65,10 @@ exports.sendFollowRequest = async (req, res) => {
     if (toUserId === fromUserId)
       return res.status(400).json({ error: 'Cannot follow yourself' });
 
-    // Ensure target exists and is not deleted
     const toUser = await prisma.user.findUnique({ where: { id: toUserId } });
     if (!toUser || toUser.deleted)
       return res.status(404).json({ error: 'User not found' });
 
-    // If already following
     const existingFollow = await prisma.follow
       .findUnique({
         where: {
@@ -87,7 +84,6 @@ exports.sendFollowRequest = async (req, res) => {
       return res.status(400).json({ error: 'Already following this user' });
     }
 
-    // If there's an existing pending request outgoing
     const existingRequest = await prisma.followRequest
       .findUnique({
         where: { fromUserId_toUserId: { fromUserId, toUserId } },
@@ -98,7 +94,6 @@ exports.sendFollowRequest = async (req, res) => {
       return res.status(400).json({ error: 'Follow request already sent' });
     }
 
-    // Create or upsert the follow request
     const request = await prisma.followRequest.upsert({
       where: { fromUserId_toUserId: { fromUserId, toUserId } },
       update: { status: 'pending', updatedAt: new Date() },
@@ -109,7 +104,6 @@ exports.sendFollowRequest = async (req, res) => {
       },
     });
 
-    // create a notification for the target user (recipient)
     try {
       await createFollowRequestNotification({
         toUserId,
@@ -118,7 +112,6 @@ exports.sendFollowRequest = async (req, res) => {
       });
     } catch (notifErr) {
       console.error('create notification failed', notifErr);
-      // don't fail the main flow if notification creation fails
     }
 
     return res.status(201).json({ request });
@@ -128,7 +121,7 @@ exports.sendFollowRequest = async (req, res) => {
   }
 };
 
-exports.cancelFollowRequest = async (req, res) => {
+export const cancelFollowRequest = async (req, res) => {
   try {
     const fromUserId = req.user.id;
     const toUserId = parseInt(req.params.toUserId, 10);
@@ -145,12 +138,10 @@ exports.cancelFollowRequest = async (req, res) => {
       return res.status(404).json({ error: 'No pending request to cancel' });
     }
 
-    // delete the follow request
     await prisma.followRequest.delete({
       where: { id: existing.id },
     });
 
-    // remove the notification that was created for the recipient
     try {
       await removeFollowRequestNotification({
         toUserId,
@@ -168,7 +159,7 @@ exports.cancelFollowRequest = async (req, res) => {
   }
 };
 
-exports.getIncomingRequests = async (req, res) => {
+export const getIncomingRequests = async (req, res) => {
   try {
     const userId = req.user.id;
     const requests = await prisma.followRequest.findMany({
@@ -187,7 +178,7 @@ exports.getIncomingRequests = async (req, res) => {
   }
 };
 
-exports.getOutgoingRequests = async (req, res) => {
+export const getOutgoingRequests = async (req, res) => {
   try {
     const userId = req.user.id;
     const requests = await prisma.followRequest.findMany({
@@ -206,13 +197,9 @@ exports.getOutgoingRequests = async (req, res) => {
   }
 };
 
-/**
- * Respond to a follow request:
- * body: { action: 'accept' | 'reject' }
- */
-exports.respondToRequest = async (req, res) => {
+export const respondToRequest = async (req, res) => {
   try {
-    const userId = req.user.id; // the recipient (the one who got the request)
+    const userId = req.user.id;
     const requestId = parseInt(req.params.requestId, 10);
     const { action } = req.body;
 
@@ -239,7 +226,6 @@ exports.respondToRequest = async (req, res) => {
         data: { status: 'rejected', updatedAt: new Date() },
       });
 
-      // remove original follow_request notification for recipient (handled)
       try {
         await removeFollowRequestNotification({
           toUserId: request.toUserId,
@@ -250,14 +236,10 @@ exports.respondToRequest = async (req, res) => {
         console.error('remove notification after reject failed', notifErr);
       }
 
-      // optionally create a "rejected" notification for requester - skipped for now
-
       return res.json({ request: updated });
     }
 
-    // action === 'accept' -> create Follow and mark request accepted in a transaction
     const [follow, updatedReq] = await prisma.$transaction(async (tx) => {
-      // create follow if not already exists
       const maybeFollow = await tx.follow.findUnique({
         where: {
           followerId_followedId: {
@@ -268,7 +250,6 @@ exports.respondToRequest = async (req, res) => {
       });
 
       if (maybeFollow) {
-        // still update request status
         const updated = await tx.followRequest.update({
           where: { id: requestId },
           data: { status: 'accepted', updatedAt: new Date() },
@@ -276,7 +257,6 @@ exports.respondToRequest = async (req, res) => {
         return [maybeFollow, updated];
       }
 
-      // create follow
       const createdFollow = await tx.follow.create({
         data: {
           followerId: request.fromUserId,
@@ -293,7 +273,6 @@ exports.respondToRequest = async (req, res) => {
       return [createdFollow, updatedReq];
     });
 
-    // Remove the follow_request notification (recipient handled it)
     try {
       await removeFollowRequestNotification({
         toUserId: request.toUserId,
@@ -304,7 +283,6 @@ exports.respondToRequest = async (req, res) => {
       console.error('remove notification after accept failed', notifErr);
     }
 
-    // create a notification for the requester to tell them their request was accepted
     try {
       await prisma.notification.create({
         data: {
@@ -320,7 +298,6 @@ exports.respondToRequest = async (req, res) => {
     return res.json({ follow });
   } catch (err) {
     console.error('respondToRequest error', err);
-    // handle unique constraint violation gracefully
     if (err.code === 'P2002') {
       return res.status(400).json({ error: 'Already following' });
     }
@@ -328,7 +305,7 @@ exports.respondToRequest = async (req, res) => {
   }
 };
 
-exports.unfollowUser = async (req, res) => {
+export const unfollowUser = async (req, res) => {
   try {
     const followerId = req.user.id;
     const followedId = parseInt(req.params.followedId, 10);
@@ -368,7 +345,7 @@ exports.unfollowUser = async (req, res) => {
   }
 };
 
-exports.getFollowers = async (req, res) => {
+export const getFollowers = async (req, res) => {
   try {
     const userId = parseInt(req.params.userId, 10);
     if (Number.isNaN(userId))
@@ -384,7 +361,6 @@ exports.getFollowers = async (req, res) => {
       },
     });
 
-    // return array of follower users
     const users = followers.map((f) => f.follower);
     return res.json({ users });
   } catch (err) {
@@ -393,7 +369,7 @@ exports.getFollowers = async (req, res) => {
   }
 };
 
-exports.getFollowing = async (req, res) => {
+export const getFollowing = async (req, res) => {
   try {
     const userId = parseInt(req.params.userId, 10);
     if (Number.isNaN(userId))

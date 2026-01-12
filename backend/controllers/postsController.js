@@ -1,7 +1,8 @@
-const prisma = require('../prismaClient');
-const cloudinary = require('../config/cloudinary');
+// controllers/postsController.js
+import prisma from '../prismaClient.js';
+import cloudinary from '../config/cloudinary.js';
 
-exports.createPost = async (req, res) => {
+export const createPost = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });
@@ -48,7 +49,7 @@ exports.createPost = async (req, res) => {
   }
 };
 
-exports.getPosts = async (req, res) => {
+export const getPosts = async (req, res) => {
   try {
     const posts = await prisma.post.findMany({
       where: { deleted: false },
@@ -67,7 +68,7 @@ exports.getPosts = async (req, res) => {
   }
 };
 
-exports.getPost = async (req, res) => {
+export const getPost = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
@@ -103,7 +104,7 @@ exports.getPost = async (req, res) => {
   }
 };
 
-exports.updatePost = async (req, res) => {
+export const updatePost = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });
@@ -196,7 +197,7 @@ exports.updatePost = async (req, res) => {
   }
 };
 
-exports.deletePost = async (req, res) => {
+export const deletePost = async (req, res) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: 'Not authorized' });

@@ -1,43 +1,35 @@
 // routes/followsRoute.js
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { authenticate } = require('../middleware/auth');
-const followController = require('../controllers/followsController');
 
-router.post(
-  '/requests/:toUserId',
-  authenticate,
-  followController.sendFollowRequest
-);
-router.delete(
-  '/requests/:toUserId',
-  authenticate,
-  followController.cancelFollowRequest
-);
+import authMiddleware from '../middleware/auth.js';
+const { authenticate } = authMiddleware;
 
-router.get(
-  '/requests/incoming',
-  authenticate,
-  followController.getIncomingRequests
-);
-router.get(
-  '/requests/outgoing',
-  authenticate,
-  followController.getOutgoingRequests
-);
+import {
+  sendFollowRequest,
+  cancelFollowRequest,
+  getIncomingRequests,
+  getOutgoingRequests,
+  respondToRequest,
+  unfollowUser,
+  getFollowers, // ✅ ADD THESE
+  getFollowing,
+} from '../controllers/followsController.js';
+
+router.post('/requests/:toUserId', authenticate, sendFollowRequest);
+router.delete('/requests/:toUserId', authenticate, cancelFollowRequest);
+
+router.get('/requests/incoming', authenticate, getIncomingRequests);
+router.get('/requests/outgoing', authenticate, getOutgoingRequests);
 
 // respond to a specific follow request (accept / reject)
-router.post(
-  '/requests/:requestId/respond',
-  authenticate,
-  followController.respondToRequest
-);
+router.post('/requests/:requestId/respond', authenticate, respondToRequest);
 
 // unfollow
-router.delete('/:followedId', authenticate, followController.unfollowUser);
+router.delete('/:followedId', authenticate, unfollowUser);
 
 // lists
-router.get('/followers/:userId', followController.getFollowers); // public
-router.get('/following/:userId', followController.getFollowing); // public
+router.get('/followers/:userId', getFollowers); // public
+router.get('/following/:userId', getFollowing); // public
 
-module.exports = router;
+export default router;
