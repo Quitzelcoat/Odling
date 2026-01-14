@@ -1,7 +1,66 @@
+:root {
+  /* Brand */
+  --brand: #4a7ecc; /* soft blue */
+  --brand-soft: #e8f1fb;
+
+  /* Neutrals */
+  --bg-primary: #fafaf9;
+  --bg-secondary: #ffffff;
+  --text-primary: #222222;
+  --text-secondary: rgba(34, 34, 34, 0.65);
+  --text-muted: rgba(34, 34, 34, 0.45);
+
+  /* States */
+  --border-subtle: rgba(34, 34, 34, 0.08);
+  --border-strong: rgba(34, 34, 34, 0.14);
+  --error: #b85555;
+  --error-soft: #fdeaea;
+}
+
+/* Dark theme (manual: html.dark) */
+html.dark {
+  --brand: #7aa3e0;
+  --brand-soft: #1f2933;
+
+  --bg-primary: #0f1011;
+  --bg-secondary: #1a1b1c;
+  --text-primary: #f5f5f5;
+  --text-secondary: rgba(245, 245, 245, 0.75);
+  --text-muted: rgba(245, 245, 245, 0.5);
+
+  --border-subtle: rgba(245, 245, 245, 0.08);
+  --border-strong: rgba(245, 245, 245, 0.18);
+  --error: #dd7777;
+  --error-soft: #3b2222;
+}
+
+/* Base */
+html,
 body {
-  margin: 0%;
-  background-color: #f5f4f2;
-  color: #6e747b;
+  margin: 0;
+  padding: 0;
   font-family: 'Zilla Slab', serif;
-  font-weight: 300;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Reset headings / text margins */
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a,
+button {
+  cursor: pointer;
+  font-family: inherit;
 }

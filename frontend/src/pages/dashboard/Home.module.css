@@ -1,55 +1,45 @@
-/* base stays the same */
+/* src/pages/dashboard/Home.module.css */
+
 .work {
+  min-height: calc(100vh - 64px); /* 64px ≈ header height, adjust if needed */
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f5f4f2;
-  color: #1e212b;
-  letter-spacing: 0.2rem;
-  padding: 2rem;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   text-align: center;
-  opacity: 0;
-  animation: fadeIn 0.8s ease-out forwards;
 }
 
 .textDesign {
-  margin: 0;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  line-height: 1.2;
+  letter-spacing: 0.08em;
 }
 
 .heading {
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 700;
-  color: #1e212b;
-  padding-bottom: 0.8rem;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
 }
 
-/* desktop / tablet default: single-line typing */
 .subHeading {
-  font-family: 'Zilla Slab', serif;
-  font-size: clamp(1.1rem, 4vw, 1.5rem);
-  font-weight: 400;
-  color: #6e747b;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text-secondary);
+  max-width: 26rem;
   white-space: nowrap;
   overflow: hidden;
-  border-right: 2px solid #6e747b;
+}
+
+/* Optional subtle type reveal animation based on the --finalWidth and --steps set in JS */
+.subHeading {
+  --finalWidth: 0px;
+  --steps: 1;
   width: 0;
-  animation: typing 2s steps(var(--steps), end) forwards,
-    blink 0.6s step-end infinite;
+  animation: reveal 1.8s steps(var(--steps)) forwards;
 }
 
-/* animations unchanged */
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes typing {
+@keyframes reveal {
   from {
     width: 0;
   }
@@ -58,63 +48,13 @@
   }
 }
 
-@keyframes blink {
-  from,
-  to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: #6e747b;
-  }
-}
-
-/* Tablet and down: allow wrapping + clamp width */
-@media (max-width: 768px) {
+/* Small screens */
+@media (max-width: 640px) {
   .work {
-    padding: 1.5rem;
-  }
-
-  .heading {
-    font-size: clamp(2.2rem, 9vw, 3.2rem);
-    letter-spacing: 0.16rem;
+    padding: 2.5rem 1.25rem;
   }
 
   .subHeading {
-    font-size: 1rem;
-    letter-spacing: 0.12rem;
-
-    /* allow wrapping, but keep typing illusion by limiting width */
-    white-space: normal;
-    border-right-width: 1px;
-    max-width: min(26ch, 100%);
-    margin: 0 auto;
-  }
-}
-
-/* Small phones: more relaxed spacing and smaller type */
-@media (max-width: 425px) {
-  .work {
-    padding: 1.25rem;
-  }
-
-  .heading {
-    font-size: clamp(1.9rem, 9vw, 2.4rem);
-  }
-
-  .subHeading {
-    font-size: 0.95rem;
-    max-width: min(22ch, 100%);
-  }
-}
-
-@media (max-width: 375px) {
-  .heading {
-    font-size: clamp(1.7rem, 9vw, 2.2rem);
-    letter-spacing: 0.12rem;
-  }
-
-  .subHeading {
-    font-size: 0.9rem;
-    max-width: min(20ch, 100%);
+    max-width: 100%;
   }
 }

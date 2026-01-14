@@ -1,178 +1,78 @@
+/* src/components/Header/Header.module.css */
+
 .fullNav {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #f5f4f2;
-  box-shadow: 0 1px 6px rgba(30, 33, 43, 0.08);
-  z-index: 1000;
-  border-bottom: 1px solid #d8cfc7;
+  z-index: 20;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .navContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.85rem 1.5rem;
-  max-width: 1200px;
+  max-width: 960px;
   margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 1.5rem;
 }
 
 .logo {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #1e212b;
-  text-decoration: none;
-  padding: 0.25em 0.5em;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 1.3rem;
+  letter-spacing: 0.18em;
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
-.logo:hover {
-  background-color: #d8cfc7;
-  color: #1e212b;
-  transform: scale(1.05);
+nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .navList {
-  margin: 0;
-  padding: 0;
   list-style: none;
   display: flex;
-  gap: 2rem;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  font-size: 1rem;
-}
-
-.navList li {
-  position: relative;
-  cursor: pointer;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
 }
 
 .navList a {
-  display: block;
-  padding: 0.5rem 0;
   text-decoration: none;
-  color: #6e747b;
-  transition: color 0.3s ease;
-  position: relative;
-}
-
-.navList a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #aebab1;
-  transition: width 0.3s ease;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid transparent;
 }
 
 .navList a:hover {
-  color: #1e212b;
-}
-
-.navList a:hover::after {
-  width: 100%;
+  color: var(--text-primary);
+  border-bottom-color: var(--brand);
 }
 
 .logoutBtn {
+  border: 1px solid var(--border-strong);
   background-color: transparent;
-  color: #6e747b;
-  border: 1px solid #6e747b;
-  border-radius: 6px;
-  padding: 0.5rem 1.2rem;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
 }
 
-.logoutBtn:hover {
-  background-color: #d8cfc7;
-  color: #1e212b;
-  border-color: #1e212b;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(30, 33, 43, 0.1);
-}
-
-/* Tablet: stack nav under logo in a second row */
-@media (max-width: 768px) {
+/* Mobile: stack nav + shrink gaps */
+@media (max-width: 640px) {
   .navContainer {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 0.75rem 1.25rem;
-    gap: 0.5rem;
-  }
-
-  .logo {
-    font-size: 1.35rem;
-  }
-
-  .navList {
-    flex-direction: row;
-    justify-content: center;
-    gap: 1.5rem;
-    font-size: 0.95rem;
-  }
-
-  .logoutBtn {
-    align-self: center;
-    padding: 0.45rem 1.4rem;
-    font-size: 0.9rem;
-  }
-}
-
-/* Small phones: compress spacing, smaller font, prevent wrapping */
-@media (max-width: 425px) {
-  .navContainer {
-    padding: 0.7rem 0.9rem;
-    gap: 0.35rem;
-  }
-
-  .logo {
-    font-size: 1.2rem;
-    letter-spacing: 1.5px;
-  }
-
-  .navList {
+    padding: 0.75rem 1rem;
     gap: 1rem;
-    font-size: 0.88rem;
   }
 
-  .navList a {
-    padding: 0.35rem 0;
+  nav {
+    display: none; /* simplest: hide center nav; you can later replace with a menu button */
   }
 
-  .logoutBtn {
-    font-size: 0.85rem;
-    padding: 0.4rem 1.1rem;
-  }
-}
-
-@media (max-width: 375px) {
   .logo {
     font-size: 1.1rem;
-    letter-spacing: 1.2px;
-  }
-
-  .navList {
-    gap: 0.8rem;
-  }
-
-  .navList a {
-    font-size: 0.85rem;
-  }
-
-  .logoutBtn {
-    font-size: 0.82rem;
-    padding: 0.4rem 0.9rem;
   }
 }
