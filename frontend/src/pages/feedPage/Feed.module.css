@@ -2,140 +2,32 @@
 
 .appShell {
   min-height: 100vh;
-  width: 100%;
-  background-color: #f5f4f2;
+  background-color: var(--bg-primary);
 }
 
 .container {
+  max-width: 1200px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 280px 1fr 350px;
-  gap: 0;
-  min-height: 100vh;
-  max-width: none;
+  grid-template-columns: 220px 1fr 260px;
+  gap: 1.5rem;
+  padding: 1.5rem;
 }
 
-/* Left column desktop */
-.container > :first-child {
-  background-color: #ffffff;
-  border-right: 1px solid #aebab1;
-  padding: 20px 16px;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  box-shadow: 2px 0 12px rgba(30, 33, 43, 0.06);
-  overflow-y: auto;
-  z-index: 10;
-}
-
-/* Center column desktop */
-.container > :nth-child(2) {
-  background-color: #f5f4f2;
-  height: 100vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 20px 0;
-  border-right: 1px solid #aebab1;
-}
-
-/* Right column desktop */
-.container > :last-child {
-  background-color: #ffffff;
-  border-left: 1px solid #aebab1;
-  padding: 20px 16px;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  box-shadow: -2px 0 12px rgba(30, 33, 43, 0.06);
-  overflow-y: auto;
-  z-index: 10;
-}
-
-/* Cards inside center column if used */
-.feedCard {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(30, 33, 43, 0.08);
-  border: 1px solid #aebab1;
-  padding: 20px;
-  color: #1e212b;
-  margin: 0 auto 16px;
-  max-width: 600px;
-}
-
-h1,
-h2,
-h3 {
-  color: #1e212b;
-}
-
-/* Large tablets: 2 columns, hide right sidebar */
-@media (max-width: 1200px) {
+/* Tablet: hide right bar, keep left + feed */
+@media (max-width: 1024px) {
   .container {
-    grid-template-columns: 260px 1fr;
-  }
-
-  .container > :last-child {
-    display: none;
+    grid-template-columns: 200px 1fr;
+    gap: 1rem;
+    padding: 1.25rem;
   }
 }
 
-/* Mobile / small tablet: stack in order: LeftBar, FeedContent, RightBar */
+/* Mobile: only feed column */
 @media (max-width: 768px) {
-  .appShell {
-    padding: 0;
-  }
-
   .container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  .container > :first-child,
-  .container > :nth-child(2),
-  .container > :last-child {
-    position: static;
-    height: auto;
-    border: none;
-    box-shadow: none;
-    padding: 0;
-  }
-
-  /* LeftBar as a top card */
-  .container > :first-child {
-    background-color: #ffffff;
-    border-bottom: 1px solid #aebab1;
-    box-shadow: 0 4px 12px rgba(30, 33, 43, 0.08);
-    padding: 12px 16px;
-  }
-
-  /* FeedContent full width */
-  .container > :nth-child(2) {
-    background-color: #f5f4f2;
-    padding: 16px 12px 8px;
-  }
-
-  /* RightBar as a bottom card (no hiding) */
-  .container > :last-child {
-    display: block;
-    background-color: #ffffff;
-    border-top: 1px solid #aebab1;
-    box-shadow: 0 -4px 12px rgba(30, 33, 43, 0.08);
-    padding: 12px 16px 16px;
-  }
-
-  .feedCard {
-    max-width: none;
-    margin: 0 0 12px;
-  }
-}
-
-/* Very small phones: reduce side padding */
-@media (max-width: 425px) {
-  .container > :first-child,
-  .container > :nth-child(2),
-  .container > :last-child {
-    padding-left: 10px;
-    padding-right: 10px;
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1rem;
   }
 }

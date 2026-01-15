@@ -1,161 +1,99 @@
-/* FeedContent.module.css */
+/* src/components/feed/feedContent/FeedContent.module.css */
 
 .column {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 4px 6px 0;
-  min-width: 0;
+  gap: 1.5rem;
 }
 
-/* “old money” app bar: soft, minimal, slightly inset */
+/* Header section */
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background-color: #f5f4f2;
-  border: 1px solid #aebab1;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  backdrop-filter: blur(10px);
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .hTitle {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: #1e212b;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
 }
 
 .hSub {
-  margin: 2px 0 0;
-  font-size: 0.85rem;
-  color: #6e747b;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
 .headerActions {
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
-/* classic pill primary */
 .newPostBtn {
-  background-color: #1e212b;
-  color: #f5f4f2;
-  border: 1px solid #1e212b;
-  padding: 7px 14px;
+  padding: 0.6rem 1.2rem;
   border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
+  border: none;
+  background-color: var(--brand);
+  color: #ffffff;
   font-size: 0.9rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 10px 24px rgba(30, 33, 43, 0.25);
-  transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease,
-    box-shadow 0.15s ease;
+  white-space: nowrap;
 }
 
-.newPostBtn::before {
-  content: '+';
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.newPostBtn:hover {
-  background-color: #111318;
-  box-shadow: 0 14px 32px rgba(30, 33, 43, 0.35);
-  transform: translateY(-1px);
-}
-
-.newPostBtn:active {
-  transform: translateY(0);
-  box-shadow: 0 6px 18px rgba(30, 33, 43, 0.3);
-}
-
+/* States */
 .center {
-  padding: 32px 0;
+  padding: 3rem 1rem;
   text-align: center;
-  color: #6e747b;
-  font-size: 0.95rem;
+  color: var(--text-secondary);
 }
 
 .error {
-  padding: 14px 12px;
-  background-color: rgba(184, 50, 50, 0.03);
-  color: #1e212b;
-  border-radius: 12px;
-  border: 1px solid rgba(184, 50, 50, 0.2);
-  font-weight: 500;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: var(--error-soft);
+  color: var(--error);
   font-size: 0.9rem;
 }
 
 .empty {
-  padding: 18px 16px;
-  border-radius: 14px;
-  background-color: #f5f4f2;
-  border: 1px dashed #aebab1;
+  padding: 3rem 1rem;
   text-align: center;
-  color: #1e212b;
+  color: var(--text-secondary);
 }
 
 .empty h3 {
-  margin: 0 0 6px;
-  font-size: 1rem;
-}
-
-.empty p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #6e747b;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
 }
 
 .empty a {
-  color: #1e212b;
-  font-weight: 600;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(30, 33, 43, 0.4);
+  color: var(--brand);
+  text-decoration: underline;
 }
 
-.empty a:hover {
-  border-bottom-color: rgba(30, 33, 43, 0.8);
-}
-
+/* Post list */
 .list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1rem;
 }
 
-/* Mobile tweak */
+/* Mobile */
 @media (max-width: 768px) {
-  .column {
-    padding-top: 70px; /* Space for hamburger */
-  }
-
   .header {
-    padding: 8px 10px;
-    border-radius: 10px;
-    top: 60px; /* Below hamburger button */
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .hTitle {
-    font-size: 0.98rem;
-  }
-
-  .hSub {
-    font-size: 0.8rem;
+    font-size: 1.25rem;
   }
 
   .newPostBtn {
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    width: 100%;
+    text-align: center;
   }
 }

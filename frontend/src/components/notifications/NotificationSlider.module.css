@@ -1,203 +1,214 @@
 /* src/components/notifications/NotificationSlider.module.css */
 
-:root {
-  --main-1: #fdfbd4;
-  --main-2: #d9d7b6;
-  --sec: #878672;
-  --accent: #545333;
-  --bg-panel: #fffaf2;
-  --glass: rgba(255, 255, 255, 0.7);
-}
-
+/* Overlay behind the panel */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 10, 10, 0.22);
+  background: rgba(0, 0, 0, 0);
   opacity: 0;
-  visibility: hidden;
-  transition: opacity 220ms ease;
-  z-index: 1200;
-}
-.overlayOpen {
-  opacity: 1;
-  visibility: visible;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 40;
 }
 
-/* Sliding panel from right */
+.overlayOpen {
+  background: rgba(0, 0, 0, 0.28);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Slider panel */
 .slider {
   position: fixed;
-  right: -420px;
   top: 0;
+  right: 0;
+  width: 360px;
+  max-width: 100%;
   height: 100vh;
-  width: 380px;
-  max-width: 92%;
-  background: linear-gradient(180deg, var(--bg-panel), #fff);
-  box-shadow: -16px 14px 40px rgba(20, 20, 20, 0.08);
-  border-left: 1px solid rgba(84, 83, 51, 0.04);
-  padding: 18px;
-  z-index: 1300;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  box-shadow: -4px 0 18px rgba(0, 0, 0, 0.08);
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  z-index: 50;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  transition: right 260ms cubic-bezier(0.2, 0.9, 0.2, 1);
-  backdrop-filter: blur(6px) saturate(120%);
-  border-radius: 12px 0 0 12px;
 }
 
-/* open state */
-.slider.open {
-  right: 18px;
+.open {
+  transform: translateX(0);
 }
 
-/* header */
+/* Header */
 .header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-}
-.title {
-  margin: 0;
-  font-size: 1.05rem;
-  color: var(--accent);
-}
-.sub {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--sec);
+  gap: 1rem;
 }
 
-/* header actions */
+.title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.sub {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 0.2rem;
+}
+
 .headerActions {
   display: flex;
-  gap: 8px;
   align-items: center;
-}
-.markAllBtn {
-  background: transparent;
-  border: 1px solid rgba(84, 83, 51, 0.08);
-  padding: 6px 10px;
-  border-radius: 9px;
-  font-weight: 700;
-  color: var(--accent);
-  cursor: pointer;
-}
-.closeBtn {
-  background: transparent;
-  border: none;
-  font-size: 1.05rem;
-  color: var(--sec);
-  cursor: pointer;
+  gap: 0.5rem;
 }
 
-/* sections */
+/* Buttons reused in header + items */
+.markAllBtn {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.closeBtn {
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: none;
+  background-color: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* Sections */
 .section {
+  padding: 0.75rem 1.25rem 1rem;
   flex: 1;
-  overflow: auto;
-  padding-right: 6px;
-}
-.sectionTitle {
-  font-weight: 700;
-  color: var(--accent);
-  margin: 8px 0;
-}
-.list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.5rem;
+  overflow: hidden;
 }
 
-/* notification item */
+.sectionTitle {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+/* List */
+.list {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+/* Item */
 .item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
-  padding: 10px;
-  border-radius: 12px;
-  background: linear-gradient(
-    180deg,
-    rgba(247, 244, 228, 0.7),
-    rgba(245, 244, 236, 0.4)
-  );
-  border: 1px solid rgba(84, 83, 51, 0.03);
+  gap: 0.75rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border-subtle);
 }
+
+.item:last-of-type {
+  border-bottom: none;
+}
+
+/* Dim read items */
+.item[data-read='true'] {
+  opacity: 0.6;
+}
+
 .itemLeft {
   display: flex;
-  gap: 10px;
-  align-items: center;
+  align-items: flex-start;
+  gap: 0.6rem;
+  flex: 1;
+  min-width: 0;
 }
+
 .avatarMock {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-  color: var(--accent);
-  background: linear-gradient(
-    180deg,
-    rgba(84, 83, 51, 0.06),
-    rgba(135, 134, 114, 0.03)
-  );
-  border: 1px solid rgba(84, 83, 51, 0.05);
-}
-.itemText {
-  font-weight: 600;
-  color: #2f2e22;
-}
-.itemTime {
-  font-size: 0.82rem;
-  color: var(--sec);
-}
-
-/* icons on right */
-.itemRight {
-  display: grid;
-  place-items: center;
-}
-.iconLike {
-  font-size: 18px;
-  color: #d84b61;
-}
-.iconComment {
-  font-size: 18px;
-  color: #3b82f6;
-}
-.iconFollow {
-  font-size: 16px;
-  color: #2f9a55;
-}
-.iconAccept {
-  font-size: 16px;
-  color: #2f9a55;
-}
-.iconDefault {
-  font-size: 16px;
-  color: var(--sec);
-}
-
-/* small bell + badge reuse (for NotificationButton) */
-.bellBtn {
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0.92));
-  border: 1px solid rgba(84, 83, 51, 0.06);
-  cursor: pointer;
-}
-.badge {
-  position: absolute;
-  right: 6px;
-  top: 6px;
-  background: #d84b61;
-  color: white;
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 4px 6px;
+  width: 34px;
+  height: 34px;
   border-radius: 999px;
-  box-shadow: 0 6px 12px rgba(216, 75, 97, 0.12);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.itemText {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.itemTime {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.itemRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+/* Icons */
+.iconLike,
+.iconComment,
+.iconFollow,
+.iconAccept,
+.iconDefault {
+  font-size: 1rem;
+}
+
+/* Footer */
+.footer {
+  padding: 0.75rem 1.25rem 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.viewAllLink {
+  font-size: 0.85rem;
+  color: var(--brand);
+  text-decoration: none;
+}
+
+.viewAllLink:hover {
+  text-decoration: underline;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .slider {
+    width: 100%;
+  }
+
+  .header {
+    padding: 0.9rem 1rem;
+  }
+
+  .section {
+    padding: 0.6rem 1rem 0.9rem;
+  }
+
+  .footer {
+    padding: 0.6rem 1rem 0.9rem;
+  }
 }

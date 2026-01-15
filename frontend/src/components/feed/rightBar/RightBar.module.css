@@ -1,75 +1,63 @@
 /* src/components/feed/rightBar/RightBar.module.css */
 
 .completeBar {
+  position: sticky;
+  top: 1.5rem;
+  align-self: flex-start;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  padding: 0;
-  gap: 0;
+  gap: 1.25rem;
+  padding: 1.5rem 1rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
 }
 
+/* Top user info */
 .userInfo {
-  padding: 24px 20px 20px;
-  border-bottom: 1px solid #aebab1;
-  background: transparent;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .userLink {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
   text-decoration: none;
-  padding: 12px;
-  border-radius: 12px;
-  transition: background-color 0.15s ease;
-}
-
-.userLink:hover {
-  background-color: rgba(30, 33, 43, 0.05);
+  color: var(--text-primary);
 }
 
 .avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #aebab1;
+  border: 1px solid var(--border-subtle);
 }
 
-.username {
-  font-weight: 600;
-  color: #1e212b;
-  font-size: 1rem;
-}
-
+/* Recommended section */
 .recommended {
-  flex: 1;
-  padding: 24px 20px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .title {
-  margin: 0 0 20px 0;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #6e747b;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-primary);
 }
 
 .center,
 .centerError {
-  padding: 24px 0;
-  color: #6e747b;
-  font-size: 0.9rem;
+  padding: 1.5rem 0.5rem;
   text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
 .centerError {
-  color: #1e212b;
-  background: #d8cfc7;
-  border-radius: 10px;
-  padding: 16px;
+  color: var(--error);
 }
 
 .list {
@@ -78,205 +66,123 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1rem;
 }
 
 .item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 12px;
-  transition: background-color 0.15s ease;
-}
-
-.item:hover {
-  background-color: rgba(30, 33, 43, 0.05);
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
 .left {
   display: flex;
-  gap: 12px;
   align-items: center;
+  gap: 0.6rem;
   text-decoration: none;
-  color: inherit;
   flex: 1;
+  min-width: 0;
+  color: var(--text-primary);
 }
 
 .itemAvatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #aebab1;
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
 }
 
 .meta {
+  flex: 1;
   min-width: 0;
 }
 
 .uname {
-  font-weight: 600;
-  color: #1e212b;
+  font-size: 0.9rem;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.95rem;
 }
 
 .small {
-  font-size: 0.85rem;
-  color: #6e747b;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Actions */
 .actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-shrink: 0;
+}
+
+.followBtn,
+.followingBtn,
+.requestedBtn {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  border: none;
+  cursor: pointer;
 }
 
 .followBtn {
-  background-color: #1e212b;
-  color: #f5f4f2;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: none;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(30, 33, 43, 0.2);
-}
-
-.followBtn:hover:not(:disabled) {
-  background-color: #111318;
-  transform: translateY(-1px);
+  background-color: var(--brand);
+  color: #ffffff;
 }
 
 .followingBtn {
-  background-color: transparent;
-  border: 1px solid #aebab1;
-  color: #1e212b;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
 }
 
-.followingBtn:hover {
-  background-color: #f5f4f2;
+.requestedBtn {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: default;
 }
 
 .requestWrap {
   display: flex;
-  gap: 4px;
   align-items: center;
-}
-
-.requestedBtn {
-  background-color: #f5f4f2;
-  border: 1px dashed #aebab1;
-  color: #6e747b;
-  padding: 5px 10px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 500;
+  gap: 0.25rem;
 }
 
 .cancelSmall {
-  background: transparent;
-  border: 1px solid #aebab1;
-  color: #6e747b;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--error-soft);
+  color: var(--error);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
+/* Footer note */
 .footerNote {
-  padding: 20px;
-  color: #6e747b;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.footerNote small {
   font-size: 0.8rem;
-  border-top: 1px solid #aebab1;
+  color: var(--text-muted);
 }
 
-@media (max-width: 768px) {
+/* Tablet & mobile: hide right sidebar */
+@media (max-width: 1024px) {
   .completeBar {
-    height: auto;
-  }
-
-  .userInfo {
-    padding: 16px 0 12px;
-    border-bottom: 1px solid #aebab1;
-  }
-
-  .userLink {
-    padding: 10px 8px;
-  }
-
-  .avatar {
-    width: 40px;
-    height: 40px;
-  }
-
-  .username {
-    font-size: 0.95rem;
-  }
-
-  .recommended {
-    padding: 16px 0 12px;
-    overflow-y: visible;
-  }
-
-  .title {
-    margin-bottom: 12px;
-    font-size: 0.8rem;
-  }
-
-  .list {
-    gap: 10px;
-  }
-
-  .item {
-    padding: 10px 8px;
-  }
-
-  .itemAvatar {
-    width: 34px;
-    height: 34px;
-  }
-
-  .uname {
-    font-size: 0.9rem;
-  }
-
-  .small {
-    font-size: 0.8rem;
-  }
-
-  .footerNote {
-    padding: 12px 0 4px;
-    font-size: 0.75rem;
-    border-top: none;
-  }
-}
-
-@media (max-width: 425px) {
-  .item {
-    gap: 8px;
-  }
-
-  .actions {
-    gap: 4px;
-  }
-
-  .followBtn,
-  .followingBtn,
-  .requestedBtn {
-    padding: 4px 8px;
-    font-size: 0.78rem;
+    display: none;
   }
 }
