@@ -1,0 +1,264 @@
+/* src/components/editProfile/ProfileEdit.module.css */
+
+.page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  background-color: var(--bg-primary);
+}
+
+/* Main card */
+.card {
+  width: 100%;
+  max-width: 920px;
+  background-color: var(--bg-secondary);
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  padding: 1.8rem 1.6rem 2rem;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeInUp 220ms ease-out;
+}
+
+.heading {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+/* Split layout: form + preview */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* Form fields */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.input,
+.textarea {
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 2px var(--brand-soft);
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.counter {
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+/* Small helper text */
+.smallNote {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Upload input styled like a button */
+.label input[type='file'] {
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: 1px dashed var(--border-subtle);
+  background-color: var(--bg-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.label input[type='file']:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Error */
+.error {
+  margin-top: 0.5rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  background-color: var(--error-soft);
+  color: var(--error);
+  font-size: 0.85rem;
+}
+
+/* Controls */
+.controls {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.saveBtn,
+.cancelBtn {
+  padding: 0.65rem 1.3rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.9rem;
+}
+
+.saveBtn {
+  background-color: var(--brand);
+  color: #ffffff;
+}
+
+.saveBtn:disabled {
+  opacity: 0.75;
+}
+
+.cancelBtn {
+  background-color: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+}
+
+/* Delete profile picture */
+.deleteBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background-color: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* Preview side */
+.previewCard {
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-primary);
+  padding: 1.1rem 1rem 1.2rem;
+  text-align: center;
+}
+
+.previewAvatar {
+  border-radius: 999px;
+  object-fit: cover;
+  border: 3px solid var(--bg-secondary);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+  margin-bottom: 0.75rem;
+}
+
+.previewName {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.previewBio {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Tips box */
+.helper {
+  margin-top: 0.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-secondary);
+  padding: 0.8rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.helper strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--text-primary);
+}
+
+.helper ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.helper li {
+  margin-bottom: 0.2rem;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 1.5rem 1rem;
+  }
+
+  .card {
+    padding: 1.5rem 1.25rem 1.7rem;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .saveBtn,
+  .cancelBtn {
+    width: 100%;
+    text-align: center;
+  }
+}

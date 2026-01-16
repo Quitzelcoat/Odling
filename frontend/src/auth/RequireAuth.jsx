@@ -1,6 +1,6 @@
 // src/components/RequireAuth.jsx
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../auth/context';
+import { useAuth } from './context';
 
 export default function RequireAuth({ children }) {
   const { user, loading } = useAuth();

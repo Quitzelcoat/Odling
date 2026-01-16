@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/context';
 import api from '../../auth/api';
-import styles from './EditProfile.module.css';
+import styles from './ProfileEdit.module.css';
 import { makeImageUrl } from '../../auth/urls';
 
 const EditProfile = () => {

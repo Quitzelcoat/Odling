@@ -1,17 +1,17 @@
 // src/pages/find/FindUsers.jsx
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import styles from './FindUsers.module.css';
-import feedStyle from '../../pages/feedPage/Feed.module.css'; // reuse container layout
+import feedStyle from '../feedPage/Feed.module.css'; // reuse container layout
 import api from '../../auth/api';
 import { useAuth } from '../../auth/context';
 import { Link } from 'react-router-dom';
 
 // layout pieces
-import UserCard from '../users/UserCard';
-import LeftBar from '../feed/leftBar/LeftBar';
-import RightBar from '../feed/rightBar/RightBar';
-import NotificationProvider from '../notifications/NotificationProvider';
-import NotificationSlider from '../notifications/NotificationSlider';
+import UserCard from '../../components/users/UserCard';
+import LeftBar from '../../components/feed/leftBar/LeftBar';
+import RightBar from '../../components/feed/rightBar/RightBar';
+import NotificationProvider from '../../components/notifications/NotificationProvider';
+import NotificationSlider from '../../components/notifications/NotificationSlider';
 
 export default function FindUsers() {
   const { user, token } = useAuth();

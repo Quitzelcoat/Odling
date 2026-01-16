@@ -4,8 +4,8 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import api from '../../auth/api';
 import { useAuth } from '../../auth/context';
 import { makeImageUrl } from '../../auth/urls';
-import PostCard from './PostCard';
-import styles from './PostPage.module.css';
+import PostCard from '../../components/postCard/PostCard';
+import styles from './EditPost.module.css';
 
 export default function PostPage() {
   const { id } = useParams();

@@ -1,0 +1,14 @@
+/* src/components/profile/PostCardWrapper.module.css */
+
+.postWrap {
+  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-secondary);
+  padding: 0.8rem;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.postWrap:hover {
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}

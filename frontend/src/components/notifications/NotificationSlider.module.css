@@ -1,6 +1,3 @@
-/* src/components/notifications/NotificationSlider.module.css */
-
-/* Overlay behind the panel */
 .overlay {
   position: fixed;
   inset: 0;

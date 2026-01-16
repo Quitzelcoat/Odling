@@ -6,8 +6,8 @@ import styles from './Profile.module.css';
 import api from '../../auth/api';
 import { makeImageUrl } from '../../auth/urls';
 
-import PostCardWrapper from './PostCardWraper';
-import FollowersModal from './FollowersModal';
+import PostCardWrapper from '../../components/profile/PostCardWraper';
+import FollowersModal from '../../components/profile/FollowersModal';
 
 const Profile = () => {
   const { user, loading, token } = useAuth();

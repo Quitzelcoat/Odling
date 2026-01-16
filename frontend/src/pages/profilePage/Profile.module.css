@@ -1,0 +1,261 @@
+/* src/pages/profile/Profile.module.css */
+
+.page {
+  min-height: calc(100vh - 64px);
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  background-color: var(--bg-primary);
+}
+
+/* Loading / no user states */
+.loading,
+.noUser {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  color: var(--text-secondary);
+}
+
+/* Header card */
+.headerCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-secondary);
+}
+
+.gradientGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      circle at 0% 0%,
+      var(--brand-soft),
+      transparent 55%
+    ),
+    radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0.03), transparent 60%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.headerInner {
+  position: relative;
+  display: flex;
+  gap: 1.75rem;
+  padding: 1.6rem 1.6rem 1.8rem;
+}
+
+/* Avatar */
+.avatarWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 3px solid var(--bg-secondary);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Small pulse indicator */
+.statusPulse {
+  position: absolute;
+  right: 6px;
+  bottom: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background-color: var(--brand);
+  box-shadow: 0 0 0 0 rgba(74, 126, 204, 0.6);
+  animation: pulse 1.8s ease-out infinite;
+}
+
+/* Title area */
+.title {
+  flex: 1;
+  min-width: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.username {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.editBtn,
+.backBtn {
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+/* Name + bio */
+.realName {
+  margin-top: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.bio {
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+/* Meta row */
+.metaRow {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.metaItem,
+.metaItemButton {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.metaItemButton {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.metaNum {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.metaLabel {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* Content section */
+.content {
+  background-color: var(--bg-secondary);
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  padding: 1.5rem 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Posts section states */
+.postsPlaceholder {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.errorText {
+  color: var(--error);
+}
+
+.noPostsTitle {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.noPostsNote {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.ctaLink {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+/* Posts grid */
+.postsGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(74, 126, 204, 0.6);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(74, 126, 204, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(74, 126, 204, 0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .headerInner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 1.5rem 1rem;
+  }
+
+  .headerInner {
+    padding: 1.25rem 1.1rem 1.5rem;
+  }
+
+  .content {
+    padding: 1.25rem 1.1rem 1.5rem;
+  }
+}

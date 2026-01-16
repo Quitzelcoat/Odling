@@ -1,6 +1,6 @@
 // src/components/GuestOnly.jsx
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../auth/context';
+import { useAuth } from './context';
 
 export default function GuestOnly({ children }) {
   const { user, loading } = useAuth();

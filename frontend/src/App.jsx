@@ -2,8 +2,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './auth/AuthProvider';
-import RequireAuth from './components/RequireAuth';
-import GuestOnly from './components/GuestOnly';
+import RequireAuth from './auth/RequireAuth';
+import GuestOnly from './auth/GuestOnly';
 import './style/main.css';
 
 import AuthLayout from './pages/logPage/AuthLayout';
@@ -12,12 +12,12 @@ import Home from './pages/dashboard/Home';
 import Login from './pages/logPage/Login';
 import Signup from './pages/logPage/Signup';
 import Feed from './pages/feedPage/Feed';
-import Profile from './components/profile/Profile';
-import EditProfile from './components/editProfile/EditProfile';
-import CreatePosts from './components/createPosts/CreatePosts';
-import FindUsers from './components/find/FindUsers';
-import PublicProfile from './components/profile/PublicProfile';
-import PostPage from './components/postCard/PostPage';
+import Profile from './pages/profilePage/Profile';
+import EditProfile from './pages/profileEdit/ProfileEdit';
+import CreatePosts from './pages/createPosts/CreatePosts';
+import FindUsers from './pages/findUsersPage/FindUsers';
+import PublicProfile from './pages/profilePage/PublicProfile';
+import PostPage from './pages/postEdit/EditPost';
 import CommentPage from './components/comment/CommentPage';
 
 function App() {

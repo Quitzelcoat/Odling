@@ -6,8 +6,8 @@ import { useAuth } from '../../auth/context';
 import { makeImageUrl } from '../../auth/urls';
 import styles from './PublicProfile.module.css';
 
-import PostCard from '../postCard/PostCard';
-import FollowersModal from './FollowersModal';
+import PostCard from '../../components/postCard/PostCard';
+import FollowersModal from '../../components/profile/FollowersModal';
 
 export default function PublicProfile() {
   const { id: paramId } = useParams(); // route: /profile/:id
@@ -244,7 +244,7 @@ export default function PublicProfile() {
     if (isFollowing) {
       return (
         <button className={styles.followingBtn} onClick={doUnfollow}>
-          Following — Unfollow
+          Following
         </button>
       );
     }

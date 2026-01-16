@@ -1,5 +1,6 @@
+// src/components/profile/PostCardWrapper.jsx
 import PostCard from '../postCard/PostCard';
-import styles from './Profile.module.css';
+import styles from './PostCardWraper.module.css';
 
 const PostCardWrapper = ({ post }) => (
   <div className={styles.postWrap}>
